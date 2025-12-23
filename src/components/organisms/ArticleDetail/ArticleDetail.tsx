@@ -1,4 +1,8 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
+import { Skeleton } from '../../atoms/Skeleton/Skeleton'; // Importando o Átomo
 import styles from './ArticleDetail.module.scss';
 
 interface ArticleDetailProps {
@@ -11,6 +15,28 @@ interface ArticleDetailProps {
 }
 
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className={styles.article}>
+        <Skeleton height="45px" width="90%" />
+        <div style={{ display: 'flex', gap: '20px', margin: '1rem 0' }}>
+          <Skeleton height="15px" width="150px" />
+          <Skeleton height="15px" width="100px" />
+        </div>
+        <Skeleton height="20px" width="100%" />
+        <Skeleton height="20px" width="95%" />
+        <Skeleton height="20px" width="98%" />
+      </div>
+    );
+  }
+
   const formattedDate = new Date(article.date).toLocaleDateString('pt-BR');
 
   return (
