@@ -4,6 +4,7 @@
     "slug": "primeiro-artigo-teste",
     "title": "A Importância do Next.js no Jornalismo Moderno",
     "summary": "Como a performance impacta a leitura de notícias online.",
+    "image": "https://picsum.photos/seed/news1/800/450",
     "content": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "date": "2025-05-20",
     "author": "Equipe Gazeta"
@@ -13,6 +14,7 @@
     "slug": "segundo-artigo-teste",
     "title": "Tendências Tecnológicas em 2025",
     "summary": "Uma visão geral das inovações que estão moldando o futuro.",
+    "image": "https://picsum.photos/seed/news2/800/450",
     "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     "date": "2025-06-15",
     "author": "Tech News"
@@ -22,6 +24,7 @@
     "slug": "terceiro-artigo-teste",
     "title": "Sustentabilidade e Tecnologia",
     "summary": "Como a tecnologia pode ajudar a criar um futuro mais verde.",
+    "image": "https://picsum.photos/seed/news3/800/450",
     "content": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     "date": "2025-07-10",
     "author": "Eco Daily"
@@ -31,6 +34,7 @@
     "slug": "quarto-artigo-teste",
     "title": "Inteligência Artificial no Cotidiano",
     "summary": "Explorando o impacto da IA em nossas vidas diárias.",
+    "image": "https://picsum.photos/seed/news4/800/450",
     "content": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "date": "2025-08-05",
     "author": "AI Weekly"
@@ -40,8 +44,19 @@
     "slug": "quinto-artigo-teste",
     "title": "O Futuro do Trabalho Remoto",
     "summary": "Como o trabalho remoto está transformando o mercado de trabalho.",
+    "image": "https://picsum.photos/seed/news5/800/450",
     "content": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
     "date": "2025-09-01",
     "author": "Work Trends"
+  },
+  {
+    "id": "6",
+    "slug": "sexto-artigo-teste",
+    "title": "Realidade Aumentada: O Próximo Passo na Tecnologia",
+    "summary": "Descubra como a realidade aumentada está mudando a forma como interagimos com o mundo.",
+    "image": "https://picsum.photos/seed/news6/800/450",
+    "content": "Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. Amet massa vitae tortor condimentum lacinia quis vel eros donec. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
+    "date": "2025-10-12",
+    "author": "AR Today"
   }
 ]

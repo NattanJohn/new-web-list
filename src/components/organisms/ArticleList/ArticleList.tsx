@@ -50,6 +50,7 @@ export const ArticleList = () => {
           title={article.title}
           summary={article.summary ?? ''}
           date={article.date ?? ''}
+          image={article.image}
         />
       ))}
     </section>

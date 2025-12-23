@@ -1,45 +1,54 @@
 .card {
   border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 8px;
-  margin-bottom: 1.5rem;
-  transition: transform 0.2s ease;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   background-color: var(--bg-color);
 
   &:hover {
-    transform: scale(1.01);
-    border-color: var(--text-color);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
   }
 }
 
 .link {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
   padding: 1.5rem;
 }
 
 .date {
   font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 600;
   opacity: 0.7;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .summary {
   margin: 1rem 0;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  opacity: 0.9;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .readMore {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 0.9rem;
-  color: #0056b3;
+  color: var(--accent-color);
+  text-transform: uppercase;
 }
-
 
 :global([data-theme='high-contrast']) .readMore {
   color: var(--text-color);
