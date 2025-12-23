@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
-import { Skeleton } from '../../atoms/Skeleton/Skeleton'; // Importando o Átomo
+import { Skeleton } from '../../atoms/Skeleton/Skeleton';
 import styles from './ArticleDetail.module.scss';
+import { BackButton } from '../../atoms/BackButton/BackButton';
 
 interface ArticleDetailProps {
   article: {
@@ -41,6 +42,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
 
   return (
     <article className={styles.article}>
+      <BackButton />
       <header className={styles.header}>
         <Title tag="h1">{article.title}</Title>
         <div className={styles.meta}>

@@ -1,0 +1,30 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
+}
+
+:global([data-theme='high-contrast']) .button {
+  border: 2px solid var(--text-color);
+  text-transform: uppercase;
+  font-weight: bold;
+}
