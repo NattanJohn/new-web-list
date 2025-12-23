@@ -1,0 +1,47 @@
+.card {
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease;
+  background-color: var(--bg-color);
+
+  &:hover {
+    transform: scale(1.01);
+    border-color: var(--text-color);
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 1.5rem;
+}
+
+.date {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.summary {
+  margin: 1rem 0;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.readMore {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #0056b3;
+}
+
+
+:global([data-theme='high-contrast']) .readMore {
+  color: var(--text-color);
+  text-decoration: underline;
+}
