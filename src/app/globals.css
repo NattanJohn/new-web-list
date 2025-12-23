@@ -1,20 +1,23 @@
 :root {
-  --font-main: 'Inter', sans-serif;
+  --font-main: "Inter", sans-serif;
   --bg-color: #ffffff;
   --text-color: #1a1a1a;
   --accent-color: #0056b3;
+  --icon-color: #1a1a1a;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --bg-color: #121212;
   --text-color: #e0e0e0;
   --accent-color: #4da3ff;
+  --icon-color: #e0e0e0;
 }
 
-[data-theme='high-contrast'] {
+[data-theme="high-contrast"] {
   --bg-color: #000000;
   --text-color: #ffff00;
   --accent-color: #ffff00;
+  --icon-color: #ffff00;
 }
 
 * {
@@ -31,7 +34,9 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1.2;
   font-weight: 800;
 }
