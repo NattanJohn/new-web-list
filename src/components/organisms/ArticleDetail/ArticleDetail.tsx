@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
 import { Skeleton } from '../../atoms/Skeleton/Skeleton';
-import styles from './ArticleDetail.module.scss';
+import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
+import styles from './ArticleDetail.module.scss';
 
 interface ArticleDetailProps {
   article: {
@@ -12,6 +13,7 @@ interface ArticleDetailProps {
     content: string;
     date: string;
     author: string;
+    image?: string;
   };
 }
 
@@ -26,14 +28,16 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   if (isLoading) {
     return (
       <div className={styles.article}>
+        <BackButton />
         <Skeleton height="45px" width="90%" />
         <div style={{ display: 'flex', gap: '20px', margin: '1rem 0' }}>
           <Skeleton height="15px" width="150px" />
           <Skeleton height="15px" width="100px" />
         </div>
+        <Skeleton height="400px" width="100%" /> 
+        <br />
         <Skeleton height="20px" width="100%" />
         <Skeleton height="20px" width="95%" />
-        <Skeleton height="20px" width="98%" />
       </div>
     );
   }
@@ -43,6 +47,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   return (
     <article className={styles.article}>
       <BackButton />
+      
       <header className={styles.header}>
         <Title tag="h1">{article.title}</Title>
         <div className={styles.meta}>
@@ -50,6 +55,13 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
           <span>Por: {article.author}</span>
         </div>
       </header>
+      
+      {article.image && (
+        <div className={styles.featuredImage}>
+          <PostImage src={article.image} alt={article.title} />
+        </div>
+      )}
+
       <div className={styles.content}>
         <p>{article.content}</p> 
       </div>

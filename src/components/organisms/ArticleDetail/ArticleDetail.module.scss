@@ -27,10 +27,28 @@
   }
 }
 
+.featuredImage {
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  :global(.imageWrapper) {
+    aspect-ratio: 21 / 9;
+    min-height: 250px;
+
+    @media (max-width: 768px) {
+      aspect-ratio: 16 / 9;
+      min-height: auto;
+    }
+  }
+}
+
 .content {
   line-height: 1.8;
   font-size: 1.125rem;
-  
+  color: var(--text-color);
   p {
     margin-bottom: 1.5rem;
   }
