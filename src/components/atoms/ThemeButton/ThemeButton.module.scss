@@ -1,40 +1,79 @@
-.container {
+.wrapper {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 0.5rem;
-  padding: 1rem;
+}
+
+.mainButton {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  background: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg-color);
+  padding: 0.5rem;
+  border-radius: 30px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease forwards;
 
   button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
     cursor: pointer;
-    padding: 0.6rem 1.2rem;
-    border: 2px solid var(--text-color);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-weight: 600;
-    border-radius: 4px;
-    transition: all 0.2s ease-in-out;
-    font-size: 0.875rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
 
     &:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    &:focus-visible {
-      outline: 3px solid #0056b3;
-      outline-offset: 2px;
+      background: rgba(128, 128, 128, 0.1);
     }
   }
+}
 
-  @media (max-width: 768px) {
-    button {
-      flex: 1 1 100%;
-      padding: 0.8rem;
-    }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    top: 1rem;
+    right: 1rem;
   }
 }
