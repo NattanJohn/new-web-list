@@ -6,7 +6,8 @@ import { Skeleton } from '../../atoms/Skeleton/Skeleton';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
 import styles from './ArticleDetail.module.scss';
-import type { Article } from '../../../types/article';
+import type { Article } from '@/types';
+import { formatDate } from '../../../utils/formatDate';
 
 type ArticleDetailType = Omit<Article, 'date'> & { date: string; content: string; author: string };
 
@@ -39,7 +40,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
     );
   }
 
-  const formattedDate = article.date ? new Date(article.date).toLocaleDateString('pt-BR') : '';
+  const formattedDate = formatDate(article.date);
 
   return (
     <article className={styles.article}>
