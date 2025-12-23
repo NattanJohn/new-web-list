@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import styles from './BackButton.module.scss';
+import { ArrowLeftIcon } from '@/components/atoms/Icons';
 
 export const BackButton = () => {
   const router = useRouter();
@@ -12,7 +13,8 @@ export const BackButton = () => {
       onClick={() => router.back()}
       aria-label="Voltar para a página anterior"
     >
-      <span className={styles.icon}>←</span> Voltar
+      <ArrowLeftIcon size={18}/>
+      <span>Voltar</span>
     </button>
   );
 };
