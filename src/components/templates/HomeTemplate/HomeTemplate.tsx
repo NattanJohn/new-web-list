@@ -20,7 +20,7 @@ export const HomeTemplate = ({ children }: HomeTemplateProps) => {
       </main>
 
       <footer className={styles.footer}>
-        <p>© 2025 Gazeta do Povo - Teste Fullstack JR</p>
+        <p>© 2025 Gazeta News - Nattan John Lana da Silva</p>
       </footer>
     </div>
   );

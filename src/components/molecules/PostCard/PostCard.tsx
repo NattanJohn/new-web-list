@@ -10,7 +10,6 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ title, summary, date, slug }: PostCardProps) => {
-  // Formatação básica de data para PT-BR
   const formattedDate = new Date(date).toLocaleDateString('pt-BR');
 
   return (
