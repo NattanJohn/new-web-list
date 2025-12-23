@@ -1,0 +1,11 @@
+[
+  {
+    "id": "1",
+    "slug": "primeiro-artigo-teste",
+    "title": "A Importância do Next.js no Jornalismo Moderno",
+    "summary": "Como a performance impacta a leitura de notícias online.",
+    "content": "Conteúdo completo aqui com vários parágrafos para a tela de detalhes...",
+    "date": "2025-05-20",
+    "author": "Equipe Gazeta"
+  }
+]
