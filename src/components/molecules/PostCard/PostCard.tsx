@@ -2,19 +2,13 @@ import Link from 'next/link';
 import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import styles from './PostCard.module.scss';
+import type { Article } from '../../../types/article';
 
-interface PostCardProps {
-  title: string;
-  summary: string;
-  date: string;
-  slug: string;
-  image?: string;
-}
+type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image'>;
 
-export const PostCard = ({ title, summary, date, slug, image }: PostCardProps) => {
-  const formattedDate = new Date(date).toLocaleDateString('pt-BR');
-  
-  const imageUrl = image || 'https://via.placeholder.com/800x450?text=Gazeta+News';
+export const PostCard = ({ title, summary = '', date = '', slug, image }: PostCardProps) => {
+  const formattedDate = date ? new Date(date).toLocaleDateString('pt-BR') : '';
+  const imageUrl = image ?? 'https://via.placeholder.com/800x450?text=Gazeta+News';
 
   return (
     <article className={styles.card}>

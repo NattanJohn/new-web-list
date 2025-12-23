@@ -1,7 +1,4 @@
-type IconProps = {
-  size?: number;
-  className?: string;
-};
+import type { IconProps } from './types';
 
 export const SunIcon = ({ size = 20, className }: IconProps) => (
   <svg

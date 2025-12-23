@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
@@ -6,15 +6,12 @@ import { Skeleton } from '../../atoms/Skeleton/Skeleton';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
 import styles from './ArticleDetail.module.scss';
+import type { Article } from '../../../types/article';
+
+type ArticleDetailType = Omit<Article, 'date'> & { date: string; content: string; author: string };
 
 interface ArticleDetailProps {
-  article: {
-    title: string;
-    content: string;
-    date: string;
-    author: string;
-    image?: string;
-  };
+  article: ArticleDetailType;
 }
 
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
@@ -42,7 +39,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
     );
   }
 
-  const formattedDate = new Date(article.date).toLocaleDateString('pt-BR');
+  const formattedDate = article.date ? new Date(article.date).toLocaleDateString('pt-BR') : '';
 
   return (
     <article className={styles.article}>

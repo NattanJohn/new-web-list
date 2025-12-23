@@ -5,7 +5,7 @@ import { PostCard } from '../../molecules/PostCard/PostCard';
 import { Skeleton } from '../../atoms/Skeleton/Skeleton';
 import styles from './ArticleList.module.scss';
 import articlesData from '@/data/news.json';
-import { Article } from '@/types/article';
+import type { Article } from '../../../types/article';
 
 export const ArticleList = () => {
   const [articles, setArticles] = useState<Article[]>([]);

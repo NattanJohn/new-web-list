@@ -1,8 +1,8 @@
-import articlesData from '@/data/news.json';
-import { notFound } from 'next/navigation';
-import { HomeTemplate } from '@/components/templates/HomeTemplate/HomeTemplate';
-import { ArticleDetail } from '@/components/organisms/ArticleDetail/ArticleDetail';
-import { Metadata } from 'next';
+import articlesData from "@/data/news.json";
+import { notFound } from "next/navigation";
+import { HomeTemplate } from "@/components/templates/HomeTemplate/HomeTemplate";
+import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
+import { Metadata } from "next";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -11,10 +11,16 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = articlesData.find((a) => a.slug === slug);
-  
+
   return {
-    title: article ? `${article.title} | Gazeta News` : 'Artigo não encontrado',
-    description: article?.summary || 'Detalhes do artigo',
+    title: article ? `${article.title} | Gazeta News` : "Artigo não encontrado",
+    description: article?.summary || "Detalhes do artigo",
+    openGraph: {
+      title: article?.title,
+      description: article?.summary,
+      images: article?.image ? [{ url: article.image }] : [],
+      type: "article",
+    },
   };
 }
 
