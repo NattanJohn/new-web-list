@@ -15,7 +15,7 @@ export const PostCard = ({ title, summary, date, slug }: PostCardProps) => {
 
   return (
     <article className={styles.card}>
-      <Link href={`/artigo/${slug}`} className={styles.link}>
+      <Link href={`/article/${slug}`} className={styles.link}>
         <header>
           <span className={styles.date}>{formattedDate}</span>
           <Title tag="h2">{title}</Title>
