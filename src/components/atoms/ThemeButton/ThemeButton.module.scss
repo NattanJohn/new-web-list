@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  button {
+    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--text-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.875rem;
+
+    &:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 3px solid #0056b3;
+      outline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    button {
+      flex: 1 1 100%;
+      padding: 0.8rem;
+    }
+  }
+}
