@@ -72,7 +72,6 @@ export const api = {
 
   async getArticleBySlug(slug: string): Promise<Article | null> {
     const res = await fetchWithTimeout(`${API_URL}/articles/${encodeURIComponent(slug)}`, { cache: 'no-store' });
-    // 404 -> return null to keep previous behaviour
     if (res.status === 404) return null;
     return handleResponse<Article>(res);
   }

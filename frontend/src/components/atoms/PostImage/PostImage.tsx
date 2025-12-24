@@ -7,15 +7,16 @@ interface PostImageProps {
   priority?: boolean;
 }
 
-export const PostImage = ({ src, alt }: PostImageProps) => {
+export const PostImage = ({ src, alt, priority = false }: PostImageProps) => {
   return (
     <div className={styles.imageWrapper}>
       <Image
         src={src}
         alt={alt}
-        fill 
+        fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={false}
+        priority={priority}
+        fetchPriority={priority ? 'high' : 'auto'}
       />
     </div>
   );

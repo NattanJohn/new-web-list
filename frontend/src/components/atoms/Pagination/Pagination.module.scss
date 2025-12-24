@@ -29,7 +29,7 @@
   font-family: var(--font-main);
   font-weight: 500;
   font-size: 1rem;
-  border-radius: 50%; // Formato circular suave no hover
+  border-radius: 50%;
   transition: all 0.2s ease;
 
   &:hover:not([disabled]) {
@@ -50,7 +50,6 @@
   font-weight: 700;
   position: relative;
 
-  // Um detalhe elegante: uma linha embaixo do número atual
   &::after {
     content: '';
     position: absolute;
@@ -62,14 +61,12 @@
   }
 }
 
-/* Seta de navegação um pouco maior e mais limpa */
 .btn[aria-label*="anterior"],
 .btn[aria-label*="Próxima"] {
   font-size: 1.4rem;
   font-weight: 300;
 }
 
-/* Ajuste para Alto Contraste */
 :global(html[data-accessibility-high-contrast="true"]) {
   .current {
     outline: 2px solid var(--text-color);

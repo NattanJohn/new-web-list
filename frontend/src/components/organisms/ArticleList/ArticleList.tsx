@@ -39,6 +39,30 @@ export const ArticleList = () => {
   }, [loadArticles]);
 
   useEffect(() => {
+    if (!articles || !articles.length) return;
+    if (currentPage !== 1) return;
+
+    const first = articles[0];
+    const url = first?.image;
+    if (!url) return;
+
+    try {
+      const existing = Array.from(document.querySelectorAll('link[rel="preload"][as="image"]')).find(
+        (l) => (l as HTMLLinkElement).href === url
+      );
+      if (existing) return;
+
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = url;
+      link.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(link);
+    } catch {
+    }
+  }, [articles, currentPage]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 10);
@@ -70,7 +94,7 @@ export const ArticleList = () => {
   return (
     <div className={styles.mainWrapper}>
       <section className={styles.grid} aria-label="Lista de notícias">
-        {paginated.map((article) => (
+        {paginated.map((article, index) => (
           <PostCard
             key={article.id ?? article.slug}
             slug={article.slug}
@@ -78,6 +102,7 @@ export const ArticleList = () => {
             summary={article.summary ?? ''}
             date={article.date ?? ''}
             image={article.image}
+            priority={currentPage === 1 && index === 0}
           />
         ))}
       </section>

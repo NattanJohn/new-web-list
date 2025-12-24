@@ -18,6 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={inter.className}>
+      <head>
+        <link rel="preconnect" href="https://picsum.photos" crossOrigin="anonymous" />
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

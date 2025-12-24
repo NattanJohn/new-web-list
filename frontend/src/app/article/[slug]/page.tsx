@@ -18,18 +18,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return { title: "Artigo não encontrado | Gazeta News" };
     }
 
+    const description =
+      article.summary ?? (article.content ? `${String(article.content).slice(0, 160).trim()}...` : "Leia a notícia completa na Gazeta News");
+
     return {
       title: `${article.title} | Gazeta News`,
-      description: article.summary || "Leia a notícia completa na Gazeta News",
+      description,
       openGraph: {
         title: article.title,
-        description: article.summary,
+        description,
         images: article.image ? [{ url: article.image }] : [],
         type: "article",
-        url: `https://seu-site.com/article/${slug}`,
       },
     };
-  } catch (error) {
+  } catch {
     return { title: "Gazeta News" };
   }
 }

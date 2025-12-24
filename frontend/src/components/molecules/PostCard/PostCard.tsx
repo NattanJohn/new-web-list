@@ -5,16 +5,18 @@ import styles from './PostCard.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
 
-type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image'>;
+type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image'> & {
+  priority?: boolean;
+};
 
-export const PostCard = ({ title, summary = '', date = '', slug, image }: PostCardProps) => {
+export const PostCard = ({ title, summary = '', date = '', slug, image, priority = false }: PostCardProps) => {
   const formattedDate = formatDate(date);
   const imageUrl = image ?? 'https://via.placeholder.com/800x450?text=Gazeta+News';
 
   return (
     <article className={styles.card}>
       <Link href={`/article/${slug}`} className={styles.link}>
-        <PostImage src={imageUrl} alt={title} />
+        <PostImage src={imageUrl} alt={title} priority={priority} />
         
         <div className={styles.content}>
           <header>
