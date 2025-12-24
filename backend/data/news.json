@@ -68,5 +68,65 @@
     "content": "Maecenas volutpat blandit aliquam etiam erat velit scelerisque in dictum. Amet justo donec enim diam vulputate ut pharetra sit amet. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
     "date": "2025-11-20",
     "author": "Cyber Secure"
+  },
+  {
+    "id": "8",
+    "slug": "oitavo-artigo-teste",
+    "title": "Explorando o Espaço: Missões Recentes e Futuras",
+    "summary": "Uma visão geral das últimas missões espaciais e o que esperar no futuro.",
+    "image": "https://picsum.photos/seed/news8/800/450",
+    "content": "Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
+    "date": "2025-12-05",
+    "author": "Space Explorer"
+  },
+  {
+    "id": "9",
+    "slug": "nono-artigo-teste",
+    "title": "A Revolução dos Veículos Elétricos",
+    "summary": "Como os veículos elétricos estão transformando a indústria automotiva.",
+    "image": "https://picsum.photos/seed/news9/800/450",
+    "content": "Sed elementum tempus egestas sed sed risus pretium quam vulputate. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
+    "date": "2026-01-15",
+    "author": "Auto Future"
+  },
+  {
+    "id": "10",
+    "slug": "decimo-artigo-teste",
+    "title": "5G e o Futuro da Conectividade",
+    "summary": "O que o 5G significa para consumidores e empresas.",
+    "image": "https://picsum.photos/seed/news10/800/450",
+    "content": "Viverra justo nec ultrices dui sapien eget mi proin sed. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
+    "date": "2026-02-10",
+    "author": "Connect World"
+  },
+  {
+    "id": "11",
+    "slug": "decimo-primeiro-artigo-teste",
+    "title": "Blockchain Além das Criptomoedas",
+    "summary": "Explorando aplicações inovadoras da tecnologia blockchain.",
+    "image": "https://picsum.photos/seed/news11/800/450",
+    "content": "Amet massa vitae tortor condimentum lacinia quis vel eros donec. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes. Quis varius quam quisque id diam vel quam elementum pulvinar.",
+    "date": "2026-03-05",
+    "author": "Blockchain Insights"
+  },
+  {
+    "id": "12",
+    "slug": "decimo-segundo-artigo-teste",
+    "title": "A Evolução dos Dispositivos Vestíveis",
+    "summary": "Como os wearables estão mudando a forma como monitoramos nossa saúde.",
+    "image": "https://picsum.photos/seed/news12/800/450",
+    "content": "Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit.",
+    "date": "2026-04-01",
+    "author": "Health Tech"
+  },
+  {
+    "id": "13",
+    "slug": "decimo-terceiro-artigo-teste",
+    "title": "Impressão 3D: Transformando Indústrias",
+    "summary": "Uma análise de como a impressão 3D está revolucionando a manufatura.",
+    "image": "https://picsum.photos/seed/news13/800/450",
+    "content": "In id cursus mi pretium tellus duis convallis. Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. Amet justo donec enim diam vulputate ut pharetra sit amet. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc sed augue lacus viverra vitae congue eu consequat ac felis. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Eget gravida cum sociis natoque penatibus et magnis dis parturient montes.",
+    "date": "2026-05-10",
+    "author": "3D Print News"
   }
 ]

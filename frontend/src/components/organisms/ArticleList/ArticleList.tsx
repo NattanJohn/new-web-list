@@ -1,17 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { PostCard } from '../../molecules/PostCard/PostCard';
-import { ArticleListSkeleton } from './ArticleListSkeleton';
+import { SkeletonList, Pagination } from '../../atoms';
 import { EmptyState } from '../../atoms/EmptyState/EmptyState';
 import { api, ApiError } from '@/services/api';
 import styles from './ArticleList.module.scss';
 import type { Article } from '@/types';
 
+const ITEMS_PER_PAGE = 6;
+
 export const ArticleList = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const loadArticles = useCallback(async () => {
     try {
@@ -23,10 +26,8 @@ export const ArticleList = () => {
       console.error('Erro ao carregar artigos:', err);
       if (err instanceof ApiError) {
         setErrorMessage(err.message || 'Erro na requisição');
-      } else if (err instanceof Error) {
-        setErrorMessage(err.message);
       } else {
-        setErrorMessage('Erro desconhecido');
+        setErrorMessage('Não foi possível conectar ao servidor');
       }
     } finally {
       setIsLoading(false);
@@ -37,44 +38,58 @@ export const ArticleList = () => {
     loadArticles();
   }, [loadArticles]);
 
-  if (isLoading) return <ArticleListSkeleton />;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 10);
 
-  const isEmpty = !articles || articles.length === 0;
+    return () => clearTimeout(timer);
+  }, [currentPage]);
 
-  if (errorMessage || isEmpty) {
-    const isNetwork = errorMessage?.toLowerCase().includes('network') || false;
+  const total = articles.length;
 
+  const paginated = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return articles.slice(start, start + ITEMS_PER_PAGE);
+  }, [articles, currentPage]);
+
+  if (isLoading) return <SkeletonList />;
+
+  if (errorMessage || !articles.length) {
     return (
-      <section className={`${styles.container} ${'centerMain'}`} aria-label="Lista de artigos">
-        <div className={styles.emptyFullscreen}>
-          <EmptyState
-            title={errorMessage ? 'Não foi possível carregar as notícias' : 'Nenhuma notícia disponível'}
-            message={
-              errorMessage
-                ? isNetwork
-                  ? 'Parece que você está offline ou o servidor está indisponível. Tente reconectar.'
-                  : errorMessage
-                : 'Atualmente não há notícias para exibir. Volte mais tarde.'
-            }
-            actions={[{ label: 'Tentar novamente', onClick: () => loadArticles() }]}
-          />
-        </div>
-      </section>
+      <div className={styles.emptyWrapper}>
+        <EmptyState
+          title={errorMessage ? 'Ops! Algo deu errado' : 'Nenhuma notícia encontrada'}
+          message={errorMessage ?? 'Aguarde novos conteúdos em breve.'}
+          actions={[{ label: 'Tentar novamente', onClick: loadArticles }]}
+        />
+      </div>
     );
   }
 
   return (
-    <section className={styles.container} aria-label="Lista de artigos">
-      {articles.map((article) => (
-        <PostCard
-          key={article.id ?? article.slug}
-          slug={article.slug}
-          title={article.title}
-          summary={article.summary ?? ''}
-          date={article.date ?? ''}
-          image={article.image}
+    <div className={styles.mainWrapper}>
+      <section className={styles.grid} aria-label="Lista de notícias">
+        {paginated.map((article) => (
+          <PostCard
+            key={article.id ?? article.slug}
+            slug={article.slug}
+            title={article.title}
+            summary={article.summary ?? ''}
+            date={article.date ?? ''}
+            image={article.image}
+          />
+        ))}
+      </section>
+
+      <footer className={styles.paginationSection}>
+        <Pagination
+          total={total}
+          current={currentPage}
+          perPage={ITEMS_PER_PAGE}
+          onPageChange={(p) => setCurrentPage(p)}
         />
-      ))}
-    </section>
+      </footer>
+    </div>
   );
 };
