@@ -4,6 +4,7 @@ import styles from './PostImage.module.scss';
 interface PostImageProps {
   src: string;
   alt: string;
+  priority?: boolean;
 }
 
 export const PostImage = ({ src, alt }: PostImageProps) => {

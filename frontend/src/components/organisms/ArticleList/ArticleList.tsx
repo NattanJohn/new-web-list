@@ -2,41 +2,40 @@
 
 import { useState, useEffect } from 'react';
 import { PostCard } from '../../molecules/PostCard/PostCard';
-import { Skeleton } from '../../atoms/Skeleton/Skeleton';
+import { ArticleListSkeleton } from './ArticleListSkeleton';
+import { EmptyState } from '../../atoms/EmptyState/EmptyState';
+import { api } from '@/services/api';
 import styles from './ArticleList.module.scss';
-import articlesData from '@/data/news.json';
 import type { Article } from '@/types';
 
 export const ArticleList = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setArticles(articlesData as Article[]);
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
+    const loadArticles = async () => {
+      try {
+        setIsLoading(true);
+        const data = await api.getArticles();
+        setArticles(data);
+      } catch (err) {
+        console.error("Erro ao carregar artigos:", err);
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadArticles();
   }, []);
 
-  if (isLoading) {
-    return (
-      <section className={styles.container}>
-        {[...Array(6)].map((_, i) => (
-          <div key={i} style={{ padding: '1.5rem', border: '1px solid #eee', borderRadius: '8px' }}>
-            <Skeleton height="14px" width="30%" />
-            <Skeleton height="28px" width="85%" />
-            <Skeleton height="60px" width="100%" />
-          </div>
-        ))}
-      </section>
-    );
-  }
+  if (isLoading) return <ArticleListSkeleton />;
 
-  if (!articles || articles.length === 0) {
+  if (error || !articles || articles.length === 0) {
     return (
       <section className={styles.container} aria-label="Lista de artigos">
-        Nenhuma notícia encontrada.
+        <EmptyState message={error ? 'Erro ao carregar notícias. Verifique se o servidor está online.' : 'Nenhuma notícia encontrada.'} />
       </section>
     );
   }
