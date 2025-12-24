@@ -38,7 +38,7 @@
 .summary {
   margin: 1rem 0;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: var(--content-line-height);
   color: var(--text-color);
   opacity: 0.9;
   display: -webkit-box;
@@ -51,7 +51,7 @@
 .readMore {
   margin-top: auto;
   font-weight: 700;
-  font-size: 0.875rem; // 14px
+  font-size: 0.875rem;
   color: var(--accent-color);
   text-transform: uppercase;
 }

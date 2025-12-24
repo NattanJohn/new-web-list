@@ -2,7 +2,7 @@
   font-family: var(--font-main);
   margin-bottom: 1rem; // 16px
   color: var(--text-color);
-  line-height: 1.2;
+  line-height: var(--content-line-height);
   font-size: 1.5rem;
 
   @media (min-width: 48rem) {

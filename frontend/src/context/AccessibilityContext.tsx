@@ -1,10 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 
 type AccessibilityState = {
   fontSize: number;
-  lineHeight: number;
+  lineHeight: number | 'normal';
   highContrast: boolean;
   grayscale: boolean;
 };
@@ -27,46 +27,56 @@ const STORAGE_KEY = 'gazeta-news-acc';
 
 export const AccessibilityProvider = ({ children }: { children: React.ReactNode }) => {
   const [config, setConfig] = useState<AccessibilityState>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          return initialConfig;
-        }
-      }
+    if (typeof window === 'undefined') return initialConfig;
+    
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return initialConfig;
+
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return initialConfig;
     }
-    return initialConfig;
   });
 
   useEffect(() => {
     const root = document.documentElement;
     
-    root.style.setProperty('--text-scale', config.fontSize.toString());
-    root.style.setProperty('--content-line-height', config.lineHeight.toString());
+    const styles: Record<string, string> = {
+      '--text-scale': config.fontSize.toString(),
+      '--content-line-height': typeof config.lineHeight === 'number' ? config.lineHeight.toString() : config.lineHeight,
+    };
+
+    Object.entries(styles).forEach(([prop, value]) => {
+      root.style.setProperty(prop, value);
+    });
+
+    // Aplica os atributos de tema e filtros
     root.setAttribute('data-theme', config.highContrast ? 'high-contrast' : 'light');
     root.style.filter = config.grayscale ? 'grayscale(1)' : 'none';
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
   }, [config]);
 
-  const updateConfig = <K extends keyof AccessibilityState>(
+  const updateConfig = useCallback(<K extends keyof AccessibilityState>(
     key: K, 
     value: AccessibilityState[K]
   ) => {
-    setConfig(prev => {
-      if (prev[key] === value) return prev;
-      return { ...prev, [key]: value };
-    });
-  };
+    setConfig(prev => (prev[key] === value ? prev : { ...prev, [key]: value }));
+  }, []);
 
-  const resetConfig = () => {
+  const resetConfig = useCallback(() => {
     setConfig(initialConfig);
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    ...config,
+    updateConfig,
+    resetConfig
+  }), [config, updateConfig, resetConfig]);
 
   return (
-    <AccessibilityContext.Provider value={{ ...config, updateConfig, resetConfig }}>
+    <AccessibilityContext.Provider value={value}>
       {children}
     </AccessibilityContext.Provider>
   );

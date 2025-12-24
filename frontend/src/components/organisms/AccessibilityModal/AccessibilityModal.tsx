@@ -42,13 +42,13 @@ export const AccessibilityModal = ({ onClose }: { onClose: () => void }) => {
         <div className={styles.section}>
           <label>Espaçamento entre Linhas</label>
           <div className={styles.grid}>
-            {[1.3, 1.6, 2].map(v => (
-              <button 
-                key={v} 
+            {(['normal', 1.3, 1.6, 2] as Array<number | 'normal'>).map(v => (
+              <button
+                key={String(v)}
                 className={`${styles.optionBtn} ${lineHeight === v ? styles.active : ''}`}
                 onClick={() => updateConfig('lineHeight', v)}
               >
-                {v}x
+                {v === 'normal' ? 'Padrão' : `${v}x`}
               </button>
             ))}
           </div>
