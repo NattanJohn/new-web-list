@@ -2,13 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
-import { SunIcon, MoonIcon, ContrastIcon } from "@/components/atoms/Icons";
+import { SunIcon, MoonIcon } from "@/components/atoms/Icons";
 import styles from "./ThemeButton.module.scss";
 
 const themeOptions = [
   { id: "light", icon: SunIcon, label: "Modo Claro" },
   { id: "dark", icon: MoonIcon, label: "Modo Escuro" },
-  { id: "high-contrast", icon: ContrastIcon, label: "Alto Contraste" },
 ] as const;
 
 export const ThemeButton = () => {
@@ -39,8 +38,6 @@ export const ThemeButton = () => {
     switch (theme) {
       case "dark":
         return <MoonIcon size={18} />;
-      case "high-contrast":
-        return <ContrastIcon size={18} />;
       default:
         return <SunIcon size={18} />;
     }

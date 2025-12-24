@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Inter } from "next/font/google";
+import { AccessibilityProvider } from "@/context/AccessibilityContext";
+import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/AccessibilityButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://picsum.photos" crossOrigin="anonymous" />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AccessibilityProvider>
+            <AccessibilityButton />
+            {children}
+          </AccessibilityProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
