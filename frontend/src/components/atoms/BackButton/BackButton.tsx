@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import styles from './BackButton.module.scss';
-import { ArrowLeftIcon } from '@/components/atoms/Icons';
+import { ArrowLeftIcon } from 'lucide-react';
 
 export const BackButton = () => {
   const router = useRouter();

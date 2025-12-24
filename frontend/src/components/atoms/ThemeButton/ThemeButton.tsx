@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
-import { SunIcon, MoonIcon } from "@/components/atoms/Icons";
 import styles from "./ThemeButton.module.scss";
+import { MoonIcon, SunIcon } from "lucide-react";
 
 const themeOptions = [
   { id: "light", icon: SunIcon, label: "Modo Claro" },

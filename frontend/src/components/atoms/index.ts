@@ -1,5 +1,4 @@
 export { BackButton } from './BackButton/BackButton';
-export * from './Icons';
 export { PostImage } from './PostImage/PostImage';
 export { Skeleton } from './Skeleton/Skeleton';
 export { SkeletonList } from './Skeleton/SkeletonList';

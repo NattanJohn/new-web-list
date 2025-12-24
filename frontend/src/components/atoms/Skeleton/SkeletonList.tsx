@@ -1,5 +1,4 @@
 import { Skeleton } from './Skeleton';
-import React from 'react';
 
 export const SkeletonList = ({ count = 6 }: { count?: number }) => {
   return (
