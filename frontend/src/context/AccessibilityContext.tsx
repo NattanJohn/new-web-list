@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import { useTheme } from './ThemeContext';
 
 type AccessibilityState = {
   fontSize: number;
@@ -18,7 +19,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export const initialConfig: AccessibilityState = {
   fontSize: 1,
-  lineHeight: 1.6,
+  lineHeight: 'normal',
   highContrast: false,
   grayscale: false,
 };
@@ -26,6 +27,7 @@ export const initialConfig: AccessibilityState = {
 const STORAGE_KEY = 'gazeta-news-acc';
 
 export const AccessibilityProvider = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useTheme();
   const [config, setConfig] = useState<AccessibilityState>(() => {
     if (typeof window === 'undefined') return initialConfig;
     
@@ -51,12 +53,17 @@ export const AccessibilityProvider = ({ children }: { children: React.ReactNode 
       root.style.setProperty(prop, value);
     });
 
-    // Aplica os atributos de tema e filtros
-    root.setAttribute('data-theme', config.highContrast ? 'high-contrast' : 'light');
+    // Aplica alto contraste mantendo o tema selecionado
+    if (config.highContrast) {
+      root.setAttribute('data-theme', `${theme}-high-contrast`);
+    } else {
+      root.setAttribute('data-theme', theme);
+    }
+
     root.style.filter = config.grayscale ? 'grayscale(1)' : 'none';
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-  }, [config]);
+  }, [config, theme]);
 
   const updateConfig = useCallback(<K extends keyof AccessibilityState>(
     key: K, 

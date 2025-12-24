@@ -6,7 +6,7 @@
   --icon-color: #1a1a1a;
   --bg-contrast: #ffffff;
   --text-scale: 1;
-  --content-line-height: 1.6;
+  --content-line-height: 1;
 }
 
 [data-theme="dark"] {
@@ -16,7 +16,15 @@
   --icon-color: #e0e0e0;
 }
 
-[data-theme="high-contrast"] {
+[data-theme="light-high-contrast"] {
+  --bg-color: #000000;
+  --text-color: #ffff00;
+  --accent-color: #ffff00;
+  --icon-color: #ffff00;
+  --bg-contrast: #000000;
+}
+
+[data-theme="dark-high-contrast"] {
   --bg-color: #000000;
   --text-color: #ffff00;
   --accent-color: #ffff00;

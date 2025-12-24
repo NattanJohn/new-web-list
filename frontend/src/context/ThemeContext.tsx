@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -33,16 +33,29 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [theme]);
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = useCallback((newTheme: Theme) => {
     if (!VALID_THEMES.includes(newTheme)) return;
     setThemeState(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
+    
+    // Reset high contrast when changing theme
+    try {
+      const accConfig = localStorage.getItem('gazeta-news-acc');
+      if (accConfig) {
+        const config = JSON.parse(accConfig);
+        config.highContrast = false;
+        localStorage.setItem('gazeta-news-acc', JSON.stringify(config));
+      }
+    } catch (e) {
+      void e;
+    }
+    
     try {
       localStorage.setItem('gazeta-theme', newTheme);
     } catch (e) {
       void e;
     }
-  };
+  }, []);
 
   const toggleTheme = (newTheme: Theme) => setTheme(newTheme);
 
