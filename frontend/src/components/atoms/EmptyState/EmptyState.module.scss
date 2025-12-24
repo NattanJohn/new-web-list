@@ -2,5 +2,43 @@
   padding: 2rem;
   text-align: center;
   color: var(--text-color);
-  opacity: 0.9;
+  opacity: 0.95;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
+
+.visual {
+  font-size: 3rem;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.message {
+  color: var(--text-color);
+  opacity: 0.85;
+  max-width: 520px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.actionButton {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: var(--text-color);
+  color: var(--bg-color);
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.defaultIcon { font-size: 3rem; }

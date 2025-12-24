@@ -7,10 +7,10 @@ import styles from './ArticleDetail.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
 
-type ArticleDetailType = Article & { 
-  content: string; 
-  author: string; 
-  date: string 
+type ArticleDetailType = Article & {
+  content?: string;
+  author?: string;
+  date?: string;
 };
 
 interface ArticleDetailProps {
@@ -19,6 +19,7 @@ interface ArticleDetailProps {
 
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const formattedDate = formatDate(article.date);
+  const author = article.author ?? 'Desconhecido';
 
   return (
     <article className={styles.article}>
@@ -28,7 +29,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
         <Title tag="h1">{article.title}</Title>
         <div className={styles.meta}>
           <time>Publicado em: {formattedDate}</time>
-          <span>Por: {article.author}</span>
+          <span>Por: {author}</span>
         </div>
       </header>
       
@@ -39,7 +40,7 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
       )}
 
       <div className={styles.content}>
-        <p>{article.content}</p> 
+        <p>{article.content ?? ''}</p>
       </div>
     </article>
   );
