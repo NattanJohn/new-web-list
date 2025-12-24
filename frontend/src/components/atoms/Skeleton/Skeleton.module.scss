@@ -2,8 +2,10 @@
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  border-radius: 0.25rem; // 4px
+  margin-bottom: 0.5rem; // 8px
+  width: 100%;
+  display: block;
 }
 
 @keyframes loading {
@@ -13,4 +15,17 @@
 
 :global([data-theme='dark']) .skeleton {
   background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+}
+
+:global([data-theme='high-contrast']) .skeleton {
+  background: none;
+  border: 1px solid var(--text-color);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
 }

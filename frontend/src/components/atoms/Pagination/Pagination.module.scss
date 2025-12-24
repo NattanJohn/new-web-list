@@ -17,9 +17,8 @@
   border: none;
   color: var(--text-color);
   opacity: 0.6;
-  
-  min-width: 40px;
-  height: 40px;
+  min-width: 2.5rem;
+  height: 2.5rem;  
   
   cursor: pointer;
   display: inline-flex;
@@ -53,24 +52,24 @@
   &::after {
     content: '';
     position: absolute;
-    bottom: 5px;
-    width: 12px;
-    height: 2px;
+    bottom: 0.3125rem; 
+    width: 0.75rem;   
+    height: 0.125rem;  
     background-color: var(--accent-color);
-    border-radius: 2px;
+    border-radius: 0.125rem;
   }
 }
 
 .btn[aria-label*="anterior"],
 .btn[aria-label*="Próxima"] {
-  font-size: 1.4rem;
+  font-size: 1.375rem;
   font-weight: 300;
 }
 
 :global(html[data-accessibility-high-contrast="true"]) {
   .current {
-    outline: 2px solid var(--text-color);
-    border-radius: 4px;
+    outline: 0.125rem solid var(--text-color);
+    border-radius: 0.25rem;
     &::after { display: none; }
   }
   .btn:hover {
@@ -78,12 +77,12 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .pages {
-    gap: 0.1rem;
+    gap: 0.0625rem;
   }
   .btn {
-    min-width: 35px;
-    height: 35px;
+    min-width: 2.1875rem; 
+    height: 2.1875rem;
   }
 }

@@ -5,7 +5,7 @@
 }
 
 .header {
-  padding: 2rem 1rem;
+  padding: 2rem 1rem; // ~32px 16px
   text-align: center;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   background-color: var(--bg-color);
@@ -29,7 +29,7 @@
 .footer {
   padding: 2rem;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.8125rem; // ~13px
   opacity: 0.7;
   border-top: 1px solid rgba(128, 128, 128, 0.2);
 }

@@ -1,11 +1,11 @@
 .title {
   font-family: var(--font-main);
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; // 16px
   color: var(--text-color);
-  // Mobile-first
+  line-height: 1.2;
   font-size: 1.5rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 48rem) {
     font-size: 2.5rem;
   }
 }

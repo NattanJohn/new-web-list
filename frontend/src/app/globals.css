@@ -4,6 +4,10 @@
   --text-color: #1a1a1a;
   --accent-color: #0056b3;
   --icon-color: #1a1a1a;
+
+  /* Variáveis para controle de acessibilidade futuro */
+  --text-scale: 1;
+  --content-line-height: 1.6;
 }
 
 [data-theme="dark"] {
@@ -26,17 +30,24 @@
   padding: 0;
 }
 
+html {
+  /* Permite que o tamanho da fonte seja controlado dinamicamente */
+  font-size: calc(100% * var(--text-scale));
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-main);
-  line-height: 1.6;
+  line-height: var(--content-line-height);
   transition: background 0.3s ease, color 0.3s ease;
+  /* Melhoria de legibilidade */
+  -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   line-height: 1.2;
   font-weight: 800;
+  /* Margem relativa ao tamanho do título */
+  margin-bottom: 0.5em; 
 }

@@ -1,9 +1,9 @@
 .article {
-  max-width: 800px;
+  max-width: 50rem;
   margin: 0 auto;
   padding: 1rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 48rem) {
     padding: 2rem;
   }
 }
@@ -18,10 +18,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   opacity: 0.8;
 
-  @media (min-width: 768px) {
+  @media (min-width: 48rem) {
     flex-direction: row;
     justify-content: space-between;
   }
@@ -30,15 +30,15 @@
 .featuredImage {
   width: 100%;
   margin: 2rem 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1);
 
   :global(.imageWrapper) {
     aspect-ratio: 21 / 9;
-    min-height: 250px;
+    min-height: 15.625rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 48rem) {
       aspect-ratio: 16 / 9;
       min-height: auto;
     }
@@ -49,6 +49,7 @@
   line-height: 1.8;
   font-size: 1.125rem;
   color: var(--text-color);
+
   p {
     margin-bottom: 1.5rem;
   }
