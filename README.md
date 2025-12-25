@@ -60,12 +60,6 @@ O projeto implementa 4 recursos de acessibilidade essenciais em um modal intuiti
 - Mínimo de JavaScript no bundle
 - SSR-friendly (sem hydration errors)
 
-### 🧪 Testes Automatizados
-- **Jest** com **React Testing Library**
-- Mock Service Worker para testes da API
-- Cobertura de componentes principais
-- 6 testes passando em 3 suites diferentes
-
 ### 📚 Arquitetura Limpa com Atomic Design
 
 O projeto segue o padrão **Atomic Design**, uma filosofia de design que trata componentes como átomos em uma estrutura hierárquica. Isso proporciona **reutilização, manutenibilidade e consistência**.
@@ -237,14 +231,6 @@ npm run dev
 
 Acesse [http://localhost:3000](http://localhost:3000) no seu navegador! 🎉
 
-### Rodando os Testes
-
-```bash
-cd frontend
-npm test              # Rodar testes uma vez
-npm run test:watch   # Modo watch (reexecuta ao salvar)
-```
-
 ---
 
 ## 📁 Estrutura do Projeto
@@ -361,39 +347,6 @@ news-web-list/
 
 ---
 
-## 🎯 Componentes Principais
-
-### Atoms
-Unidades indivisíveis do design:
-- **Title**: Títulos com hierarquia semântica (h1, h2, h3) e tamanhos responsivos específicos
-- **BackButton**: Botão voltar com ícone
-- **ThemeButton**: Botão de alternância de tema
-- **Pagination**: Navegação entre páginas com suporte a URL
-- **Skeleton**: Loading placeholder
-- **PostImage**: Imagem otimizada com next/image
-- **EmptyState**: Estado vazio customizável com ações
-
-### Molecules
-Combinações simples de atoms:
-- **PostCard**: Card de artigo com Schema.org NewsArticle microdata, contém Title + Date + Summary + Link
-- **AccessibilityButton**: Botão flutuante para abrir modal de acessibilidade
-
-### Organisms
-Componentes complexos auto-suficientes:
-- **ArticleList**: Lista paginada com controle via URL query params, skeleton states, empty states
-- **ArticleDetail**: Artigo completo com Schema.org microdata (NewsArticle, Person, ImageObject)
-- **AccessibilityModal**: Modal com 4 controles de acessibilidade (font-size, line-height, contrast, grayscale)
-- **Header**: Cabeçalho do site com título
-- **Footer**: Rodapé do site
-
-### Templates
-Layouts compartilhados:
-- **HomeTemplate**: Layout da home com Header + Main + Footer
-- **ArticleTemplate**: Layout para páginas de artigos
-- **StatusTemplate**: Layout para páginas de erro e 404
-
----
-
 ## 🔧 Stack Técnico
 
 ### Frontend
@@ -414,41 +367,6 @@ Layouts compartilhados:
 | **Node.js** | Runtime JavaScript |
 | **Express.js** | Framework HTTP |
 | **JSON** | Base de dados local |
-
----
-
-## 📋 Testes
-
-### Estrutura de Testes
-
-```
-src/
-├── components/
-│   ├── molecules/PostCard/PostCard.test.tsx
-│   └── organisms/ArticleList/ArticleList.test.tsx
-│
-└── services/
-    └── api.test.ts
-```
-
-### Exemplo de Teste
-
-```typescript
-describe('PostCard', () => {
-  it('renders title and summary', () => {
-    render(<PostCard article={mockArticle} />);
-    expect(screen.getByText('Article Title')).toBeInTheDocument();
-  });
-});
-```
-
-### Rodando Testes
-
-```bash
-npm test                    # Rodar uma vez
-npm test -- --watch       # Modo watch
-npm test -- --coverage    # Com cobertura
-```
 
 ---
 
@@ -507,28 +425,6 @@ try {
 } catch (err) {
   setErrorMessage(handleApiError(err));
 }
-```
-
-### 2️⃣ **Custom Hooks para Lógica Reutilizável**
-
-```typescript
-// src/hooks/useLocalStorage.ts
-export const useLocalStorage = <T,>(
-  key: string, 
-  initialValue: T
-): [T, (value: T) => void] => {
-  const [stored, setStored] = useState<T>(() => {
-    const item = safeLocalStorageGet(key);
-    return item ? JSON.parse(item) : initialValue;
-  });
-
-  const setValue = useCallback((value: T) => {
-    setStored(value);
-    safeLocalStorageSet(key, JSON.stringify(value));
-  }, [key]);
-
-  return [stored, setValue];
-};
 ```
 
 ### 3️⃣ **Type-Safe API Service**
@@ -846,63 +742,12 @@ describe('ArticleList', () => {
 
 O projeto implementa tratamento robusto de erros em múltiplas camadas:
 
-### 1️⃣ Handler Unificado de Erros
+- **Handler Unificado**: `errorHandler.ts` para tratamento consistente de erros API
+- **ApiError Customizado**: Classe especializada para erros de requisição HTTP
+- **Error Boundaries**: Páginas error.tsx e not-found.tsx para fallbacks visuais
+- **Empty States**: Componente reutilizável para estados vazios
 
-```typescript
-// src/utils/errorHandler.ts
-export function handleApiError(err: unknown): string {
-  if (err instanceof ApiError) {
-    return err.message;
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'Erro desconhecido ao carregar os dados';
-}
-
-// Uso no componente
-import { handleApiError } from '@/utils/errorHandler';
-
-try {
-  const articles = await fetchArticles();
-  setArticles(articles);
-} catch (err) {
-  setError(handleApiError(err));
-}
-```
-
-### 2️⃣ ApiError Customizado
-
-```typescript
-// src/services/api.ts
-export class ApiError extends Error {
-  status?: number;
-  code?: string;
-  
-  constructor(shape: { message: string; status?: number; code?: string }) {
-    super(shape.message);
-    this.name = 'ApiError';
-    this.status = shape.status;
-    this.code = shape.code;
-  }
-}
-```
-
-### 3️⃣ Error Boundaries
-
-- **error.tsx**: Captura erros não tratados com botão de retry
-- **not-found.tsx**: Página 404 customizada com link para home
-
-### 4️⃣ Empty States
-
-```typescript
-// src/components/atoms/EmptyState/EmptyState.tsx
-<EmptyState 
-  message="Nenhum artigo encontrado" 
-  actionLabel="Voltar para home"
-  onAction={() => router.push('/')}
-/>
-```
+Veja detalhes na seção [Padrões de Implementação](#🔧-padrões-de-implementação).
 
 ---
 
