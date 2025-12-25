@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccessibility } from '@/context/AccessibilityContext';
+import { useAccessibility, ACCESSIBILITY_LEVELS } from '@/context/AccessibilityContext';
 import styles from './AccessibilityModal.module.scss';
 import { X, RotateCcw, Contrast, Ghost } from 'lucide-react';
 
@@ -27,7 +27,7 @@ export const AccessibilityModal = ({ onClose }: { onClose: () => void }) => {
         <div className={styles.section}>
           <label>Tamanho do Texto</label>
           <div className={styles.grid}>
-            {[1, 1.25, 1.5, 1.75, 2].map(v => (
+            {ACCESSIBILITY_LEVELS.fontSize.map(v => (
               <button 
                 key={v} 
                 className={`${styles.optionBtn} ${fontSize === v ? styles.active : ''}`}
@@ -42,7 +42,7 @@ export const AccessibilityModal = ({ onClose }: { onClose: () => void }) => {
         <div className={styles.section}>
           <label>Espaçamento entre Linhas</label>
           <div className={styles.grid}>
-            {(['normal', 1.3, 1.6, 2] as Array<number | 'normal'>).map(v => (
+            {ACCESSIBILITY_LEVELS.lineHeight.map(v => (
               <button
                 key={String(v)}
                 className={`${styles.optionBtn} ${lineHeight === v ? styles.active : ''}`}

@@ -1,3 +1,5 @@
+@import '@/styles/variables';
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -6,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  z-index: $z-modal;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -15,20 +17,31 @@
   color: var(--text-color);
   width: 400px; 
   max-width: 90vw;
-  padding: 32px;
-  border-radius: 24px;
-  border: 1px solid rgba(128, 128, 128, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  font-size: 16px !important;
-  line-height: 1.5 !important;
+  padding: $spacing-xl;
+  border-radius: $border-radius-lg;
+  border: 1px solid $colors-border;
+  box-shadow: $shadow-lg;
+  
+  // Reset CSS variables locally to ignore accessibility scaling
+  --text-scale: 1;
+  --content-line-height: 1.5;
+  
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
-  h2 { font-size: 22px; margin: 0; font-weight: 800; letter-spacing: -0.5px; }
+  margin-bottom: $spacing-xl;
+  
+  h2 { 
+    font-size: $font-size-lg;
+    margin: 0; 
+    font-weight: 800; 
+    letter-spacing: -0.5px; 
+  }
 }
 
 .closeBtn {
@@ -36,19 +49,24 @@
   border: none;
   color: var(--text-color);
   cursor: pointer;
-  padding: 8px;
+  padding: $spacing-sm;
   border-radius: 50%;
-  transition: all 0.2s;
-  &:hover { background: rgba(128, 128, 128, 0.2); transform: rotate(90deg); }
+  transition: $transition-fast;
+  
+  &:hover { 
+    background: rgba(128, 128, 128, 0.2); 
+    transform: rotate(90deg); 
+  }
 }
 
 .section {
-  margin-bottom: 28px;
+  margin-bottom: $spacing-lg;
+  
   label { 
     display: block; 
-    margin-bottom: 12px; 
+    margin-bottom: $spacing-sm;
     font-weight: 700; 
-    font-size: 12px; 
+    font-size: $font-size-xs;
     text-transform: uppercase;
     letter-spacing: 1px;
     opacity: 0.6;
@@ -58,21 +76,24 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
-  gap: 10px;
+  gap: $spacing-sm;
 }
 
 .optionBtn {
-  padding: 12px 8px;
-  border: 1.5px solid rgba(128, 128, 128, 0.2);
+  padding: $spacing-sm $spacing-xs;
+  border: 1.5px solid $colors-border;
   background: transparent;
   color: var(--text-color);
-  border-radius: 12px;
+  border-radius: $border-radius-sm;
   cursor: pointer;
-  font-size: 14px;
+  font-size: $font-size-sm;
   font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: $transition-normal;
 
-  &:hover { border-color: var(--accent-color); background: rgba(var(--accent-color-rgb), 0.05); }
+  &:hover { 
+    border-color: var(--accent-color); 
+    background: rgba(var(--accent-color-rgb), 0.05); 
+  }
 
   &.active {
     background: var(--accent-color);
@@ -86,23 +107,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-  span { font-size: 15px; font-weight: 600; }
+  margin-bottom: $spacing-sm;
+  
+  span { 
+    font-size: 16px; 
+    font-weight: 600; 
+  }
 }
 
 .toggleBtn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  border-radius: 14px;
-  border: 1.5px solid rgba(128, 128, 128, 0.2);
+  gap: $spacing-md;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $border-radius-md;
+  border: 1.5px solid $colors-border;
   background: transparent;
   color: var(--text-color);
   cursor: pointer;
-  font-size: 13px;
+  font-size: $font-size-xs;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: $transition-fast;
 
   &.toggleActive {
     background: var(--text-color);
@@ -110,32 +135,41 @@
     border-color: var(--text-color);
   }
 
-  &:hover:not(.toggleActive) { border-color: var(--text-color); }
+  &:hover:not(.toggleActive) { 
+    border-color: var(--text-color); 
+  }
 }
 
 .footer {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(128, 128, 128, 0.1);
+  margin-top: $spacing-xl;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $colors-border-light;
 }
 
 .resetBtn {
   width: 100%;
   padding: 14px;
-  background: #fdf2f2; 
-  color: #ef4444;
-  border: 1px solid #fee2e2;
-  border-radius: 14px;
+  background: map-get($colors-error, 'light');
+  color: map-get($colors-error, 'main');
+  border: 1px solid map-get($colors-error, 'border');
+  border-radius: $border-radius-md;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: all 0.2s;
+  gap: $spacing-md;
+  transition: $transition-fast;
 
-  &:hover { background: #ef4444; color: #fff; transform: translateY(-1px); }
-  &:active { transform: translateY(0); }
+  &:hover { 
+    background: map-get($colors-error, 'main'); 
+    color: #fff; 
+    transform: translateY(-1px); 
+  }
+  
+  &:active { 
+    transform: translateY(0); 
+  }
 }
 
 @keyframes fadeIn {
