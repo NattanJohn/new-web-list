@@ -14,21 +14,29 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
   const imageUrl = image ?? 'https://via.placeholder.com/800x450?text=Gazeta+News';
 
   return (
-    <article className={styles.card}>
+    <article 
+      className={styles.card}
+      itemScope 
+      itemType="https://schema.org/NewsArticle"
+    >
       <Link href={`/article/${slug}`} className={styles.link}>
         <PostImage src={imageUrl} alt={title} priority={priority} />
         
         <div className={styles.content}>
           <header>
-            <span className={styles.date}>{formattedDate}</span>
+            <time dateTime={date} className={styles.date} itemProp="datePublished">
+              {formattedDate}
+            </time>
             <Title tag="h2" className={styles.title}>
-              {title}
+              <span itemProp="headline">{title}</span>
             </Title>
           </header>
           
-          <p className={styles.summary}>{summary}</p>
+          <p className={styles.summary} itemProp="description">{summary}</p>
           
-          <span className={styles.readMore}>Leia mais →</span>
+          <span className={styles.readMore} aria-label={`Leia mais sobre ${title}`}>
+            Leia mais →
+          </span>
         </div>
       </Link>
     </article>

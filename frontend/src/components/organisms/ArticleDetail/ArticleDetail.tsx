@@ -30,24 +30,36 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   }, []);
 
   return (
-    <article className={styles.article}>
+    <article 
+      className={styles.article}
+      itemScope 
+      itemType="https://schema.org/NewsArticle"
+    >
       <BackButton />
       
       <header className={styles.header}>
-        <Title tag="h1">{article.title}</Title>
+        <Title tag="h1">
+          <span itemProp="headline">{article.title}</span>
+        </Title>
         <div className={styles.meta}>
-          <time dateTime={article.date}>Publicado em: {formattedDate}</time>
-          <span itemProp="author">Por: {author}</span>
+          <time dateTime={article.date} itemProp="datePublished">
+            Publicado em: {formattedDate}
+          </time>
+          <span itemProp="author" itemScope itemType="https://schema.org/Person">
+            Por: <span itemProp="name">{author}</span>
+          </span>
         </div>
       </header>
       
       {article.image && (
-        <div className={styles.featuredImage}>
+        <figure className={styles.featuredImage} itemProp="image" itemScope itemType="https://schema.org/ImageObject">
           <PostImage priority={true} src={article.image} alt={article.title} />
-        </div>
+          <meta itemProp="url" content={article.image} />
+          <meta itemProp="width" content="800" />
+        </figure>
       )}
 
-      <div className={styles.content}>
+      <div className={styles.content} itemProp="articleBody">
         {paragraphs.length > 0 ? (
           paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>

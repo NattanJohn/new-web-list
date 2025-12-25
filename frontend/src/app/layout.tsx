@@ -43,7 +43,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://picsum.photos" crossOrigin="anonymous" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <AccessibilityProvider>
             <AccessibilityButton />

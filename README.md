@@ -16,7 +16,8 @@ Um agregador de notícias moderno, responsivo e **altamente acessível**, constr
 ### 🎨 Tema Dinâmico (Light/Dark Mode)
 - **Tema Claro**: Excelente para leitura durante o dia com cores suaves e alto contraste
 - **Tema Escuro**: Modo noturno que reduz fadiga ocular em ambientes com pouca luz
-- **Persistência**: Preferência de tema salva no `localStorage` e sincronizada entre abas
+- **Persistência**: Preferência de tema salva no `localStorage` 
+- **SSR-Safe**: Evita hydration mismatch renderizando inicialmente sem tema específico
 - **Transições Suaves**: Animações fluidas ao trocar entre temas
 
 ### ♿ Modo de Acessibilidade Avançado
@@ -54,9 +55,10 @@ O projeto implementa 4 recursos de acessibilidade essenciais em um modal intuiti
 ### ⚡ Performance
 - Carregamento lazy de imagens
 - CSS Modules para estilos isolados
-- Paginação de 6 artigos por página
+- **Paginação via URL Query Params** (`/?page=2`)
 - Preload automático da primeira imagem
 - Mínimo de JavaScript no bundle
+- SSR-friendly (sem hydration errors)
 
 ### 🧪 Testes Automatizados
 - **Jest** com **React Testing Library**
@@ -83,26 +85,30 @@ Assim como a química organiza a matéria em níveis (átomos → moléculas →
 
 ```
 src/components/
-├── atoms/                    # Elementos básicos e isolados
-│   ├── Title/               # Título com variações
+├── atoms/                    # Elementos básicos e semânticas (h1, h2, h3)
 │   ├── ThemeButton/         # Botão tema (atom complexo)
 │   ├── BackButton/          # Botão voltar
 │   ├── PostImage/           # Imagem otimizada
 │   ├── Skeleton/            # Carregamento (padrão)
 │   ├── Pagination/          # Paginação
+│   ├── Title/               # Titulo
 │   └── EmptyState/          # Estado vazio customizável
 │
 ├── molecules/               # Combinações simples de atoms
-│   ├── PostCard/            # Atom: Title + Date + Summary + Link
-│   └── AccessibilityButton/ # Atom: Eye Icon + Text
+│   ├── PostCard/            # Title + Date + Summary + Link com microdata
+│   └── AccessibilityButton/ # Eye Icon + Text
 │
 ├── organisms/               # Componentes complexos auto-suficientes
-│   ├── ArticleList/         # Lista completa com paginação
-│   ├── ArticleDetail/       # Artigo completo com metadados
-│   └── AccessibilityModal/  # Modal com 4 controles de a11y
+│   ├── ArticleList/         # Lista completa com paginação via URL
+│   ├── ArticleDetail/       # Artigo completo com Schema.org microdata
+│   ├── AccessibilityModal/  # Modal com 4 controles de a11y
+│   ├── Header/              # Cabeçalho com título do site
+│   └── Footer/              # Rodapé
 │
 └── templates/               # Layouts compartilhados
-    └── HomeTemplate/        # Header + Main + Footer
+    ├── HomeTemplate/        # Header + Main + Footer
+    ├── ArticleTemplate/     # Layout para artigos
+    └── StatusTemplate/      # Layout para páginas de erro
 ```
 
 #### 💡 **Benefícios**
@@ -255,49 +261,58 @@ news-web-list/
     ├── src/
     │   ├── app/                    # Next.js App Router
     │   │   ├── page.tsx            # Página inicial (home)
-    │   │   ├── article/[slug]/     # Página de artigo individual
-    │   │   ├── layout.tsx          # Layout raiz
-    │   │   ├── status/             # Páginas de status reutilizáveis
-    │   │   │   ├── ErrorPage.tsx   # Erro genérico
-    │   │   │   └── NotFoundPage.tsx# 404 not found
-    │   │   └── globals.css         # Estilos globais
+    │   │   ├── layout.tsx          # Layout raiz com providers
+    │   │   ├── error.tsx           # Error boundary global
+    │   │   ├── not-found.tsx       # Página 404 customizada
+    │   │   ├── globals.css         # Estilos globais + CSS variables
+    │   │   └── article/[slug]/     # Página de artigo individual
+    │   │       ├── page.tsx        # Server component com metadata
+    │   │       └── loading.tsx     # Loading state
     │   │
-    │   ├── components/             # Componentes React
+    │   ├── components/             # Componentes React (Atomic Design)
     │   │   ├── atoms/              # Botões, títulos, ícones
-    │   │   │   ├── ThemeButton/
-    │   │   │   ├── Title/
+    │   │   │   ├── BackButton/
+    │   │   │   ├── EmptyState/
     │   │   │   ├── Pagination/
+    │   │   │   ├── PostImage/
     │   │   │   ├── Skeleton/
-    │   │   │   └── Icons/
+    │   │   │   ├── ThemeButton/
+    │   │   │   └── Title/          # h1/h2/h3 com tamanhos específicos
     │   │   │
     │   │   ├── molecules/          # Componentes compostos
-    │   │   │   ├── PostCard/
-    │   │   │   └── AccessibilityButton/
+    │   │   │   ├── AccessibilityButton/
+    │   │   │   └── PostCard/       # Com Schema.org microdata
     │   │   │
-    │   │   └── organisms/          # Componentes complexos
-    │   │   |    ├── ArticleList/
-    │   │   |    ├── ArticleDetail/
-    │   │   |    └── AccessibilityModal/
-    |   |   |
-    |   |   └── templates/          # Estrutua de paginas
-    │   │   |    ├── HomeTemplate/
+    │   │   ├── organisms/          # Componentes complexos
+    │   │   │   ├── AccessibilityModal/
+    │   │   │   ├── ArticleDetail/  # Com microdata completo
+    │   │   │   ├── ArticleList/    # Com paginação via URL
+    │   │   │   ├── Footer/
+    │   │   │   └── Header/
+    │   │   │
+    │   │   └── templates/          # Estrutura de páginas
+    │   │       ├── ArticleTemplate/
+    │   │       ├── HomeTemplate/
+    │   │       └── StatusTemplate/
     │   │
     │   ├── context/                # State global (2 contextos)
-    │   │   ├── ThemeContext.tsx    # Tema (light/dark mode)
+    │   │   ├── ThemeContext.tsx    # Tema (light/dark) SSR-safe
     │   │   └── AccessibilityContext.tsx  # 4 controles de a11y
     │   │
     │   ├── hooks/                  # Custom React hooks
     │   │   └── useLocalStorage.ts  # Sincronização de localStorage
     │   │
     │   ├── services/               # Chamadas de API
-    │   │   └── api.ts              # Serviço HTTP com error handling
+    │   │   ├── api.ts              # Serviço HTTP com error handling
+    │   │   └── api.test.ts         # Testes da API
     │   │
     │   ├── types/                  # TypeScript types
     │   │   ├── article.ts          # Article interface
-    │   │   ├── error.ts            # Erro types
+    │   │   ├── error.ts            # Error types
     │   │   └── index.ts            # Exports centralizados
     │   │
     │   ├── utils/                  # Funções utilitárias
+    │   │   ├── errorHandler.ts     # Handler unificado de erros API
     │   │   ├── formatDate.ts       # Formatação de datas
     │   │   └── localStorage.ts     # Safe localStorage helpers
     │   │
@@ -350,28 +365,32 @@ news-web-list/
 
 ### Atoms
 Unidades indivisíveis do design:
-- **Title**: Títulos com variações de tag (h1, h2, h3)
+- **Title**: Títulos com hierarquia semântica (h1, h2, h3) e tamanhos responsivos específicos
 - **BackButton**: Botão voltar com ícone
-- **ThemeButton**: Menu tema com 2 opções
-- **Pagination**: Navegação entre páginas
+- **ThemeButton**: Botão de alternância de tema
+- **Pagination**: Navegação entre páginas com suporte a URL
 - **Skeleton**: Loading placeholder
-- **PostImage**: Imagem otimizada para artigos
-- **EmptyState**: Estado vazio customizável
+- **PostImage**: Imagem otimizada com next/image
+- **EmptyState**: Estado vazio customizável com ações
 
 ### Molecules
 Combinações simples de atoms:
-- **PostCard**: Título + Data + Resumo + Link (usado em ArticleList)
-- **AccessibilityButton**: Ícone Eye + Text "Acessibilidade"
+- **PostCard**: Card de artigo com Schema.org NewsArticle microdata, contém Title + Date + Summary + Link
+- **AccessibilityButton**: Botão flutuante para abrir modal de acessibilidade
 
 ### Organisms
 Componentes complexos auto-suficientes:
-- **ArticleList**: Lista com paginação, skeleton, empty state
-- **ArticleDetail**: Artigo completo com imagem, data, botão voltar
-- **AccessibilityModal**: Modal com 4 sliders/toggles de a11y
+- **ArticleList**: Lista paginada com controle via URL query params, skeleton states, empty states
+- **ArticleDetail**: Artigo completo com Schema.org microdata (NewsArticle, Person, ImageObject)
+- **AccessibilityModal**: Modal com 4 controles de acessibilidade (font-size, line-height, contrast, grayscale)
+- **Header**: Cabeçalho do site com título
+- **Footer**: Rodapé do site
 
 ### Templates
 Layouts compartilhados:
-- **HomeTemplate**: Header (Title + ThemeButton) + Main + Footer
+- **HomeTemplate**: Layout da home com Header + Main + Footer
+- **ArticleTemplate**: Layout para páginas de artigos
+- **StatusTemplate**: Layout para páginas de erro e 404
 
 ---
 
@@ -441,22 +460,53 @@ Evita erros de acesso (SSR, user permissions, etc):
 
 ```typescript
 // src/utils/localStorage.ts
-export const safeLocalStorageGet = (key: string): string | null => {
+export const safeLocalStorageGet = <T = string>(key: string): T | null => {
   try {
-    return typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+    if (typeof window === 'undefined') return null;
+    const item = localStorage.getItem(key);
+    return item ? (JSON.parse(item) as T) : null;
   } catch (error) {
     console.error(`Erro ao ler localStorage[${key}]:`, error);
     return null;
   }
 };
 
-export const safeLocalStorageSet = (key: string, value: string): void => {
+export const safeLocalStorageSet = <T = unknown>(key: string, value: T): void => {
   try {
-    localStorage.setItem(key, value);
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.error(`Erro ao escrever localStorage[${key}]:`, error);
   }
 };
+```
+
+### 2️⃣ **Error Handler Unificado**
+
+Tratamento consistente de erros de API:
+
+```typescript
+// src/utils/errorHandler.ts
+import { ApiError } from '@/services/api';
+
+export const handleApiError = (err: unknown): string => {
+  if (err instanceof ApiError) {
+    return err.message || 'Erro na requisição';
+  }
+  
+  if (err instanceof Error) {
+    return err.message;
+  }
+  
+  return 'Não foi possível conectar ao servidor';
+};
+
+// Uso no código:
+try {
+  const data = await api.getArticles();
+} catch (err) {
+  setErrorMessage(handleApiError(err));
+}
 ```
 
 ### 2️⃣ **Custom Hooks para Lógica Reutilizável**
@@ -485,34 +535,133 @@ export const useLocalStorage = <T,>(
 
 ```typescript
 // src/services/api.ts
+export class ApiError extends Error {
+  status?: number;
+  code?: string;
+  constructor(shape: { message: string; status?: number; code?: string }) {
+    super(shape.message);
+    this.name = 'ApiError';
+    this.status = shape.status;
+    this.code = shape.code;
+  }
+}
+
 export const api = {
-  get<T>(url: string): Promise<T> {
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
-      .then(res => {
-        if (!res.ok) throw new ApiError(res.status);
-        return res.json();
-      })
-      .catch(error => {
-        console.error(`API Error [${url}]:`, error);
-        throw error;
-      });
+  async getArticles(): Promise<ArticleList> {
+    const res = await fetch(`${API_URL}/articles`);
+    if (!res.ok) throw new ApiError({ message: 'Erro ao buscar artigos', status: res.status });
+    return res.json();
+  },
+  
+  async getArticleBySlug(slug: string): Promise<Article | null> {
+    const res = await fetch(`${API_URL}/articles/${encodeURIComponent(slug)}`);
+    if (res.status === 404) return null;
+    if (!res.ok) throw new ApiError({ message: 'Erro ao buscar artigo', status: res.status });
+    return res.json();
   }
 };
 ```
 
-### 4️⃣ **Error Boundaries & Error Pages**
+### 4️⃣ **Paginação via URL Query Params**
+
+Melhor prática para SEO e UX (compartilhável, botão voltar funciona):
 
 ```typescript
-// src/app/error.tsx
-'use client';
+// src/components/organisms/ArticleList/ArticleList.tsx
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Error({ error, reset }: ErrorProps) {
-  return (
-    <div>
-      <h2>Algo deu errado</h2>
-      <button onClick={() => reset()}>Tentar novamente</button>
+export const ArticleList = ({ initialArticles }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Ler página da URL (SSR-safe)
+  const currentPage = Number(searchParams.get('page')) || 1;
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (page === 1) {
+      params.delete('page'); // URL limpa: / ao invés de /?page=1
+    } else {
+      params.set('page', String(page));
+    }
+    
+    const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+    router.push(newUrl, { scroll: false });
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  // ... resto do código
+};
+```
+
+### 5️⃣ **SEO com Schema.org Microdata**
+
+Implementação de microdata para melhor indexação e rich snippets:
+
+```tsx
+// src/components/organisms/ArticleDetail/ArticleDetail.tsx
+<article 
+  className={styles.article}
+  itemScope 
+  itemType="https://schema.org/NewsArticle"
+>
+  <header className={styles.header}>
+    <Title tag="h1">
+      <span itemProp="headline">{article.title}</span>
+    </Title>
+    <div className={styles.meta}>
+      <time dateTime={article.date} itemProp="datePublished">
+        Publicado em: {formattedDate}
+      </time>
+      <span itemProp="author" itemScope itemType="https://schema.org/Person">
+        Por: <span itemProp="name">{author}</span>
+      </span>
     </div>
-  );
+  </header>
+  
+  <figure className={styles.featuredImage} itemProp="image" itemScope itemType="https://schema.org/ImageObject">
+    <PostImage priority src={article.image} alt={article.title} />
+    <meta itemProp="url" content={article.image} />
+  </figure>
+
+  <div className={styles.content} itemProp="articleBody">
+    {/* conteúdo do artigo */}
+  </div>
+</article>
+```
+
+### 6️⃣ **Hierarquia Semântica de Headings**
+
+Tamanhos específicos e pesos diferentes para h1, h2, h3:
+
+```scss
+// src/components/atoms/Title/Title.module.scss
+.title {
+  font-family: var(--font-main);
+  color: var(--text-color);
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* h1 - Maior, para páginas principais */
+h1.title {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 900;
+}
+
+/* h2 - Médio, para posts em cards */
+h2.title {
+  font-size: clamp(1.25rem, 3vw, 1.875rem);
+  font-weight: 800;
+}
+
+/* h3 - Pequeno, para subtítulos */
+h3.title {
+  font-size: clamp(1.rem, 2.5vw, 1.5rem);
+  font-weight: 700;
 }
 ```
 
@@ -558,70 +707,202 @@ NODE_ENV=development
 
 ## 📱 Funcionalidades por Página
 
-### Home (`/`)
-- Lista paginada de todas as notícias
+### Home (`/` ou `/?page=2`)
+- Lista paginada de todas as notícias (6 por página)
+- **Paginação via URL query params** - compartilhável e SEO-friendly
 - Skeleton loading durante carregamento
-- Paginação interativa
-- Busca visual através de cards
+- Empty state se não houver artigos
+- Cards com Schema.org NewsArticle microdata
+- Primeira imagem com preload automático
+- Botão voltar do navegador funciona corretamente
 
 ### Artigo (`/article/[slug]`)
-- Exibe artigo completo
-- Imagem de capa otimizada
-- Formatted date
-- Data de publicação legível
-- Botão de voltar à home
+- Exibe artigo completo com Schema.org NewsArticle microdata
+- Metadata dinâmica (OpenGraph, Twitter Cards, JSON-LD)
+- Imagem de capa otimizada com `next/image`
+- Data de publicação formatada e autor
+- Botão de voltar com histórico do navegador
+- Conteúdo organizado em parágrafos
+- Fallback para 404 se artigo não existir
+
+### Páginas de Erro
+- **404 Not Found** - Página personalizada com link para home
+- **Error Boundary** - Captura erros de runtime com botão de retry
+- **Empty State** - Componente reutilizável para estados vazios
 
 ---
 
 ## ✅ Checklist de Features
 
-- ✅ TypeScript em todo o projeto
-- ✅ Componentes React funcionais
-- ✅ Context API para state global
+### 🏗️ Arquitetura & Fundamentos
+- ✅ TypeScript em 100% do código frontend
+- ✅ Next.js 16.1 com App Router e SSR
+- ✅ Atomic Design pattern (4 níveis: atoms/molecules/organisms/templates)
+- ✅ Context API para state global (ThemeContext, AccessibilityContext)
 - ✅ CSS Modules para estilos isolados
+
+### 🎨 UI/UX & Design
 - ✅ Responsivo (mobile/tablet/desktop)
-- ✅ Tema dark/light mode
-- ✅ Acessibilidade avançada (4 controles)
-- ✅ Testes com Jest + RTL
+- ✅ Tema dark/light mode com transições suaves
+- ✅ SSR-safe theme loading (mounted state pattern)
+- ✅ Hierarquia semântica de headings (h1/h2/h3 com tamanhos específicos)
+- ✅ Loading states com skeleton components
+- ✅ Empty states customizáveis
+
+### ♿ Acessibilidade
+- ✅ 4 controles de acessibilidade (font-size, line-height, contrast, grayscale)
+- ✅ Modal de acessibilidade persistente
+- ✅ Labels ARIA em elementos interativos
+- ✅ Navegação por teclado
+
+### 🚀 Performance & SEO
+- ✅ Imagens otimizadas com next/image
+- ✅ Lazy loading e code splitting
+- ✅ Schema.org microdata (NewsArticle, Person, ImageObject)
+- ✅ Metadata dinâmica (OpenGraph, Twitter Cards)
+- ✅ Paginação via URL query params (/?page=2)
+- ✅ Primeira imagem com preload
+
+### 🧪 Qualidade de Código
+- ✅ Testes com Jest + RTL (6 testes passando)
 - ✅ API service com error handling
-- ✅ Performance otimizada
-- ✅ SEO friendly (Next.js)
-- ✅ Atomic Design pattern
-- ✅ Error boundaries
-- ✅ Loading states (skeletons)
-- ✅ Roteamento dinâmico
+- ✅ Handler unificado de erros (errorHandler.ts)
+- ✅ Type-safe com TypeScript strict mode
+- ✅ Error boundaries + páginas 404 customizadas
+
+### 🔄 Funcionalidades
+- ✅ Roteamento dinâmico ([slug])
+- ✅ Paginação compartilhável via URL
+- ✅ Histórico do navegador funcionando corretamente
+- ✅ Botão voltar com useRouter
+- ✅ API RESTful com Express.js
+
+---
+
+## 🧪 Testes
+
+O projeto utiliza **Jest** e **React Testing Library** para testes automatizados.
+
+### Setup de Testes
+
+```typescript
+// frontend/setupTests.ts
+import '@testing-library/jest-dom';
+
+// Mock de next/navigation para testes
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+  })),
+  useSearchParams: jest.fn(() => new URLSearchParams()),
+}));
+```
+
+### Executando Testes
+
+```bash
+cd frontend
+npm test                  # Roda todos os testes
+npm test -- --coverage    # Gera relatório de cobertura
+```
+
+### Testes Atuais
+
+- ✅ **PostCard.test.tsx** - Renderização do card, links, imagens
+- ✅ **ArticleList.test.tsx** - Lista, paginação, empty state, loading
+- ✅ **api.test.ts** - Chamadas de API, error handling
+
+**Resultado:** 6 testes em 3 suites (todos passando)
+
+### Exemplo de Teste com Mocks de Navegação
+
+```typescript
+// ArticleList.test.tsx
+import { useRouter, useSearchParams } from 'next/navigation';
+
+jest.mock('next/navigation');
+
+describe('ArticleList', () => {
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+    });
+    (useSearchParams as jest.Mock).mockReturnValue(
+      new URLSearchParams('page=1')
+    );
+  });
+
+  it('deve navegar para próxima página', () => {
+    // Teste implementado
+  });
+});
+```
 
 ---
 
 ## 🐛 Tratamento de Erros
 
-O projeto implementa tratamento robusto de erros:
+O projeto implementa tratamento robusto de erros em múltiplas camadas:
 
-- **ApiError**: Classe customizada para erros de API
-- **Error Boundary**: Fallback para erros não capturados
-- **Empty State**: Mensagem quando não há artigos
-- **Error Page**: Página 404 customizada
+### 1️⃣ Handler Unificado de Erros
 
----
+```typescript
+// src/utils/errorHandler.ts
+export function handleApiError(err: unknown): string {
+  if (err instanceof ApiError) {
+    return err.message;
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return 'Erro desconhecido ao carregar os dados';
+}
 
-## � Recursos Adicionais
+// Uso no componente
+import { handleApiError } from '@/utils/errorHandler';
 
-### 🔍 Checklist de Qualidade
-- ✅ TypeScript em 100% do código
-- ✅ Componentes React funcionais
-- ✅ Context API para state global (2 contextos sincronizados)
-- ✅ CSS Modules para estilos isolados
-- ✅ Responsivo (mobile/tablet/desktop)
-- ✅ Tema dark/light mode
-- ✅ Acessibilidade avançada (4 controles)
-- ✅ Testes com Jest + RTL (6 testes passando)
-- ✅ API service com error handling
-- ✅ Performance otimizada (lazy loading, code splitting)
-- ✅ SEO friendly (Next.js App Router)
-- ✅ Atomic Design pattern (4 níveis)
-- ✅ Error boundaries + Error pages
-- ✅ Loading states (skeletons)
-- ✅ Roteamento dinâmico
+try {
+  const articles = await fetchArticles();
+  setArticles(articles);
+} catch (err) {
+  setError(handleApiError(err));
+}
+```
+
+### 2️⃣ ApiError Customizado
+
+```typescript
+// src/services/api.ts
+export class ApiError extends Error {
+  status?: number;
+  code?: string;
+  
+  constructor(shape: { message: string; status?: number; code?: string }) {
+    super(shape.message);
+    this.name = 'ApiError';
+    this.status = shape.status;
+    this.code = shape.code;
+  }
+}
+```
+
+### 3️⃣ Error Boundaries
+
+- **error.tsx**: Captura erros não tratados com botão de retry
+- **not-found.tsx**: Página 404 customizada com link para home
+
+### 4️⃣ Empty States
+
+```typescript
+// src/components/atoms/EmptyState/EmptyState.tsx
+<EmptyState 
+  message="Nenhum artigo encontrado" 
+  actionLabel="Voltar para home"
+  onAction={() => router.push('/')}
+/>
+```
 
 ---
 
@@ -634,3 +915,12 @@ Este projeto é de código aberto sob a licença MIT.
 ## 👨‍💻 Desenvolvido com ❤️
 
 Desenvolvido como solução para desafio fullstack junior com foco em **acessibilidade**, **performance** e **boas práticas de código**.
+
+### 🎯 Melhorias Implementadas
+
+1. **Schema.org Microdata** - NewsArticle, Person, ImageObject para melhor SEO
+2. **Paginação via URL** - Compartilhável e SEO-friendly (/?page=2)
+3. **Hierarquia Semântica** - h1/h2/h3 com tamanhos específicos e responsivos
+4. **Error Handler Unificado** - DRY e type-safe
+5. **SSR-Safe Theme** - Mounted state pattern para evitar hydration mismatch
+6. **Testes Atualizados** - Mocks de next/navigation (useRouter, useSearchParams)

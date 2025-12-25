@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { PostCard } from '../../molecules/PostCard/PostCard';
 import { Skeleton, Pagination } from '../../atoms';
 import { EmptyState } from '../../atoms/EmptyState/EmptyState';
-import { api, ApiError } from '@/services/api';
+import { api } from '@/services/api';
+import { handleApiError } from '@/utils/errorHandler';
 import styles from './ArticleList.module.scss';
 import type { Article } from '@/types';
 
@@ -16,22 +18,13 @@ interface ArticleListProps {
 }
 
 export const ArticleList = ({ initialArticles = [], initialError = null }: ArticleListProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(initialError);
-  
-  const getInitialPage = () => {
-    try {
-      const saved = sessionStorage.getItem('home-page');
-      if (saved) {
-        const page = parseInt(saved, 10);
-        if (Number.isFinite(page) && page > 0) return page;
-      }
-    } catch {}
-    return 1;
-  };
-  
-  const [currentPage, setCurrentPage] = useState(getInitialPage);
+  const currentPage = Number(searchParams.get('page')) || 1;
 
   const loadArticles = useCallback(async () => {
     try {
@@ -41,11 +34,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
       setArticles(data);
     } catch (err) {
       console.error('Erro ao carregar artigos:', err);
-      if (err instanceof ApiError) {
-        setErrorMessage(err.message || 'Erro na requisição');
-      } else {
-        setErrorMessage('Não foi possível conectar ao servidor');
-      }
+      setErrorMessage(handleApiError(err));
     } finally {
       setIsLoading(false);
     }
@@ -81,14 +70,18 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     }
   }, [articles, currentPage]);
 
-  useEffect(() => {
-    try {
-      sessionStorage.setItem('home-page', String(currentPage));
-    } catch {}
-  }, [currentPage]);
-
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    // Atualizar URL com nova página
+    const params = new URLSearchParams(searchParams.toString());
+    if (page === 1) {
+      params.delete('page'); // Remove ?page=1 para URL limpa
+    } else {
+      params.set('page', String(page));
+    }
+    
+    const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+    router.push(newUrl, { scroll: false });
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

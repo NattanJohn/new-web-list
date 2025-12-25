@@ -16,11 +16,17 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const VALID_THEMES: Theme[] = ['light', 'dark'];
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
+
+  // Carregar tema do localStorage após hydration
+  useEffect(() => {
+    setMounted(true);
     const saved = safeLocalStorageGet('gazeta-theme');
-    if (saved && VALID_THEMES.includes(saved as Theme)) return saved as Theme;
-    return 'light';
-  });
+    if (saved && VALID_THEMES.includes(saved as Theme)) {
+      setThemeState(saved as Theme);
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -44,6 +50,17 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const toggleTheme = (newTheme: Theme) => setTheme(newTheme);
+
+  // Evitar flash: renderizar sem classe de tema até montar
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
+        <div className="theme-wrapper">
+          {children}
+        </div>
+      </ThemeContext.Provider>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

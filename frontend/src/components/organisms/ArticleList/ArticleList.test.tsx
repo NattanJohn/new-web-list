@@ -25,6 +25,19 @@ Object.defineProperty(window, "scrollTo", {
   value: jest.fn(),
 });
 
+// Mock Next.js navigation hooks
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  })),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(() => null),
+    toString: jest.fn(() => ""),
+  })),
+}));
+
 jest.mock("@/services/api", () => ({
   api: {
     getArticles: jest.fn().mockResolvedValue(mockArticles),
