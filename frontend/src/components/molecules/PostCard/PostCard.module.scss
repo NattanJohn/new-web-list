@@ -7,7 +7,7 @@
   height: 100%;
 
   &:hover {
-    transform: translateY(-0.25rem); // -4px
+    transform: translateY(-0.25rem);
     box-shadow: 0 0.625rem 1.25rem rgba(0,0,0,0.1);
   }
 }
@@ -21,10 +21,17 @@
 }
 
 .content {
-  padding: 1.5rem;
+  padding: clamp(12px, 1.5vw, 24px);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+.title {
+  margin-bottom: clamp(8px, 1.5vw, 16px);
+  line-height: var(--content-line-height);
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .date {
