@@ -204,6 +204,10 @@ Nota: o modal e a flag de acessibilidade usam variáveis CSS locais para não he
 git clone https://github.com/NattanJohn/new-web-list.git
 cd news-web-list
 
+# Renomeie os arquivos .env.example para .env
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
+
 # Instale as dependências do frontend
 cd frontend
 npm install
@@ -212,6 +216,16 @@ npm install
 cd ../backend
 npm install
 ```
+
+> **📝 Por que renomear `.env.example` para `.env`?**
+> 
+> - **`.env.example`**: Arquivo de exemplo commitado no repositório com valores placeholder
+> - **`.env`**: Arquivo real com variáveis de ambiente da sua máquina (não é commitado, protegido em `.gitignore`)
+> 
+> A aplicação procura por `.env` em runtime, não por `.env.example`. Renomear permite que:
+> - Cada desenvolvedor tenha seu próprio `.env` isolado
+> - Credenciais e valores sensíveis não vazem no repositório
+> - A aplicação encontre as variáveis corretas durante execução
 
 ### Rodando o Projeto
 
@@ -254,9 +268,7 @@ URLs:
 
 ### Por que renderização dinâmica?
 
-Em desenvolvimento local (`npm run dev`), a home usa **SSG (Static Site Generation)** com `revalidate = 60`.
-
-No Docker, a home usa **renderização dinâmica** (`dynamic = 'force-dynamic'`) porque:
+A home usa **renderização dinâmica** (`dynamic = 'force-dynamic'`) em todos os ambientes (dev, Docker e produção) porque:
 
 1. **API não disponível no build**: Durante `docker-compose build`, o backend (`http://backend:3001`) não está rodando ainda.
 2. **Sem pré-renderização estática**: Sem a API disponível no build, Next.js não consegue gerar HTML estático da home.
