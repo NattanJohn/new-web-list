@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { HomeTemplate } from '@/components/templates/HomeTemplate/HomeTemplate';
+import { StatusTemplate } from '@/components/templates';
 import { Title } from '@/components/atoms/Title/Title';
 import styles from './Status.module.scss';
 
@@ -9,7 +9,7 @@ interface ErrorPageProps {
 
 export default function ErrorPage({ message }: ErrorPageProps) {
   return (
-    <HomeTemplate>
+    <StatusTemplate>
       <div className={styles.container}>
         <div className={styles.card}>
           <div className={styles.headerRow}>
@@ -29,6 +29,6 @@ export default function ErrorPage({ message }: ErrorPageProps) {
           </div>
         </div>
       </div>
-    </HomeTemplate>
+    </StatusTemplate>
   );
 }

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { api } from "@/services/api";
-import { HomeTemplate } from "@/components/templates/HomeTemplate/HomeTemplate";
+import { ArticleTemplate } from "@/components/templates";
 import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
 import NotFound from "@/app/not-found";
 
@@ -82,9 +82,9 @@ export default async function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomeTemplate>
+        <ArticleTemplate>
         <ArticleDetail article={article} />
-      </HomeTemplate>
+      </ArticleTemplate>
     </>
   );
 }

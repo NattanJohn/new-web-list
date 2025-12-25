@@ -1,12 +1,12 @@
 import React from 'react';
 import { Title } from '../../atoms/Title/Title';
-import styles from './HomeTemplate.module.scss';
+import styles from './ArticleTemplate.module.scss';
 
-interface HomeTemplateProps {
+interface ArticleTemplateProps {
   children: React.ReactNode;
 }
 
-export const HomeTemplate = ({ children }: HomeTemplateProps) => {
+export const ArticleTemplate = ({ children }: ArticleTemplateProps) => {
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>

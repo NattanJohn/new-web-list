@@ -1,11 +1,7 @@
 .article {
-  max-width: 50rem;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 1rem;
-
-  @media (min-width: 48rem) {
-    padding: 2rem;
-  }
+  padding: clamp(16px, 2vw, 32px);
 }
 
 .header {
@@ -18,8 +14,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: calc(0.875rem * var(--text-scale));
+  line-height: var(--content-line-height);
   opacity: 0.8;
+  flex-wrap: wrap;
 
   @media (min-width: 48rem) {
     flex-direction: row;
@@ -47,10 +45,13 @@
 
 .content {
   line-height: var(--content-line-height);
-  font-size: 1.125rem;
+  font-size: calc(1.125rem * var(--text-scale));
   color: var(--text-color);
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 
   p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 }

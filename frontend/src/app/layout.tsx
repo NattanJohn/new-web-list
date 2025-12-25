@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { Inter } from "next/font/google";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/AccessibilityButton";
+import { ThemeButton } from "@/components/atoms/ThemeButton/ThemeButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AccessibilityProvider>
             <AccessibilityButton />
+            <ThemeButton />
             {children}
           </AccessibilityProvider>
         </ThemeProvider>
