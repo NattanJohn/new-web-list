@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { PostCard } from '../../molecules/PostCard/PostCard';
-import { SkeletonList, Pagination } from '../../atoms';
+import { Skeleton, Pagination } from '../../atoms';
 import { EmptyState } from '../../atoms/EmptyState/EmptyState';
 import { api, ApiError } from '@/services/api';
 import styles from './ArticleList.module.scss';
@@ -99,7 +99,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     return articles.slice(start, start + ITEMS_PER_PAGE);
   }, [articles, currentPage]);
 
-  if (isLoading) return <div aria-busy="true" aria-live="polite"><SkeletonList /></div>;
+  if (isLoading) return <div aria-busy="true" aria-live="polite"><Skeleton variant="list" /></div>;
 
   if (errorMessage || !articles.length) {
     return (
