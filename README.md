@@ -915,12 +915,3 @@ Este projeto é de código aberto sob a licença MIT.
 ## 👨‍💻 Desenvolvido com ❤️
 
 Desenvolvido como solução para desafio fullstack junior com foco em **acessibilidade**, **performance** e **boas práticas de código**.
-
-### 🎯 Melhorias Implementadas
-
-1. **Schema.org Microdata** - NewsArticle, Person, ImageObject para melhor SEO
-2. **Paginação via URL** - Compartilhável e SEO-friendly (/?page=2)
-3. **Hierarquia Semântica** - h1/h2/h3 com tamanhos específicos e responsivos
-4. **Error Handler Unificado** - DRY e type-safe
-5. **SSR-Safe Theme** - Mounted state pattern para evitar hydration mismatch
-6. **Testes Atualizados** - Mocks de next/navigation (useRouter, useSearchParams)
