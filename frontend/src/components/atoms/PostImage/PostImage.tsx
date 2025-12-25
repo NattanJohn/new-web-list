@@ -17,6 +17,7 @@ export const PostImage = ({ src, alt, priority = false }: PostImageProps) => {
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         priority={priority}
         fetchPriority={priority ? 'high' : 'auto'}
+        className={styles.image}
       />
     </div>
   );

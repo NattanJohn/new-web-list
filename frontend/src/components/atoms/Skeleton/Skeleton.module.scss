@@ -18,7 +18,7 @@
   background-size: 200% 100%;
 }
 
-:global([data-theme='high-contrast']) .skeleton {
+:global([data-theme$='-high-contrast']) .skeleton {
   background: none;
   border: 1px solid var(--text-color);
   animation: pulse 1.5s infinite;

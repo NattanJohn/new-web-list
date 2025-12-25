@@ -15,20 +15,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const article = await api.getArticleBySlug(slug);
 
     if (!article) {
-      return { title: "Artigo não encontrado | Gazeta News" };
+      return { title: "Artigo não encontrado" };
     }
 
     const description =
       article.summary ?? (article.content ? `${String(article.content).slice(0, 160).trim()}...` : "Leia a notícia completa na Gazeta News");
 
     return {
-      title: `${article.title} | Gazeta News`,
+      title: article.title,
       description,
+      alternates: {
+        canonical: `/article/${slug}`,
+      },
       openGraph: {
         title: article.title,
         description,
         images: article.image ? [{ url: article.image }] : [],
         type: "article",
+        publishedTime: article.date,
+        authors: article.author ? [article.author] : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: article.title,
+        description,
+        images: article.image ? [article.image] : undefined,
       },
     };
   } catch {
@@ -44,9 +55,36 @@ export default async function ArticlePage({ params }: Props) {
     return <NotFound />;
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.summary || article.content?.slice(0, 160),
+    image: article.image,
+    datePublished: article.date,
+    author: {
+      '@type': 'Person',
+      name: article.author || 'Gazeta News',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Gazeta News',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`,
+      },
+    },
+  };
+
   return (
-    <HomeTemplate>
-      <ArticleDetail article={article} />
-    </HomeTemplate>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <HomeTemplate>
+        <ArticleDetail article={article} />
+      </HomeTemplate>
+    </>
   );
 }

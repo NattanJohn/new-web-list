@@ -20,6 +20,9 @@ interface ArticleDetailProps {
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const formattedDate = formatDate(article.date);
   const author = article.author ?? 'Desconhecido';
+  const paragraphs = article.content 
+    ? article.content.split(/\n\n+/).filter(p => p.trim())
+    : [];
 
   return (
     <article className={styles.article}>
@@ -28,8 +31,8 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
       <header className={styles.header}>
         <Title tag="h1">{article.title}</Title>
         <div className={styles.meta}>
-          <time>Publicado em: {formattedDate}</time>
-          <span>Por: {author}</span>
+          <time dateTime={article.date}>Publicado em: {formattedDate}</time>
+          <span itemProp="author">Por: {author}</span>
         </div>
       </header>
       
@@ -40,7 +43,13 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
       )}
 
       <div className={styles.content}>
-        <p>{article.content ?? ''}</p>
+        {paragraphs.length > 0 ? (
+          paragraphs.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))
+        ) : (
+          <p>Conteúdo não disponível.</p>
+        )}
       </div>
     </article>
   );

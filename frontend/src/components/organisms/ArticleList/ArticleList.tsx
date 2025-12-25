@@ -10,10 +10,15 @@ import type { Article } from '@/types';
 
 const ITEMS_PER_PAGE = 6;
 
-export const ArticleList = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+interface ArticleListProps {
+  initialArticles?: Article[];
+  initialError?: string | null;
+}
+
+export const ArticleList = ({ initialArticles = [], initialError = null }: ArticleListProps) => {
+  const [articles, setArticles] = useState<Article[]>(initialArticles);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(initialError);
   const [currentPage, setCurrentPage] = useState(1);
 
   const loadArticles = useCallback(async () => {
@@ -34,9 +39,12 @@ export const ArticleList = () => {
     }
   }, []);
 
+  // Fallback: quando não há dados iniciais (SSR), buscar no cliente
   useEffect(() => {
-    loadArticles();
-  }, [loadArticles]);
+    if (!initialArticles || initialArticles.length === 0) {
+      void loadArticles();
+    }
+  }, [initialArticles, loadArticles]);
 
   useEffect(() => {
     if (!articles || !articles.length) return;
@@ -77,11 +85,11 @@ export const ArticleList = () => {
     return articles.slice(start, start + ITEMS_PER_PAGE);
   }, [articles, currentPage]);
 
-  if (isLoading) return <SkeletonList />;
+  if (isLoading) return <div aria-busy="true" aria-live="polite"><SkeletonList /></div>;
 
   if (errorMessage || !articles.length) {
     return (
-      <div className={styles.emptyWrapper}>
+      <div className={styles.emptyWrapper} role="alert" aria-live="assertive">
         <EmptyState
           title={errorMessage ? 'Ops! Algo deu errado' : 'Nenhuma notícia encontrada'}
           message={errorMessage ?? 'Aguarde novos conteúdos em breve.'}
@@ -92,8 +100,8 @@ export const ArticleList = () => {
   }
 
   return (
-    <div className={styles.mainWrapper}>
-      <section className={styles.grid} aria-label="Lista de notícias">
+    <div className={styles.mainWrapper} aria-busy={isLoading}>
+      <section className={styles.grid} aria-label="Lista de notícias" aria-live="polite">
         {paginated.map((article, index) => (
           <PostCard
             key={article.id ?? article.slug}

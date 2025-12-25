@@ -8,9 +8,28 @@ import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gazeta News",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  title: {
+    default: "Gazeta News - Notícias Atualizadas",
+    template: "%s | Gazeta News",
+  },
   description:
     "Fique por dentro das últimas notícias com a Gazeta News - sua fonte confiável para informações atualizadas e análises aprofundadas sobre os principais acontecimentos locais, nacionais e internacionais.",
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: 'Gazeta News',
+    title: 'Gazeta News - Notícias Atualizadas',
+    description: 'Sua fonte confiável para informações atualizadas sobre os principais acontecimentos.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gazeta News',
+    description: 'Notícias atualizadas e confiáveis',
+  },
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({

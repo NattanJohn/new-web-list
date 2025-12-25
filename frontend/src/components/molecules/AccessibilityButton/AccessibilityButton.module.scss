@@ -4,8 +4,7 @@
   top: 80%;
   transform: translateY(-50%);
   z-index: 9998;
-  
-  // Reset CSS variables locally to ignore accessibility scaling
+
   --text-scale: 1;
   --content-line-height: 1.4;
   
@@ -55,7 +54,7 @@
   }
 }
 
-:global([data-theme="high-contrast"]) {
+:global([data-theme$="-high-contrast"]) {
   .trigger {
     border: 2px solid var(--text-color);
     box-shadow: none;

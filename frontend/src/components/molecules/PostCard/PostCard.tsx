@@ -21,7 +21,9 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
         <div className={styles.content}>
           <header>
             <span className={styles.date}>{formattedDate}</span>
-            <Title tag="h2">{title}</Title>
+            <Title tag="h2" className={styles.title}>
+              {title}
+            </Title>
           </header>
           
           <p className={styles.summary}>{summary}</p>

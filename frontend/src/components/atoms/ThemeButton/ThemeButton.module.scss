@@ -115,7 +115,7 @@
   }
 }
 
-:global([data-theme="high-contrast"]) {
+:global([data-theme$="-high-contrast"]) {
   .mainButton, .menu {
     border: 2px solid var(--text-color);
     background: var(--bg-color);

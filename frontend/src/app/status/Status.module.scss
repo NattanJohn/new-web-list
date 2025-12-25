@@ -76,7 +76,7 @@
   box-shadow: 0 8px 30px rgba(255, 255, 255, 0.03);
 }
 
-[data-theme='high-contrast'] .card {
+[data-theme$='-high-contrast'] .card {
   border-color: rgba(255, 255, 0, 0.12);
   box-shadow: none;
 }

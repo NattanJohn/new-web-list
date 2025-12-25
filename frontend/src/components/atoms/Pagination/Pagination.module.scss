@@ -81,7 +81,7 @@
   font-weight: 300;
 }
 
-:global(html[data-accessibility-high-contrast="true"]) {
+:global([data-theme$='-high-contrast']) {
   .current {
     outline: 0.125rem solid var(--text-color);
     border-radius: 0.25rem;

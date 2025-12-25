@@ -1,6 +1,7 @@
 'use client';
 
 import { useAccessibility, ACCESSIBILITY_LEVELS } from '@/context/AccessibilityContext';
+import { useEffect, useRef } from 'react';
 import styles from './AccessibilityModal.module.scss';
 import { X, RotateCcw, Contrast, Ghost } from 'lucide-react';
 
@@ -14,12 +15,18 @@ export const AccessibilityModal = ({ onClose }: { onClose: () => void }) => {
     resetConfig 
   } = useAccessibility();
 
+  const firstButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    firstButtonRef.current?.focus();
+  }, []);
+
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="accessibility-title">
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <header className={styles.header}>
-          <h2>Acessibilidade</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar">
+          <h2 id="accessibility-title">Acessibilidade</h2>
+          <button ref={firstButtonRef} className={styles.closeBtn} onClick={onClose} aria-label="Fechar">
             <X size={24} />
           </button>
         </header>
