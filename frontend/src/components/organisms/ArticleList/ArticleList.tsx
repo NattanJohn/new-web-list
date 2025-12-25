@@ -19,7 +19,19 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(initialError);
-  const [currentPage, setCurrentPage] = useState(1);
+  
+  const getInitialPage = () => {
+    try {
+      const saved = sessionStorage.getItem('home-page');
+      if (saved) {
+        const page = parseInt(saved, 10);
+        if (Number.isFinite(page) && page > 0) return page;
+      }
+    } catch {}
+    return 1;
+  };
+  
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
 
   const loadArticles = useCallback(async () => {
     try {
@@ -39,7 +51,6 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     }
   }, []);
 
-  // Fallback: quando não há dados iniciais (SSR), buscar no cliente
   useEffect(() => {
     if (!initialArticles || initialArticles.length === 0) {
       void loadArticles();
@@ -71,12 +82,15 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
   }, [articles, currentPage]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 10);
-
-    return () => clearTimeout(timer);
+    try {
+      sessionStorage.setItem('home-page', String(currentPage));
+    } catch {}
   }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const total = articles.length;
 
@@ -120,7 +134,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
           total={total}
           current={currentPage}
           perPage={ITEMS_PER_PAGE}
-          onPageChange={(p) => setCurrentPage(p)}
+          onPageChange={handlePageChange}
         />
       </footer>
     </div>

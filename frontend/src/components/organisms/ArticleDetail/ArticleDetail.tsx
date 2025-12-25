@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
@@ -23,6 +24,10 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const paragraphs = article.content 
     ? article.content.split(/\n\n+/).filter(p => p.trim())
     : [];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   return (
     <article className={styles.article}>
