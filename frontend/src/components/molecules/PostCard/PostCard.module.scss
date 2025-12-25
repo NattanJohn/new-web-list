@@ -5,6 +5,8 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   background-color: var(--bg-color);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     transform: translateY(-0.25rem);
@@ -25,13 +27,18 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-width: 0;
 }
 .title {
   margin-bottom: clamp(8px, 1.5vw, 16px);
-  line-height: var(--content-line-height);
-  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  word-wrap: break-word;
   overflow-wrap: break-word;
-  word-break: normal;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .date {
