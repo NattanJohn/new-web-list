@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { safeLocalStorageSet, safeLocalStorageGet } from '@/utils/localStorage';
 
 type Theme = 'light' | 'dark';
 
@@ -16,18 +17,21 @@ const VALID_THEMES: Theme[] = ['light', 'dark'];
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    try {
-      const saved = localStorage.getItem('gazeta-theme');
-      if (saved && VALID_THEMES.includes(saved as Theme)) return saved as Theme;
-    } catch (e) {
-      void e;
-    }
+    const saved = safeLocalStorageGet('gazeta-theme');
+    if (saved && VALID_THEMES.includes(saved as Theme)) return saved as Theme;
     return 'light';
   });
 
   useEffect(() => {
     try {
-      document.documentElement.setAttribute('data-theme', theme);
+      const root = document.documentElement;
+      const currentAttr = root.getAttribute('data-theme') || '';
+      
+      if (currentAttr.includes('-high-contrast')) {
+        root.setAttribute('data-theme', `${theme}-high-contrast`);
+      } else {
+        root.setAttribute('data-theme', theme);
+      }
     } catch (e) {
       void e;
     }
@@ -36,25 +40,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const setTheme = useCallback((newTheme: Theme) => {
     if (!VALID_THEMES.includes(newTheme)) return;
     setThemeState(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-    
-    // Reset high contrast when changing theme
-    try {
-      const accConfig = localStorage.getItem('gazeta-news-acc');
-      if (accConfig) {
-        const config = JSON.parse(accConfig);
-        config.highContrast = false;
-        localStorage.setItem('gazeta-news-acc', JSON.stringify(config));
-      }
-    } catch (e) {
-      void e;
-    }
-    
-    try {
-      localStorage.setItem('gazeta-theme', newTheme);
-    } catch (e) {
-      void e;
-    }
+    safeLocalStorageSet('gazeta-theme', newTheme);
   }, []);
 
   const toggleTheme = (newTheme: Theme) => setTheme(newTheme);
