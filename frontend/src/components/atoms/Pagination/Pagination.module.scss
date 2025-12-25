@@ -4,12 +4,27 @@
   align-items: center;
   padding: 3rem 0;
   width: 100%;
+  
+  // Reset CSS variables locally to ignore accessibility scaling
+  --text-scale: 1;
+  --content-line-height: 1.5;
+  
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .pages {
   display: flex;
   gap: 0.25rem;
   align-items: center;
+}
+
+.ellipsis {
+  color: var(--text-color);
+  opacity: 0.4;
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  user-select: none;
 }
 
 .btn {
