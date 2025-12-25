@@ -1,12 +1,13 @@
 # 📰 News Web List
 
-Um agregador de notícias moderno, responsivo e altamente acessível, construído com as melhores práticas de desenvolvimento fullstack.
+Um agregador de notícias moderno, responsivo e **altamente acessível**, construído com as melhores práticas de desenvolvimento fullstack. Implementa padrões avançados como Atomic Design, Context API sincronizados, e testes automatizados.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?style=flat-square)
 ![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)
 ![Jest](https://img.shields.io/badge/Jest-30.2.0-C21325?style=flat-square&logo=jest)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js)
+![SCSS](https://img.shields.io/badge/SCSS-Modules-CD6799?style=flat-square&logo=sass)
 
 ---
 
@@ -23,7 +24,7 @@ Um agregador de notícias moderno, responsivo e altamente acessível, construíd
 O projeto implementa 4 recursos de acessibilidade essenciais em um modal intuitivo:
 
 #### 1️⃣ **Tamanho do Texto** (Font Scale)
-   - 4 níveis de escala: 1x (padrão), 1.3x, 1.6x, 2x
+   - 5 níveis de escala: 1x (padrão), 1.25x, 1.5x, 1.75x e 2x
    - Redimensiona dinamicamente todos os componentes
    - Ideal para usuários com baixa visão
 
@@ -63,14 +64,130 @@ O projeto implementa 4 recursos de acessibilidade essenciais em um modal intuiti
 - Cobertura de componentes principais
 - 6 testes passando em 3 suites diferentes
 
-### 📚 Arquitetura Limpa
-- Componentes organizados por padrão **Atomic Design**
-  - **Atoms**: Componentes básicos (Button, Title, Icon)
-  - **Molecules**: Combinações simples (PostCard)
-  - **Organisms**: Componentes complexos (ArticleList, ArticleDetail)
-  - **Templates**: Layouts de página (HomeTemplate)
-- **Context API** para gerenciamento de estado global
-- Separação clara de responsabilidades
+### 📚 Arquitetura Limpa com Atomic Design
+
+O projeto segue o padrão **Atomic Design**, uma filosofia de design que trata componentes como átomos em uma estrutura hierárquica. Isso proporciona **reutilização, manutenibilidade e consistência**.
+
+#### 🔬 **O que é Atomic Design?**
+
+Assim como a química organiza a matéria em níveis (átomos → moléculas → organismos), o Atomic Design organiza componentes UI de forma crescente em complexidade:
+
+| Nível | Descrição | Exemplo |
+|-------|-----------|---------|
+| **Atoms** | Menores unidades indivisíveis. São "blocos de construção" | Button, Icon, Title, Input, Label |
+| **Molecules** | Grupos de átomos ligados entre si. Têm uma função específica | PostCard (Title + Date + Summary), SearchBox (Input + Button) |
+| **Organisms** | Grupos de moléculas combinadas. Componentes sofisticados e auto-suficientes | ArticleList, ArticleDetail, AccessibilityModal |
+| **Templates** | Estrutura de páginas. Combinam organismos e moléculas | HomeTemplate |
+
+#### 🏗️ **Estrutura no Projeto**
+
+```
+src/components/
+├── atoms/                    # Elementos básicos e isolados
+│   ├── Title/               # Título com variações
+│   ├── ThemeButton/         # Botão tema (atom complexo)
+│   ├── BackButton/          # Botão voltar
+│   ├── PostImage/           # Imagem otimizada
+│   ├── Skeleton/            # Carregamento (padrão)
+│   ├── Pagination/          # Paginação
+│   └── EmptyState/          # Estado vazio customizável
+│
+├── molecules/               # Combinações simples de atoms
+│   ├── PostCard/            # Atom: Title + Date + Summary + Link
+│   └── AccessibilityButton/ # Atom: Eye Icon + Text
+│
+├── organisms/               # Componentes complexos auto-suficientes
+│   ├── ArticleList/         # Lista completa com paginação
+│   ├── ArticleDetail/       # Artigo completo com metadados
+│   └── AccessibilityModal/  # Modal com 4 controles de a11y
+│
+└── templates/               # Layouts compartilhados
+    └── HomeTemplate/        # Header + Main + Footer
+```
+
+#### 💡 **Benefícios**
+
+- ✅ **Reutilização**: Atoms são usados em múltiplas molecules
+- ✅ **Manutenibilidade**: Mudanças em um atom afetam todos os componentes
+- ✅ **Escalabilidade**: Fácil adicionar novos componentes
+- ✅ **Testes**: Cada nível tem responsabilidades claras
+- ✅ **Documentação**: Estrutura intuitiva para novos desenvolvedores
+
+---
+
+### 🧠 **Context API & State Management**
+
+O projeto implementa **2 contextos independentes mas sincronizados**:
+
+#### 1️⃣ **ThemeContext** (Tema Light/Dark)
+```typescript
+interface ThemeContextType {
+  theme: 'light' | 'dark';
+  setTheme: (theme: Theme) => void;
+  toggleTheme: (theme: Theme) => void;
+}
+```
+- Gerencia apenas o tema (light/dark)
+- Modifica `data-theme` no DOM
+- Preserva alto contraste quando ativo (mantém sufixo `-high-contrast` ao alterar tema)
+- Persiste em `localStorage` com chave `gazeta-theme`
+
+#### 2️⃣ **AccessibilityContext** (4 Controles de A11y)
+```typescript
+interface AccessibilityState {
+  fontSize: number;        // 1 | 1.25 | 1.5 | 1.75 | 2
+  lineHeight: number | 'normal';  // 'normal' | 1.3 | 1.6 | 2
+  highContrast: boolean;   // true | false
+  grayscale: boolean;      // true | false
+}
+```
+- Gerencia 4 recursos de acessibilidade
+- Modifica CSS variables (`--text-scale`, `--content-line-height`)
+- Modifica `data-theme` (aplica variants high-contrast)
+- Aplica `filter: grayscale(1)`
+- Persiste em `localStorage` com chave `gazeta-news-acc`
+
+#### 🔄 **Sincronização Entre Contextos**
+
+Quando `ThemeContext` muda, o alto contraste é preservado se estiver ativo. A sincronização entre contextos e abas utiliza eventos nativos de `storage` (sem polling).
+
+```typescript
+// ThemeContext: preserva sufixo -high-contrast ao mudar tema
+useEffect(() => {
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme') || '';
+  root.setAttribute(
+    'data-theme',
+    current.includes('-high-contrast') ? `${theme}-high-contrast` : theme
+  );
+}, [theme]);
+
+// AccessibilityContext: aplica CSS vars e persiste config
+useEffect(() => {
+  const root = document.documentElement;
+  root.style.setProperty('--text-scale', String(fontSize));
+  root.style.setProperty(
+    '--content-line-height',
+    typeof lineHeight === 'number' ? String(lineHeight) : '1'
+  );
+  root.setAttribute('data-theme', highContrast ? `${theme}-high-contrast` : theme);
+  root.style.filter = grayscale ? 'grayscale(1)' : 'none';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+}, [config, theme]);
+
+// Sincronização entre abas/janelas sem polling
+useEffect(() => {
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY && e.newValue) {
+      setConfig(JSON.parse(e.newValue));
+    }
+  };
+  window.addEventListener('storage', onStorage);
+  return () => window.removeEventListener('storage', onStorage);
+}, []);
+```
+
+Nota: o modal e a flag de acessibilidade usam variáveis CSS locais para não herdarem a escala de fonte e a altura de linha do conteúdo.
 
 ---
 
@@ -84,7 +201,7 @@ O projeto implementa 4 recursos de acessibilidade essenciais em um modal intuiti
 
 ```bash
 # Clone o repositório
-git clone <seu-repo>
+git clone https://github.com/NattanJohn/new-web-list.git
 cd news-web-list
 
 # Instale as dependências do frontend
@@ -140,6 +257,9 @@ news-web-list/
     │   │   ├── page.tsx            # Página inicial (home)
     │   │   ├── article/[slug]/     # Página de artigo individual
     │   │   ├── layout.tsx          # Layout raiz
+    │   │   ├── status/             # Páginas de status reutilizáveis
+    │   │   │   ├── ErrorPage.tsx   # Erro genérico
+    │   │   │   └── NotFoundPage.tsx# 404 not found
     │   │   └── globals.css         # Estilos globais
     │   │
     │   ├── components/             # Componentes React
@@ -151,28 +271,38 @@ news-web-list/
     │   │   │   └── Icons/
     │   │   │
     │   │   ├── molecules/          # Componentes compostos
-    │   │   │   └── PostCard/
+    │   │   │   ├── PostCard/
+    │   │   │   └── AccessibilityButton/
     │   │   │
     │   │   └── organisms/          # Componentes complexos
-    │   │       ├── ArticleList/
-    │   │       ├── ArticleDetail/
-    │   │       └── AccessibilityModal/
+    │   │   |    ├── ArticleList/
+    │   │   |    ├── ArticleDetail/
+    │   │   |    └── AccessibilityModal/
+    |   |   |
+    |   |   └── templates/          # Estrutua de paginas
+    │   │   |    ├── HomeTemplate/
     │   │
-    │   ├── context/                # State global
-    │   │   └── ThemeContext.tsx    # Tema + Acessibilidade
+    │   ├── context/                # State global (2 contextos)
+    │   │   ├── ThemeContext.tsx    # Tema (light/dark mode)
+    │   │   └── AccessibilityContext.tsx  # 4 controles de a11y
+    │   │
+    │   ├── hooks/                  # Custom React hooks
+    │   │   └── useLocalStorage.ts  # Sincronização de localStorage
     │   │
     │   ├── services/               # Chamadas de API
-    │   │   └── api.ts
+    │   │   └── api.ts              # Serviço HTTP com error handling
     │   │
     │   ├── types/                  # TypeScript types
-    │   │   ├── article.ts
-    │   │   └── error.ts
+    │   │   ├── article.ts          # Article interface
+    │   │   ├── error.ts            # Erro types
+    │   │   └── index.ts            # Exports centralizados
     │   │
     │   ├── utils/                  # Funções utilitárias
-    │   │   └── formatDate.ts
+    │   │   ├── formatDate.ts       # Formatação de datas
+    │   │   └── localStorage.ts     # Safe localStorage helpers
     │   │
-    │   └── styles/                 # Variáveis SCSS globais
-    │       └── variables.scss
+    │   └── styles/                 # SCSS global e design system
+    │       └── variables.scss      # Variáveis (spacing, colors, etc)
     │
     ├── jest.config.js              # Configuração do Jest
     ├── setupTests.ts               # Setup dos testes
@@ -181,33 +311,67 @@ news-web-list/
     └── package.json
 ```
 
+#### **Padrões de Organização**
+
+- **index.ts em cada pasta**: Exports centralizados
+  ```typescript
+  // src/components/atoms/index.ts
+  export { Title } from './Title/Title';
+  export { BackButton } from './BackButton/BackButton';
+  export { ThemeButton } from './ThemeButton/ThemeButton';
+  ```
+
+- **Modules (SCSS)**: Cada componente tem seu próprio arquivo `.module.scss`
+  ```typescript
+  import styles from './Button.module.scss';
+  <button className={styles.button}>Click</button>
+  ```
+
+- **Custom Hooks**: Lógica reutilizável extraída
+  ```typescript
+  // src/hooks/useLocalStorage.ts
+  export const useLocalStorage = (key: string, initialValue: any) => {
+    // Lógica sincronizada com localStorage
+  };
+  ```
+
+- **Utility Functions**: Helpers puros
+  ```typescript
+  // src/utils/localStorage.ts
+  export const safeLocalStorageGet = (key: string): string | null => {
+    try { return localStorage.getItem(key); } 
+    catch { return null; }
+  };
+  ```
+
 ---
 
 ## 🎯 Componentes Principais
 
-### ThemeButton
-Botão flutuante no canto superior direito que permite:
-- ☀️ Alternar tema (light/dark)
-- ♿ Acessar modo de acessibilidade (modal)
+### Atoms
+Unidades indivisíveis do design:
+- **Title**: Títulos com variações de tag (h1, h2, h3)
+- **BackButton**: Botão voltar com ícone
+- **ThemeButton**: Menu tema com 2 opções
+- **Pagination**: Navegação entre páginas
+- **Skeleton**: Loading placeholder
+- **PostImage**: Imagem otimizada para artigos
+- **EmptyState**: Estado vazio customizável
 
-### AccessibilityModal
-Modal interativo com 4 controles:
-- Slider para tamanho de texto (1x - 2x)
-- Slider para espaçamento (Normal - 2x)
-- Toggle para alto contraste
-- Toggle para modo grayscale
+### Molecules
+Combinações simples de atoms:
+- **PostCard**: Título + Data + Resumo + Link (usado em ArticleList)
+- **AccessibilityButton**: Ícone Eye + Text "Acessibilidade"
 
-### ArticleList
-- Exibe lista paginada de artigos (6 por página)
-- Skeleton loading enquanto carrega
-- Link para detalhes completos do artigo
-- Responsivo em todas as resoluções
+### Organisms
+Componentes complexos auto-suficientes:
+- **ArticleList**: Lista com paginação, skeleton, empty state
+- **ArticleDetail**: Artigo completo com imagem, data, botão voltar
+- **AccessibilityModal**: Modal com 4 sliders/toggles de a11y
 
-### ArticleDetail
-- Exibe artigo completo com imagem de capa
-- Data formatada
-- Botão de voltar
-- Rota dinâmica `/article/[slug]`
+### Templates
+Layouts compartilhados:
+- **HomeTemplate**: Header (Title + ThemeButton) + Main + Footer
 
 ---
 
@@ -223,6 +387,7 @@ Modal interativo com 4 controles:
 | **Jest** | 30.2.0 | Testing framework |
 | **React Testing Library** | 16.3.1 | Testes de componentes |
 | **MSW** | 2.12.4 | Mock de API em testes |
+| **lucide-react** | Icons | Ícones SVG |
 
 ### Backend
 | Tecnologia | Propósito |
@@ -268,6 +433,91 @@ npm test -- --coverage    # Com cobertura
 
 ---
 
+## 🔧 Padrões de Implementação
+
+### 1️⃣ **Safe localStorage Helpers**
+
+Evita erros de acesso (SSR, user permissions, etc):
+
+```typescript
+// src/utils/localStorage.ts
+export const safeLocalStorageGet = (key: string): string | null => {
+  try {
+    return typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+  } catch (error) {
+    console.error(`Erro ao ler localStorage[${key}]:`, error);
+    return null;
+  }
+};
+
+export const safeLocalStorageSet = (key: string, value: string): void => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    console.error(`Erro ao escrever localStorage[${key}]:`, error);
+  }
+};
+```
+
+### 2️⃣ **Custom Hooks para Lógica Reutilizável**
+
+```typescript
+// src/hooks/useLocalStorage.ts
+export const useLocalStorage = <T,>(
+  key: string, 
+  initialValue: T
+): [T, (value: T) => void] => {
+  const [stored, setStored] = useState<T>(() => {
+    const item = safeLocalStorageGet(key);
+    return item ? JSON.parse(item) : initialValue;
+  });
+
+  const setValue = useCallback((value: T) => {
+    setStored(value);
+    safeLocalStorageSet(key, JSON.stringify(value));
+  }, [key]);
+
+  return [stored, setValue];
+};
+```
+
+### 3️⃣ **Type-Safe API Service**
+
+```typescript
+// src/services/api.ts
+export const api = {
+  get<T>(url: string): Promise<T> {
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
+      .then(res => {
+        if (!res.ok) throw new ApiError(res.status);
+        return res.json();
+      })
+      .catch(error => {
+        console.error(`API Error [${url}]:`, error);
+        throw error;
+      });
+  }
+};
+```
+
+### 4️⃣ **Error Boundaries & Error Pages**
+
+```typescript
+// src/app/error.tsx
+'use client';
+
+export default function Error({ error, reset }: ErrorProps) {
+  return (
+    <div>
+      <h2>Algo deu errado</h2>
+      <button onClick={() => reset()}>Tentar novamente</button>
+    </div>
+  );
+}
+```
+
+---
+
 ## 🎨 Temas CSS
 
 ### Variáveis Globais
@@ -291,26 +541,14 @@ O projeto utiliza CSS variables para tema dinâmico:
 --a11y-font-scale: 1          // Alias para --text-scale
 ```
 
-### Aplicando Temas
-
-Adicione o atributo `data-theme` ao `<html>`:
-
-```tsx
-<html data-theme="dark">
-  {/* ... */}
-</html>
-```
-
----
-
 ## 🌍 Variáveis de Ambiente
 
-**Frontend (`frontend/.env.local`):**
+**Frontend (`frontend/.env.example`):**
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
-**Backend (`backend/.env`):**
+**Backend (`backend/.env.example`):**
 ```bash
 PORT=3001
 NODE_ENV=development
@@ -366,16 +604,24 @@ O projeto implementa tratamento robusto de erros:
 
 ---
 
-## 🚀 Próximos Passos (Ideias)
+## � Recursos Adicionais
 
-- [ ] Integração com banco de dados real (PostgreSQL)
-- [ ] Sistema de busca e filtros
-- [ ] Salvos/favoritos do usuário
-- [ ] Sistema de comentários
-- [ ] Notificações de novas notícias
-- [ ] Dark mode automático (system preference)
-- [ ] Análise de acessibilidade (Lighthouse)
-- [ ] Deploy em Vercel/Railway
+### 🔍 Checklist de Qualidade
+- ✅ TypeScript em 100% do código
+- ✅ Componentes React funcionais
+- ✅ Context API para state global (2 contextos sincronizados)
+- ✅ CSS Modules para estilos isolados
+- ✅ Responsivo (mobile/tablet/desktop)
+- ✅ Tema dark/light mode
+- ✅ Acessibilidade avançada (4 controles)
+- ✅ Testes com Jest + RTL (6 testes passando)
+- ✅ API service com error handling
+- ✅ Performance otimizada (lazy loading, code splitting)
+- ✅ SEO friendly (Next.js App Router)
+- ✅ Atomic Design pattern (4 níveis)
+- ✅ Error boundaries + Error pages
+- ✅ Loading states (skeletons)
+- ✅ Roteamento dinâmico
 
 ---
 
