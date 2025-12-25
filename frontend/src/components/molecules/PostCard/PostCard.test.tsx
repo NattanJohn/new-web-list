@@ -2,15 +2,19 @@ import { render, screen } from '@testing-library/react';
 import { PostCard } from './PostCard';
 
 jest.mock('next/link', () => {
-  return ({ children, href }: any) => <a href={href}>{children}</a>;
+  return ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
 });
 
 jest.mock('../../atoms/Title/Title', () => ({
-  Title: ({ children, tag: Tag = 'h1' }: any) => <Tag>{children}</Tag>,
+  Title: ({ children, tag: Tag = 'h1' }: { children: React.ReactNode; tag?: 'h1' | 'h2' | 'h3' }) => (
+    <Tag>{children}</Tag>
+  ),
 }));
 
 jest.mock('../../atoms/PostImage/PostImage', () => ({
-  PostImage: ({ alt }: any) => <img alt={alt} src="test.jpg" />,
+  PostImage: ({ alt }: { alt: string }) => <img alt={alt} src="test.jpg" />,
 }));
 
 const mockArticle = {

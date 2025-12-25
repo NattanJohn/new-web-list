@@ -37,14 +37,16 @@ jest.mock('@/services/api', () => ({
 }));
 
 jest.mock('next/link', () => {
-  return ({ children, href }: any) => <a href={href}>{children}</a>;
+  return ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
 });
 
 jest.mock('../../molecules/PostCard/PostCard', () => ({
-  PostCard: ({ article }: any) => (
+  PostCard: ({ title, summary }: { title?: string; summary?: string }) => (
     <div data-testid="post-card">
-      <h2>{article?.title || 'Untitled'}</h2>
-      <p>{article?.summary || ''}</p>
+      <h2>{title ?? 'Untitled'}</h2>
+      <p>{summary ?? ''}</p>
     </div>
   ),
 }));
