@@ -231,6 +231,50 @@ npm run dev
 
 Acesse [http://localhost:3000](http://localhost:3000) no seu navegador! 🎉
 
+### Rodando com Docker (frontend + backend)
+
+```bash
+# Build e sobe os serviços (frontend:3000, backend:3001)
+docker-compose up --build
+
+# Ou, após o primeiro build (mais rápido)
+docker-compose up
+
+# Para parar
+docker-compose down
+```
+
+URLs:
+- Frontend: http://localhost:3000
+- Backend:  http://localhost:3001/articles
+
+---
+
+## 🐳 Arquitetura Docker
+
+### Por que renderização dinâmica?
+
+Em desenvolvimento local (`npm run dev`), a home usa **SSG (Static Site Generation)** com `revalidate = 60`.
+
+No Docker, a home usa **renderização dinâmica** (`dynamic = 'force-dynamic'`) porque:
+
+1. **API não disponível no build**: Durante `docker-compose build`, o backend (`http://backend:3001`) não está rodando ainda.
+2. **Sem pré-renderização estática**: Sem a API disponível no build, Next.js não consegue gerar HTML estático da home.
+3. **Solução pragmática**: Renderizar dinamicamente em runtime quando a API já está disponível.
+
+### Configuração
+
+**Variáveis de Ambiente:**
+- `NEXT_PUBLIC_API_URL=http://backend:3001` (frontend, apenas para build)
+- `PORT=3001` (backend)
+
+**Componentes:**
+- Frontend: `next.config.mjs` (JavaScript, sem TypeScript em runtime)
+- Backend: Node.js 18-alpine + Express
+- Ambos na mesma rede Docker para comunicação interna
+
+---
+
 ---
 
 ## 📁 Estrutura do Projeto

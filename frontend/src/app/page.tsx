@@ -1,9 +1,13 @@
+import { Suspense } from 'react';
 import { HomeTemplate } from '@/components/templates/HomeTemplate/HomeTemplate';
 import { ArticleList } from '@/components/organisms/ArticleList/ArticleList';
+import { Skeleton } from '@/components/atoms';
 import { api } from '@/services/api';
 import type { Article } from '@/types';
 
-export const revalidate = 60; 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
 export default async function HomePage() {
   let initialArticles: Article[] = [];
@@ -18,7 +22,9 @@ export default async function HomePage() {
 
   return (
     <HomeTemplate>
-      <ArticleList initialArticles={initialArticles} initialError={initialError} />
+      <Suspense fallback={<Skeleton variant="list" />}>
+        <ArticleList initialArticles={initialArticles} initialError={initialError} />
+      </Suspense>
     </HomeTemplate>
   );
 }
