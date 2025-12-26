@@ -2,12 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 0;
+  padding: clamp(1.5rem, 3rem, 4rem) 0;
   width: 100%;
-  
-  // Reset CSS variables locally to ignore accessibility scaling
-  --text-scale: 1;
-  --content-line-height: 1.5;
   
   font-size: 16px;
   line-height: 1.5;
@@ -15,14 +11,16 @@
 
 .pages {
   display: flex;
-  gap: 0.25rem;
+  gap: clamp(0.0625rem, 0.25rem, 0.5rem);
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .ellipsis {
   color: var(--text-color);
   opacity: 0.4;
-  padding: 0 0.5rem;
+  padding: 0 clamp(0.25rem, 0.5rem, 0.75rem);
   font-size: 1rem;
   user-select: none;
 }
@@ -32,8 +30,8 @@
   border: none;
   color: var(--text-color);
   opacity: 0.6;
-  min-width: 2.5rem;
-  height: 2.5rem;  
+  min-width: clamp(2rem, 2.5rem, 3rem);
+  height: clamp(2rem, 2.5rem, 3rem);
   
   cursor: pointer;
   display: inline-flex;
@@ -42,7 +40,7 @@
   
   font-family: var(--font-main);
   font-weight: 500;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1rem, 1.25rem);
   border-radius: 50%;
   transition: all 0.2s ease;
 
@@ -95,9 +93,11 @@
 @media (max-width: 30rem) {
   .pages {
     gap: 0.0625rem;
+    row-gap: 0.5rem;
   }
   .btn {
-    min-width: 2.1875rem; 
-    height: 2.1875rem;
+    min-width: clamp(1.8rem, 2rem, 2.3rem);
+    height: clamp(1.8rem, 2rem, 2.3rem);
+    font-size: clamp(0.7rem, 0.85rem, 1rem);
   }
 }
