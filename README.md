@@ -10,17 +10,6 @@ Agregador de notícias moderno e acessível construído com Next.js 16, TypeScri
 
 ---
 
-## 🌐 Demo Online
-
-**Acesse a aplicação em produção:**
-
-- 🚀 **Frontend (Vercel)**: [https://new-web-list.vercel.app/](https://new-web-list.vercel.app/)
-- 🔌 **API Backend (Render)**: [https://new-web-list.onrender.com/articles](https://new-web-list.onrender.com/articles)
-
-> 💡 **Nota**: O primeiro acesso ao backend pode levar ~30s (cold start do Render free tier)
-
----
-
 ## ✨ Destaques do Projeto
 
 ### 🎯 Funcionalidades Principais
@@ -138,6 +127,8 @@ docker compose ps            # Status dos containers
 
 ## 🧪 Testes
 
+### Testes Unitários e de Integração (Jest)
+
 ```bash
 cd frontend
 
@@ -153,6 +144,44 @@ npm run test:coverage      # Relatório de coverage
 - ✅ Testes de integração (HomePage completa)
 - ✅ Testes de componentes (PostCard, ArticleList)
 - ✅ Testes de API (error handling, fetching)
+
+### Testes E2E (Playwright)
+
+**Pré-requisito:** Backend deve estar rodando em `localhost:3001`
+
+```bash
+# Terminal 1: Inicie o backend
+cd backend
+npm start
+
+# Terminal 2: Rode os testes E2E
+cd frontend
+npm run test:e2e              # Headless (CI/CD)
+npm run test:e2e:ui           # Modo UI interativo (recomendado)
+npm run test:e2e:headed       # Ver browser executando
+```
+
+**Cenários E2E (6 testes):**
+1. ✅ Carregar home e exibir lista de artigos
+2. ✅ Navegar home → artigo → voltar
+3. ✅ Abrir modal de acessibilidade e aumentar fonte
+4. ✅ Alternar tema dark/light
+5. ✅ Exibir paginação quando há artigos
+6. ✅ Exibir 404 para artigo inexistente
+
+**Primeira vez?** Instale o browser Chromium:
+```bash
+npm run playwright:install
+```
+
+**Estrutura dos testes:**
+```
+frontend/
+├── e2e/
+│   └── app.spec.ts          # 6 cenários E2E completos
+├── playwright.config.ts      # Configuração do Playwright
+└── playwright-report/        # Relatórios HTML (gerado após execução)
+```
 
 ---
 
