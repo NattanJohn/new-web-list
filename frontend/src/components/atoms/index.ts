@@ -5,3 +5,4 @@ export { Pagination } from './Pagination/Pagination';
 export { ThemeButton } from './ThemeButton/ThemeButton';
 export { Title } from './Title/Title';
 export { EmptyState } from './EmptyState/EmptyState';
+export { CategoryTag } from './CategoryTag/CategoryTag';

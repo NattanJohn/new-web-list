@@ -7,6 +7,7 @@ export type Article = {
   date?: string;
   content?: string;
   author?: string;
+  category?: string;
 };
 
 export type ArticleList = Article[];

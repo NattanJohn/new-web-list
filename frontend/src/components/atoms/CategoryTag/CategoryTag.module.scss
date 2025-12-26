@@ -1,0 +1,70 @@
+.tag {
+  --category-color: var(--category-default);
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: clamp(0.7rem, 0.85rem, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--category-color) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--category-color) 50%, transparent);
+  color: color-mix(in srgb, var(--category-color) 100%, black 25%);
+  width: fit-content;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  white-space: nowrap;
+  
+  @media (max-width: 48rem) {
+    font-size: clamp(0.65rem, 0.75rem, 0.85rem);
+    padding: 0.3rem 0.65rem;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0.35rem 1rem color-mix(in srgb, var(--category-color) 15%, transparent);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: color-mix(in srgb, var(--category-color) 18%, transparent);
+    border-color: color-mix(in srgb, var(--category-color) 35%, transparent);
+    color: color-mix(in srgb, var(--category-color) 100%, white 20%);
+  }
+  
+  :global([data-theme='light-high-contrast']) & {
+    background: #000;
+    color: #ffeb3b;
+    border: 2px solid #ffeb3b;
+    font-weight: 700;
+  }
+  
+  :global([data-theme='dark-high-contrast']) & {
+    background: #ffeb3b;
+    color: #000;
+    border: 2px solid #000;
+    font-weight: 700;
+  }
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+}
+
+/* Category token mapping */
+.tag[data-category='tech'] {
+  --category-color: var(--category-tech);
+}
+
+.tag[data-category='innovation'] {
+  --category-color: var(--category-innovation);
+}
+
+.tag[data-category='sustainability'] {
+  --category-color: var(--category-sustainability);
+}

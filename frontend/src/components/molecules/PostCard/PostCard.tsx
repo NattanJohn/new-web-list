@@ -1,20 +1,19 @@
 import Link from 'next/link';
 import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
+import { CategoryTag } from '../../atoms/CategoryTag/CategoryTag';
 import styles from './PostCard.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
 import { getImageFallbackUrl } from '@/utils/imageOptimization';
 
-type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image'> & {
+type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image' | 'category'> & {
   priority?: boolean;
 };
 
-export const PostCard = ({ title, summary = '', date = '', slug, image, priority = false }: PostCardProps) => {
+export const PostCard = ({ title, summary = '', date = '', slug, image, category, priority = false }: PostCardProps) => {
   const formattedDate = formatDate(date);
-  // Usar fallback SVG otimizado ao invés de via.placeholder.com
   const imageUrl = image || getImageFallbackUrl();
-  const cardNumber = slug.charCodeAt(0) % 1000; // Gera seed único baseado no slug
 
   return (
     <article 
@@ -33,9 +32,12 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
         
         <div className={styles.content}>
           <header>
-            <time dateTime={date} className={styles.date} itemProp="datePublished">
-              {formattedDate}
-            </time>
+            <div className={styles.meta}>
+              <time dateTime={date} className={styles.date} itemProp="datePublished">
+                {formattedDate}
+              </time>
+              {category && <CategoryTag label={category} />}
+            </div>
             <Title tag="h2" className={styles.title}>
               <span itemProp="headline">{title}</span>
             </Title>
@@ -49,7 +51,6 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
         </div>
       </Link>
 
-      {/* Metadata Schema.org otimizada */}
       <meta itemProp="image" content={imageUrl} />
     </article>
   );

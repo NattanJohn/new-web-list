@@ -117,6 +117,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
             summary={article.summary ?? ''}
             date={article.date ?? ''}
             image={article.image}
+            category={article.category}
             priority={currentPage === 1 && index === 0}
           />
         ))}

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
+import { CategoryTag } from '../../atoms/CategoryTag/CategoryTag';
 import styles from './ArticleDetail.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
@@ -21,18 +22,17 @@ interface ArticleDetailProps {
   article: ArticleDetailType;
 }
 
-// Dimensões padrão para imagens de artigos
 const DEFAULT_IMAGE_WIDTH = 1200;
 const DEFAULT_IMAGE_HEIGHT = 630;
 
 export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const formattedDate = formatDate(article.date);
   const author = article.author ?? 'Desconhecido';
+  const category = article.category ?? 'Geral';
   const paragraphs = article.content 
     ? article.content.split(/\n\n+/).filter(p => p.trim())
     : [];
 
-  // Dimensões otimizadas (dinâmicas, não hardcoded)
   const imageWidth = article.imageWidth || DEFAULT_IMAGE_WIDTH;
   const imageHeight = article.imageHeight || DEFAULT_IMAGE_HEIGHT;
   const imageUrl = article.image || getImageFallbackUrl();
@@ -53,6 +53,9 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
         <Title tag="h1">
           <span itemProp="headline">{article.title}</span>
         </Title>
+        <div className={styles.category}>
+          <CategoryTag label={category} />
+        </div>
         <div className={styles.meta}>
           <time dateTime={article.date} itemProp="datePublished">
             Publicado em: {formattedDate}
@@ -72,7 +75,6 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
             width={imageWidth}
             height={imageHeight}
           />
-          {/* Schema.org Image metadata - dimensões dinâmicas */}
           <meta itemProp="url" content={imageUrl} />
           <meta itemProp="width" content={String(imageWidth)} />
           <meta itemProp="height" content={String(imageHeight)} />
