@@ -1,3 +1,5 @@
+export const OPTIMIZED_BLUR_DATA_URL = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 5"%3E%3Cfilter id="b" color-interpolation-filters="sRGB"%3E%3CfeGaussianBlur stdDeviation="1"/%3E%3C/filter%3E%3Crect width="8" height="5" fill="%23f5f5f5" filter="url(%23b)"/%3E%3C/svg%3E';
+
 export const generateBlurPlaceholder = (
   width: number = 800,
   height: number = 450,

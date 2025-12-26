@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getImageFallbackUrl, getImageQuality, isValidImageUrl } from '@/utils/imageOptimization';
+import { getImageFallbackUrl, getImageQuality, isValidImageUrl, OPTIMIZED_BLUR_DATA_URL } from '@/utils/imageOptimization';
 import styles from './PostImage.module.scss';
 
 interface PostImageProps {
@@ -33,12 +33,8 @@ export const PostImage = ({
         loading={priority ? 'eager' : 'lazy'}
         quality={quality}
         placeholder="blur"
-        blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSIjZjVmNWY1IiB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIvPjwvc3ZnPg=="
+        blurDataURL={OPTIMIZED_BLUR_DATA_URL}
         className={styles.image}
-        onError={(result) => {
-          // Fallback em caso de erro no carregamento
-          result.currentTarget.src = getImageFallbackUrl();
-        }}
       />
     </div>
   );

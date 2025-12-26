@@ -46,35 +46,10 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     }
   }, [initialArticles, loadArticles]);
 
-  useEffect(() => {
-    if (!articles || !articles.length) return;
-    if (currentPage !== 1) return;
-
-    const first = articles[0];
-    const url = first?.image;
-    if (!url) return;
-
-    try {
-      const existing = Array.from(document.querySelectorAll('link[rel="preload"][as="image"]')).find(
-        (l) => (l as HTMLLinkElement).href === url
-      );
-      if (existing) return;
-
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = url;
-      link.setAttribute('fetchpriority', 'high');
-      document.head.appendChild(link);
-    } catch {
-    }
-  }, [articles, currentPage]);
-
   const handlePageChange = (page: number) => {
-    // Atualizar URL com nova página
     const params = new URLSearchParams(searchParams.toString());
     if (page === 1) {
-      params.delete('page'); // Remove ?page=1 para URL limpa
+      params.delete('page');
     } else {
       params.set('page', String(page));
     }

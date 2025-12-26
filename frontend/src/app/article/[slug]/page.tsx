@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { api } from "@/services/api";
 import { ArticleTemplate } from "@/components/templates";
 import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
+import { ScrollToTop } from "@/components/atoms";
 import NotFound from "@/app/not-found";
 
 interface Props {
@@ -82,8 +83,10 @@ export default async function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-        <ArticleTemplate>
-        <ArticleDetail article={article} />
+      <ArticleTemplate>
+        <ScrollToTop>
+          <ArticleDetail article={article} />
+        </ScrollToTop>
       </ArticleTemplate>
     </>
   );

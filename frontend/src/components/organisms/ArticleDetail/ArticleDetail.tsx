@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect } from 'react';
 import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
@@ -36,10 +33,6 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const imageWidth = article.imageWidth || DEFAULT_IMAGE_WIDTH;
   const imageHeight = article.imageHeight || DEFAULT_IMAGE_HEIGHT;
   const imageUrl = article.image || getImageFallbackUrl();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
 
   return (
     <article 

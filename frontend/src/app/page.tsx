@@ -20,11 +20,29 @@ export default async function HomePage() {
     initialError = 'Não foi possível carregar as notícias no momento.';
   }
 
+  const firstImage = initialArticles[0]?.image;
+
   return (
-    <HomeTemplate>
-      <Suspense fallback={<Skeleton variant="list" />}>
-        <ArticleList initialArticles={initialArticles} initialError={initialError} />
-      </Suspense>
-    </HomeTemplate>
+    <>
+      {firstImage && (
+        <link
+          rel="preload"
+          as="image"
+          href={firstImage}
+          imageSrcSet={`
+            /_next/image?url=${encodeURIComponent(firstImage)}&w=640&q=75 640w,
+            /_next/image?url=${encodeURIComponent(firstImage)}&w=750&q=75 750w,
+            /_next/image?url=${encodeURIComponent(firstImage)}&w=828&q=75 828w
+          `}
+          imageSizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          fetchPriority="high"
+        />
+      )}
+      <HomeTemplate>
+        <Suspense fallback={<Skeleton variant="list" />}>
+          <ArticleList initialArticles={initialArticles} initialError={initialError} />
+        </Suspense>
+      </HomeTemplate>
+    </>
   );
 }

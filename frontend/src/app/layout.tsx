@@ -7,10 +7,12 @@ import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/AccessibilityButton";
 import { ThemeButton } from "@/components/atoms/ThemeButton/ThemeButton";
 
-const inter = Inter({ subsets: ["latin"] });
-
-// Estilo inline mínimo para alinhar fundo antes do carregamento do CSS
-const themeInlineStyle = `:root{background-color:#ffffff;color-scheme:light;}@media(prefers-color-scheme:dark){:root{background-color:#121212;color-scheme:dark;}}`;
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -54,12 +56,11 @@ export default async function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={inter.className}
+      className={`${inter.variable} ${inter.className}`}
       data-theme={initialTheme}
       style={initialTheme ? { backgroundColor: initialTheme === 'dark' ? '#121212' : '#ffffff' } : undefined}
     >
       <head>
-        <style id="theme-inline-fallback" dangerouslySetInnerHTML={{ __html: themeInlineStyle }} />
         <link rel="preconnect" href="https://picsum.photos" crossOrigin="anonymous" />
       </head>
       <body suppressHydrationWarning>
