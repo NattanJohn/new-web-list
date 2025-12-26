@@ -10,6 +10,17 @@ Agregador de notícias moderno e acessível construído com Next.js 16, TypeScri
 
 ---
 
+## 🌐 Demo Online
+
+**Acesse a aplicação em produção:**
+
+- 🚀 **Frontend (Vercel)**: [https://new-web-list.vercel.app/](https://new-web-list.vercel.app/)
+- 🔌 **API Backend (Render)**: [https://new-web-list.onrender.com/articles](https://new-web-list.onrender.com/articles)
+
+> 💡 **Nota**: O primeiro acesso ao backend pode levar ~30s (cold start do Render free tier)
+
+---
+
 ## ✨ Destaques do Projeto
 
 ### 🎯 Funcionalidades Principais
