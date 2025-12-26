@@ -16,6 +16,7 @@
   width: fit-content;
   transition: transform 150ms ease, box-shadow 150ms ease;
   white-space: nowrap;
+  line-height: 1;
   
   @media (max-width: 48rem) {
     font-size: clamp(0.65rem, 0.75rem, 0.85rem);

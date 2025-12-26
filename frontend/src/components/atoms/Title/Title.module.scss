@@ -2,7 +2,7 @@
   font-family: var(--font-main);
   margin-bottom: 1rem;
   color: var(--text-color);
-  line-height: 1.2;
+  line-height: var(--content-line-height);
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: none;
