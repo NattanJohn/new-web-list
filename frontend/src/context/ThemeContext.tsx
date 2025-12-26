@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { safeLocalStorageSet, safeLocalStorageGet } from '@/utils/localStorage';
 
 type Theme = 'light' | 'dark';
@@ -15,52 +15,54 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const VALID_THEMES: Theme[] = ['light', 'dark'];
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
-
-  // Carregar tema do localStorage após hydration
-  useEffect(() => {
-    setMounted(true);
-    const saved = safeLocalStorageGet('gazeta-theme');
-    if (saved && VALID_THEMES.includes(saved as Theme)) {
-      setThemeState(saved as Theme);
+export const ThemeProvider = ({ children, initialTheme }: { children: React.ReactNode; initialTheme?: Theme }) => {
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (initialTheme) return initialTheme;
+    if (typeof window !== 'undefined') {
+      const saved = safeLocalStorageGet('gazeta-theme');
+      if (saved && VALID_THEMES.includes(saved as Theme)) {
+        return saved as Theme;
+      }
     }
-  }, []);
+    return 'light';
+  });
+  const didMount = useRef(false);
+
+  const setThemeCookie = (value: Theme) => {
+    try {
+      document.cookie = `gazeta-theme=${value}; max-age=31536000; path=/; samesite=lax`;
+    } catch (e) {
+      void e;
+    }
+  };
 
   useEffect(() => {
     try {
       const root = document.documentElement;
       const currentAttr = root.getAttribute('data-theme') || '';
-      
-      if (currentAttr.includes('-high-contrast')) {
-        root.setAttribute('data-theme', `${theme}-high-contrast`);
-      } else {
-        root.setAttribute('data-theme', theme);
-      }
+      const next = currentAttr.includes('-high-contrast') ? `${theme}-high-contrast` : theme;
+      root.setAttribute('data-theme', next);
+      root.style.backgroundColor = next.startsWith('dark') ? '#121212' : '#ffffff';
     } catch (e) {
       void e;
     }
   }, [theme]);
 
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    safeLocalStorageSet('gazeta-theme', theme);
+    setThemeCookie(theme);
+  }, [theme]);
+
   const setTheme = useCallback((newTheme: Theme) => {
     if (!VALID_THEMES.includes(newTheme)) return;
     setThemeState(newTheme);
-    safeLocalStorageSet('gazeta-theme', newTheme);
   }, []);
 
   const toggleTheme = (newTheme: Theme) => setTheme(newTheme);
-
-  // Evitar flash: renderizar sem classe de tema até montar
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-        <div className="theme-wrapper">
-          {children}
-        </div>
-      </ThemeContext.Provider>
-    );
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

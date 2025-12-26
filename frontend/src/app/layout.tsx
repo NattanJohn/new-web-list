@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.scss";
+import { cookies } from "next/headers";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Inter } from "next/font/google";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
@@ -7,6 +8,9 @@ import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/
 import { ThemeButton } from "@/components/atoms/ThemeButton/ThemeButton";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Estilo inline mínimo para alinhar fundo antes do carregamento do CSS
+const themeInlineStyle = `:root{background-color:#ffffff;color-scheme:light;}@media(prefers-color-scheme:dark){:root{background-color:#121212;color-scheme:dark;}}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -33,18 +37,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let initialTheme: 'light' | 'dark' | undefined;
+  try {
+    const cookieStore = typeof cookies === 'function' ? await cookies() : undefined;
+    const cookieValue = cookieStore?.get ? cookieStore.get('gazeta-theme')?.value : undefined;
+    initialTheme = cookieValue === 'dark' ? 'dark' : cookieValue === 'light' ? 'light' : undefined;
+  } catch {
+    initialTheme = undefined;
+  }
+
   return (
-    <html lang="pt-BR" className={inter.className}>
+    <html
+      lang="pt-BR"
+      className={inter.className}
+      data-theme={initialTheme}
+      style={initialTheme ? { backgroundColor: initialTheme === 'dark' ? '#121212' : '#ffffff' } : undefined}
+    >
       <head>
+        <style id="theme-inline-fallback" dangerouslySetInnerHTML={{ __html: themeInlineStyle }} />
         <link rel="preconnect" href="https://picsum.photos" crossOrigin="anonymous" />
       </head>
       <body suppressHydrationWarning>
-        <ThemeProvider>
+        <ThemeProvider initialTheme={initialTheme}>
           <AccessibilityProvider>
             <AccessibilityButton />
             <ThemeButton />

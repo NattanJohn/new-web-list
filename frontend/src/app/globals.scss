@@ -7,6 +7,7 @@
   --bg-contrast: #ffffff;
   --text-scale: 1;
   --content-line-height: 1;
+  color-scheme: light;
   /* Category tokens */
   --category-tech: #2563eb;
   --category-innovation: #ea580c;
@@ -19,6 +20,7 @@
   --text-color: #e0e0e0;
   --accent-color: #4da3ff;
   --icon-color: #e0e0e0;
+  color-scheme: dark;
 }
 
 [data-theme="light-high-contrast"] {
@@ -45,6 +47,7 @@
 
 html {
   font-size: calc(100% * var(--text-scale));
+  background-color: var(--bg-color);
 }
 
 body {
@@ -52,7 +55,7 @@ body {
   color: var(--text-color);
   font-family: var(--font-main);
   line-height: var(--content-line-height);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: none;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -62,4 +65,15 @@ h3 {
   line-height: 1.2;
   font-weight: 800;
   margin-bottom: 0.5em;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent-color: #4da3ff;
+    --icon-color: #e0e0e0;
+    color-scheme: dark;
+    background-color: #121212;
+  }
 }

@@ -46,13 +46,17 @@ const STORAGE_KEY = "gazeta-news-acc";
 
 export const AccessibilityProvider = ({
   children,
+  initialHighContrast,
 }: {
   children: React.ReactNode;
+  initialHighContrast?: boolean;
 }) => {
   const { theme } = useTheme();
 
   const [config, setConfig] = useState<AccessibilityState>(() => {
-    if (typeof window === "undefined") return initialConfig;
+    if (typeof window === "undefined") {
+      return { ...initialConfig, highContrast: initialHighContrast ?? initialConfig.highContrast };
+    }
 
     const saved = safeLocalStorageGet(STORAGE_KEY);
     if (!saved) return initialConfig;
@@ -60,7 +64,9 @@ export const AccessibilityProvider = ({
     try {
       return JSON.parse(saved);
     } catch {
-      return initialConfig;
+      return initialHighContrast
+        ? { ...initialConfig, highContrast: true }
+        : initialConfig;
     }
   });
 
@@ -104,6 +110,14 @@ export const AccessibilityProvider = ({
     root.style.filter = config.grayscale ? "grayscale(1)" : "none";
 
     safeLocalStorageSet(STORAGE_KEY, JSON.stringify(config));
+
+    try {
+      document.cookie = config.highContrast
+        ? `gazeta-acc-high-contrast=1; max-age=31536000; path=/; samesite=lax`
+        : `gazeta-acc-high-contrast=; max-age=0; path=/; samesite=lax`;
+    } catch (e) {
+      void e;
+    }
   }, [config, theme]);
 
   const updateConfig = useCallback(
