@@ -1,6 +1,6 @@
 # 📰 News Web List
 
-Agregador de notícias moderno e acessível construído com Next.js 16, TypeScript e Atomic Design. Demonstra boas práticas em performance, SEO, testes automatizados e acessibilidade WCAG.
+Portal de notícias moderno e acessível construído com Next.js 16, TypeScript e Atomic Design. Demonstra boas práticas em performance, SEO, testes automatizados e acessibilidade WCAG.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?style=flat-square)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
