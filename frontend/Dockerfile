@@ -15,7 +15,10 @@ RUN npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+
+# Receber ARG novamente neste stage
+ARG NEXT_PUBLIC_API_URL=http://backend:3001
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 # Instalar gzip e brotli para compressão
 RUN apk add --no-cache gzip brotli

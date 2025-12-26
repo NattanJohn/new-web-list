@@ -48,34 +48,79 @@ PORT=3001
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Como Rodar o Projeto
 
-### Desenvolvimento Local
+### ⚙️ Pré-requisitos
+
+- **Node.js** 18+ (backend) e 20+ (frontend)
+- **npm** ou **yarn**
+- **Docker** e **Docker Compose** (opcional, para rodar em containers)
+
+### 📦 Desenvolvimento Local (sem Docker)
 
 ```bash
-# Clone e instale dependências
+# 1. Clone o repositório
 git clone https://github.com/NattanJohn/new-web-list.git
 cd news-web-list
 
-# Copie env de exemplo
-cp .env.example .env
-# Ajuste NEXT_PUBLIC_API_URL se a API não estiver em localhost:3001
+# 2. Configure as variáveis de ambiente
+# Frontend: crie .env na pasta frontend/
+echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > frontend/.env
 
-# Backend (Terminal 1)
-cd backend && npm install && npm start
-# Roda em http://localhost:3001
+# Backend: crie .env na pasta backend/ (opcional, padrão é 3001)
+echo "PORT=3001" > backend/.env
 
-# Frontend (Terminal 2)
-cd frontend && npm install && npm run dev
-# Acesse http://localhost:3000
+# 3. Instale e inicie o BACKEND (Terminal 1)
+cd backend
+npm install
+npm start
+# ✅ Backend rodando em http://localhost:3001
+
+# 4. Instale e inicie o FRONTEND (Terminal 2)
+cd frontend
+npm install
+npm run dev
+# ✅ Frontend rodando em http://localhost:3000
 ```
 
-### Com Docker
+**Acesse:**
+- 🌐 **Frontend**: http://localhost:3000
+- 🔌 **API Backend**: http://localhost:3001/articles
+
+### 🐳 Com Docker (Recomendado)
 
 ```bash
-docker-compose up --build
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:3001/articles
+# 1. Clone o repositório (se ainda não clonou)
+git clone https://github.com/NattanJohn/new-web-list.git
+cd news-web-list
+
+# 2. Build e inicie os containers
+docker compose build    # Primeira vez: ~80 segundos
+docker compose up -d    # Inicia em modo detached (background)
+
+# 3. Verifique os containers
+docker compose ps       # Status: healthy ✅
+
+# 4. Veja os logs (opcional)
+docker compose logs -f  # Acompanhe em tempo real
+
+# 5. Pare os containers quando terminar
+docker compose down     # Para e remove containers
+```
+
+**Acesse:**
+- 🌐 **Frontend**: http://localhost:3000 (startup: ~273ms ⚡)
+- 🔌 **API Backend**: http://localhost:3001/articles
+
+**Comandos úteis do Docker:**
+```bash
+docker compose up -d         # Inicia em background
+docker compose stop          # Para sem remover
+docker compose start         # Reinicia containers parados
+docker compose down          # Para e remove tudo
+docker compose logs backend  # Logs apenas do backend
+docker compose logs frontend # Logs apenas do frontend
+docker compose ps            # Status dos containers
 ```
 
 ---
