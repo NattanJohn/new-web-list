@@ -271,6 +271,11 @@ frontend/src/
 │   ├── AccessibilityContext.tsx  # 4 controles + 10 testes
 │   └── AccessibilityContext.test.tsx
 │
+├── lib/                          # Utilitários e infraestrutura
+│   ├── index.ts                  # Barrel (ErrorBoundary + metadata)
+│   ├── ErrorBoundary.tsx         # Error boundary reutilizável
+│   └── metadata.ts               # Constantes de SEO centralizadas
+│
 ├── services/
 │   ├── api.ts                    # HTTP service + 7 testes
 │   └── api.test.ts
@@ -589,6 +594,50 @@ npm run lint               # ESLint
 npm start                  # Servidor Express (localhost:3001)
 npm run dev                # Watch mode com nodemon (se configurado)
 ```
+
+---
+
+## 🤖 Uso de Inteligência Artificial
+
+Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitHub Copilot) como auxiliares de produtividade. Abaixo, descrevo como elas foram aplicadas conforme solicitado nas diretrizes:
+
+### Ferramentas Utilizadas
+
+**IA de Chat (ChatGPT/Claude)**: Utilizada para discussões arquiteturais, planejamento de deploy e estratégias de acessibilidade.
+
+**IA no Editor (GitHub Copilot/VS Code)**: Utilizada para auxílio no preenchimento de código repetitivo (boilerplate) e refatoração rápida.
+
+### Principais Prompts e Contextos
+
+**Arquitetura e UX:**
+> "Como implementar um contexto de acessibilidade no React que persista as preferências do usuário no LocalStorage?"
+
+**Refatoração:**
+> "Refatore este componente de Context para usar as melhores práticas de performance (useMemo/useCallback) e resolver erros de lint de variáveis não utilizadas."
+
+**Estilização:**
+> "Crie um SCSS para um botão de tema fixo que seja resiliente ao aumento de escala de fonte (zoom de texto) do navegador."
+
+**DevOps:**
+> "Crie um Dockerfile e um docker-compose.yml para um monorepo com pastas separadas de frontend (Next.js) e backend (Node.js)."
+
+**Performance:**
+> "Como otimizar o LCP de uma listagem de notícias com Next.js Image optimization e preload de recursos críticos?"
+
+**Análise de código:**
+> "Analise este projeto e identifique más práticas em HTML semântico, TypeScript, SCSS, SEO e código duplicado."
+
+### Decisões Tomadas por Mim
+
+Apesar do uso de IA, **todas as decisões arquiteturais foram minhas**:
+- Escolha do Atomic Design como padrão de organização
+- Implementação de 4 controles de acessibilidade (não apenas dark mode)
+- Estrutura de testes com Jest + RTL + Playwright
+- Schema.org microdata para SEO profissional
+- Error Boundaries customizados
+- Separação entre componentes (UI) e lib (infraestrutura)
+
+A IA foi usada como **acelerador de produtividade**, não como substituto de conhecimento técnico.
 
 ---
 

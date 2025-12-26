@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/AccessibilityButton";
 import { ThemeButton } from "@/components/atoms/ThemeButton/ThemeButton";
+import { ErrorBoundary, SITE_CONFIG, OPEN_GRAPH_CONFIG, TWITTER_CONFIG } from "@/lib";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -15,25 +16,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Gazeta News - Notícias Atualizadas",
-    template: "%s | Gazeta News",
+    default: SITE_CONFIG.title,
+    template: `%s | ${SITE_CONFIG.name}`,
   },
-  description:
-    "Fique por dentro das últimas notícias com a Gazeta News - sua fonte confiável para informações atualizadas e análises aprofundadas sobre os principais acontecimentos locais, nacionais e internacionais.",
-  openGraph: {
-    type: 'website',
-    locale: 'pt_BR',
-    siteName: 'Gazeta News',
-    title: 'Gazeta News - Notícias Atualizadas',
-    description: 'Sua fonte confiável para informações atualizadas sobre os principais acontecimentos.',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Gazeta News',
-    description: 'Notícias atualizadas e confiáveis',
-  },
+  description: SITE_CONFIG.description,
+  openGraph: OPEN_GRAPH_CONFIG,
+  twitter: TWITTER_CONFIG,
   alternates: {
     canonical: '/',
   },
@@ -66,9 +56,11 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <ThemeProvider initialTheme={initialTheme}>
           <AccessibilityProvider>
-            <AccessibilityButton />
-            <ThemeButton />
-            {children}
+            <ErrorBoundary>
+              <AccessibilityButton />
+              <ThemeButton />
+              {children}
+            </ErrorBoundary>
           </AccessibilityProvider>
         </ThemeProvider>
       </body>

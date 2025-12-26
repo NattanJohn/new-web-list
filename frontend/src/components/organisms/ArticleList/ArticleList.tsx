@@ -44,7 +44,8 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     if (!initialArticles || initialArticles.length === 0) {
       void loadArticles();
     }
-  }, [initialArticles, loadArticles]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialArticles]);
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -67,7 +68,13 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     return articles.slice(start, start + ITEMS_PER_PAGE);
   }, [articles, currentPage]);
 
-  if (isLoading) return <div aria-busy="true" aria-live="polite"><Skeleton variant="list" /></div>;
+  if (isLoading) {
+    return (
+      <div className={styles.mainWrapper} aria-busy="true" aria-live="polite">
+        <Skeleton variant="list" />
+      </div>
+    );
+  }
 
   if (errorMessage || !articles.length) {
     return (

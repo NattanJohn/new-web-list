@@ -32,33 +32,6 @@ export const isValidImageUrl = (url: string): boolean => {
   }
 };
 
-export const optimizePicsumUrl = (
-  seed: string | number,
-  width: number = 800,
-  height: number = 450
-): string => {
-  return `https://picsum.photos/seed/${seed}/${width}/${height}?random=${Math.random()}`;
-};
-
-export const calculateAspectRatio = (
-  width: number,
-  height: number
-): string => {
-  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-  const divisor = gcd(width, height);
-  return `${width / divisor} / ${height / divisor}`;
-};
-
-export const getOptimizedDimensions = (context: 'card' | 'detail' | 'thumbnail') => {
-  const dimensions = {
-    card: { width: 800, height: 450, aspectRatio: '16 / 9' },
-    detail: { width: 1200, height: 630, aspectRatio: '21 / 9' },
-    thumbnail: { width: 200, height: 200, aspectRatio: '1 / 1' },
-  };
-
-  return dimensions[context] || dimensions.card;
-};
-
 export const getImageFallbackUrl = (): string => {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>
     <defs>

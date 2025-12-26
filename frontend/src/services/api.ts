@@ -1,12 +1,5 @@
-import type { Article, ArticleList } from '@/types';
+import type { Article, ArticleList, ApiErrorShape } from '@/types';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-export type ApiErrorShape = {
-  message: string;
-  status?: number;
-  code?: string;
-  details?: unknown;
-};
 
 export class ApiError extends Error {
   status?: number;

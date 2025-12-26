@@ -29,9 +29,9 @@ test.describe('Navegação Home → Artigo', () => {
     await expect(page).toHaveURL(/\/article\/.+/);
     await page.waitForLoadState('networkidle');
     
-    // Verifica que tem conteúdo do artigo (conta quantos h1, deve ter 2: header + artigo)
+    // Verifica que há um h1 (título do artigo)
     const headings = page.locator('h1');
-    await expect(headings).toHaveCount(2);
+    await expect(headings).toHaveCount(1);
 
     // Clica no botão voltar (é um button, não link)
     const backButton = page.getByRole('button', { name: /voltar para a página anterior|voltar/i });

@@ -10,7 +10,7 @@ interface ArticleTemplateProps {
 export const ArticleTemplate = ({ children }: ArticleTemplateProps) => {
   return (
     <div className={styles.wrapper}>
-      <Header className={styles.header} />
+      <Header className={styles.header} headingLevel="h2" />
       
       <main className={styles.mainContent}>
         {children}
