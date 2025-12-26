@@ -356,7 +356,8 @@ news-web-list/
     │   ├── utils/                  # Funções utilitárias
     │   │   ├── errorHandler.ts     # Handler unificado de erros API
     │   │   ├── formatDate.ts       # Formatação de datas
-    │   │   └── localStorage.ts     # Safe localStorage helpers
+    │   │   ├── localStorage.ts     # Safe localStorage helpers
+    │   │   └── imageOptimization.ts# Blur, fallback SVG, quality adaptativo
     │   │
     │   └── styles/                 # SCSS global e design system
     │       └── variables.scss      # Variáveis (spacing, colors, etc)
@@ -708,12 +709,30 @@ NODE_ENV=development
 - ✅ Navegação por teclado
 
 ### 🚀 Performance & SEO
-- ✅ Imagens otimizadas com next/image
-- ✅ Lazy loading e code splitting
+
+#### Otimizações de Imagem
+- ✅ **Next.js Image com WebP/AVIF**: Formatos modernos reduzem tamanho em até 35%
+- ✅ **Blur placeholder dinâmico**: SVG em base64 enquanto carrega
+- ✅ **Lazy loading automático**: Imagens abaixo do fold carregam sob demanda
+- ✅ **Quality adaptation**: 85% em desktop, 75% em mobile (devicePixelRatio)
+- ✅ **SRCSET responsivo**: Diferentes resoluções para diferentes devices
+- ✅ **Fallback otimizado**: SVG gradient ao invés de placeholder genérico
+- ✅ **Fallback inline + whitelist**: SVG carregado localmente e validação de host evita erros do Next/Image
+- ✅ **Dimensões dinâmicas**: ImageObject schema com width/height reais
+
+#### Compressão & Caching
+- ✅ **Gzip + Brotli**: Compressão dupla no Docker
+- ✅ **Cache HTTP 1 ano**: Assets estáticos com TTL = 31536000s
+- ✅ **Minificação SWC**: Mais rápida que Terser
+- ✅ **Healthchecks**: Docker monitora saúde dos serviços
+- ✅ **Source maps desabilitados**: Produção sem maps (segurança)
+
+#### SEO & Semântica
 - ✅ Schema.org microdata (NewsArticle, Person, ImageObject)
 - ✅ Metadata dinâmica (OpenGraph, Twitter Cards)
 - ✅ Paginação via URL query params (/?page=2)
-- ✅ Primeira imagem com preload
+- ✅ HTML semântico com `<article>`, `<time>`, `<figure>`
+- ✅ Dimensões de imagem em schema (crucial para Lighthouse)
 
 ### 🧪 Qualidade de Código
 - ✅ Testes com Jest + RTL (6 testes passando)
@@ -721,6 +740,7 @@ NODE_ENV=development
 - ✅ Handler unificado de erros (errorHandler.ts)
 - ✅ Type-safe com TypeScript strict mode
 - ✅ Error boundaries + páginas 404 customizadas
+- ✅ Image optimization utils (imageOptimization.ts)
 
 ### 🔄 Funcionalidades
 - ✅ Roteamento dinâmico ([slug])
@@ -748,6 +768,7 @@ jest.mock('next/navigation', () => ({
     replace: jest.fn(),
     back: jest.fn(),
   })),
+```
   useSearchParams: jest.fn(() => new URLSearchParams()),
 }));
 ```

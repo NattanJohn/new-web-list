@@ -4,6 +4,7 @@ import { PostImage } from '../../atoms/PostImage/PostImage';
 import styles from './PostCard.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
+import { getImageFallbackUrl } from '@/utils/imageOptimization';
 
 type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'image'> & {
   priority?: boolean;
@@ -11,7 +12,9 @@ type PostCardProps = Pick<Article, 'slug' | 'title' | 'summary' | 'date' | 'imag
 
 export const PostCard = ({ title, summary = '', date = '', slug, image, priority = false }: PostCardProps) => {
   const formattedDate = formatDate(date);
-  const imageUrl = image ?? 'https://via.placeholder.com/800x450?text=Gazeta+News';
+  // Usar fallback SVG otimizado ao invés de via.placeholder.com
+  const imageUrl = image || getImageFallbackUrl();
+  const cardNumber = slug.charCodeAt(0) % 1000; // Gera seed único baseado no slug
 
   return (
     <article 
@@ -20,7 +23,13 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
       itemType="https://schema.org/NewsArticle"
     >
       <Link href={`/article/${slug}`} className={styles.link}>
-        <PostImage src={imageUrl} alt={title} priority={priority} />
+        <PostImage 
+          src={imageUrl} 
+          alt={title}
+          priority={priority}
+          width={800}
+          height={450}
+        />
         
         <div className={styles.content}>
           <header>
@@ -39,6 +48,9 @@ export const PostCard = ({ title, summary = '', date = '', slug, image, priority
           </span>
         </div>
       </Link>
+
+      {/* Metadata Schema.org otimizada */}
+      <meta itemProp="image" content={imageUrl} />
     </article>
   );
 };
