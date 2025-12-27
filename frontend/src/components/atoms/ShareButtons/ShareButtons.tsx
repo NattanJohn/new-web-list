@@ -14,18 +14,40 @@ export const ShareButtons = ({
   url,
   summary = "",
 }: ShareButtonsProps) => {
-  const encodedUrl = encodeURIComponent(url);
+  // Usa a URL do navegador apenas se for diferente da prop (SSR vs client)
+  const shareUrl =
+    typeof window !== "undefined" && window.location.href !== url
+      ? window.location.href
+      : url;
+
+  const encodedUrl = encodeURIComponent(shareUrl);
   const encodedTitle = encodeURIComponent(title);
   const encodedSummary = encodeURIComponent(summary);
 
   const shareLinks = {
-    twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}${encodedSummary ? `%20-%20${encodedSummary}` : ''}&url=${encodedUrl}`,
-    whatsapp: `https://wa.me/?text=${encodedTitle}${encodedSummary ? `%0A${encodedSummary}%0A` : '%20'}${encodedUrl}`,
+    twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}${
+      encodedSummary ? `%20-%20${encodedSummary}` : ""
+    }&url=${encodedUrl}`,
+    whatsapp: `https://wa.me/?text=${encodedTitle}${
+      encodedSummary ? `%0A${encodedSummary}%0A` : "%20"
+    }${encodedUrl}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
   };
 
+  // Detecta mobile
+  const isMobile = typeof window !== "undefined" && /Mobi|Android/i.test(navigator.userAgent);
+
   const openShare = (link: string) => {
-    window.open(link, "_blank", "width=600,height=400");
+    if (isMobile && navigator.share) {
+      // Usa a Web Share API se disponível
+      navigator.share({
+        title,
+        text: summary,
+        url: shareUrl,
+      });
+    } else {
+      window.open(link, "_blank", "width=600,height=400");
+    }
   };
 
   return (

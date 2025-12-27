@@ -39,6 +39,7 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 - 📄 **Paginação via URL** (/?page=2) - Compartilhável e SEO-friendly
 - 🐳 **Docker** pronto para produção com multi-stage builds
 - ⚡ **Performance Mobile Otimizada** - LCP ~1.5s, Score ~95
+- 📤 **Compartilhamento nativo no mobile**: Os botões de compartilhar usam a Web Share API em dispositivos móveis, abrindo o menu nativo do sistema (permitindo compartilhar direto para apps como WhatsApp, LinkedIn, Twitter, etc.) e evitando problemas de foco/hover ao voltar do app.
 
 ---
 

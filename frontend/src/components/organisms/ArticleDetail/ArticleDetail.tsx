@@ -7,6 +7,7 @@ import styles from './ArticleDetail.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
 import { getImageFallbackUrl } from '@/utils/imageOptimization';
+import { SITE_CONFIG } from '@/lib/metadata';
 
 type ArticleDetailType = Article & {
   content?: string;
@@ -36,9 +37,8 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const imageUrl = article.image || getImageFallbackUrl();
   
   // URL do artigo para compartilhamento
-  const articleUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/article/${article.slug}`
-    : `http://localhost:3000/article/${article.slug}`;
+  // Usa SITE_CONFIG.url (definido via env var) para garantir URL correta no SSR
+  const articleUrl = `${SITE_CONFIG.url}/article/${article.slug}`;
 
   return (
     <article 

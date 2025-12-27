@@ -80,6 +80,11 @@
     z-index: 1;
     stroke-width: 2.5;
   }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 
@@ -111,5 +116,16 @@
   .container {
     --btn-bg: #2a2a2a;
     border-color: #333;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .button:hover,
+  .button:active {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border-color: var(--btn-border);
+    transform: none;
+    box-shadow: none;
   }
 }
