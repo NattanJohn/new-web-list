@@ -203,9 +203,7 @@ frontend/
 
 ---
 
-<details>
-<summary><strong>## 📁 Arquitetura do Projeto (clique para expandir)</strong></summary>
-
+<strong>## 📁 Arquitetura do Projeto (clique para expandir)</strong>
 ### 🏗️ Atomic Design Pattern
 
 O projeto utiliza **Atomic Design**, um padrão de design que organiza componentes em níveis hierárquicos:
@@ -380,8 +378,7 @@ UI Rendering
 
 ---
 
-<details>
-<summary><strong>## 🎨 Features Principais (clique para expandir)</strong></summary>
+<strong>## 🎨 Features Principais (clique para expandir)</strong>
 
 ### 1. Tema Dark/Light Mode
 - Persistência em `localStorage`
@@ -414,8 +411,7 @@ UI Rendering
 
 ---
 
-<details>
-<summary><strong>## ⚡ Otimizações de Performance Aplicadas (clique para expandir)</strong></summary>
+<strong>## ⚡ Otimizações de Performance Aplicadas (clique para expandir)</strong>
 
 ### 1. Server Components Maximizados
 - **ArticleDetail como Server Component**: Todo o conteúdo renderizado no servidor
@@ -469,8 +465,7 @@ const inter = Inter({
 
 ---
 
-<details>
-<summary><strong>## 🎯 Boas Práticas Implementadas (clique para expandir)</strong></summary>
+<strong>## 🎯 Boas Práticas Implementadas (clique para expandir)</strong>
 
 ### Type Safety
 ```typescript
@@ -521,8 +516,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-<details>
-<summary><strong>## 📱 Funcionalidades (clique para expandir)</strong></summary>
+<strong>## 📱 Funcionalidades (clique para expandir)</strong>
 
 ### Home (`/` ou `/?page=2`)
 - Lista paginada de notícias (6 por página)
@@ -545,8 +539,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-<details>
-<summary><strong>## 📊 Checklist Completo (clique para expandir)</strong></summary>
+<strong>## 📊 Checklist Completo (clique para expandir)</strong>
 
 ### Funcionalidades Principais
 - ✅ React/Next.js 16 com TypeScript 5
@@ -577,20 +570,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-<details>
-<summary><strong>## 🤖 Uso de Inteligência Artificial (clique para expandir)</strong></summary>
-...existing code...
-</details>
-...existing code...
-</details>
-...existing code...
-</details>
-...existing code...
-</details>
-...existing code...
-</details>
-...existing code...
-</details>
+<strong>## 🤖 Uso de Inteligência Artificial (clique para expandir)</strong>
 
 Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitHub Copilot) como auxiliares de produtividade. Abaixo, descrevo como elas foram aplicadas conforme solicitado nas diretrizes:
 
