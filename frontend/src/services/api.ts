@@ -1,8 +1,6 @@
 import type { Article, ArticleList, ApiErrorShape, ArticlePageResponse } from '@/types';
-const isServer = typeof window === 'undefined';
-const API_URL = isServer
-  ? process.env.INTERNAL_API_URL || 'http://backend:3001'
-  : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export class ApiError extends Error {
   status?: number;
