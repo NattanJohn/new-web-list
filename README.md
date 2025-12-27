@@ -48,6 +48,7 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 ```bash
 # Frontend (.env ou .env.example)
 NEXT_PUBLIC_API_URL=http://localhost:3001
+INTERNAL_API_URL=http://127.0.0.1:3001
 
 # Backend (.env ou .env.example)
 PORT=3001
@@ -55,6 +56,7 @@ PORT=3001
 
 **Por que são necessárias?**
 - `NEXT_PUBLIC_API_URL`: o frontend roda em ambiente dinâmico e precisa saber em runtime onde está a API (localhost em dev, host real em deploy). Como é `NEXT_PUBLIC`, ela é lida no cliente e no servidor.
+`INTERNAL_API_URL`: Utilizada pelo servidor Node.js (SSR). Localmente aponta para o IP direto (127.0.0.1) para evitar latência de DNS, e no Docker aponta para o nome do serviço (http://backend:3001).
 - `PORT`: define a porta do Express; útil para Docker e para não conflitar com outras apps locais.
 
 ---

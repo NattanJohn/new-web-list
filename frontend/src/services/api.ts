@@ -1,6 +1,14 @@
 import type { Article, ArticleList, ApiErrorShape, ArticlePageResponse } from '@/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  }
+
+  return process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+};
+
+const API_URL = getBaseUrl();
 
 export class ApiError extends Error {
   status?: number;
@@ -25,7 +33,10 @@ async function fetchWithTimeout(input: RequestInfo, init?: RequestInit, timeout 
     return res;
   } catch (err) {
     clearTimeout(id);
-    throw new ApiError({ message: (err instanceof Error && err.message) ? err.message : 'Network error' });
+    throw new ApiError({ 
+      message: (err instanceof Error && err.message) ? err.message : 'Network error',
+      status: 0 
+    });
   }
 }
 
@@ -33,6 +44,7 @@ async function handleResponse<T = unknown>(res: Response): Promise<T> {
   const contentType = res.headers.get('content-type') || '';
   const tryParseJson = contentType.includes('application/json');
   let body: unknown = null;
+
   if (tryParseJson) {
     try { body = await res.json(); } catch { body = null; }
   } else {
@@ -65,9 +77,11 @@ export const api = {
   },
 
   async getArticlesPaginated(page: number, perPage: number): Promise<ArticlePageResponse> {
+    // Usamos o construtor URL para garantir que os parâmetros fiquem corretos
     const url = new URL(`${API_URL}/articles`);
     url.searchParams.set('page', String(page));
     url.searchParams.set('per_page', String(perPage));
+    
     const res = await fetchWithTimeout(url.toString(), { cache: 'no-store' });
     return handleResponse<ArticlePageResponse>(res);
   },
