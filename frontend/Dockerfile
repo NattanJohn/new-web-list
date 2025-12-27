@@ -5,8 +5,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --prefer-offline --no-audit
 
+
 FROM deps AS build
 WORKDIR /app
+# Copia o .env.docker se existir, sobrescrevendo variáveis para build Docker
+COPY .env.docker .env
 COPY . .
 # Permite configurar a URL da API em build-time (fallback no compose)
 ARG NEXT_PUBLIC_API_URL=http://backend:3001
