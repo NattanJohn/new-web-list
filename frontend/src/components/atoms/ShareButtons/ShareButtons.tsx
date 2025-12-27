@@ -34,20 +34,8 @@ export const ShareButtons = ({
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
   };
 
-  // Detecta mobile
-  const isMobile = typeof window !== "undefined" && /Mobi|Android/i.test(navigator.userAgent);
-
   const openShare = (link: string) => {
-    if (isMobile && navigator.share) {
-      // Usa a Web Share API se disponível
-      navigator.share({
-        title,
-        text: summary,
-        url: shareUrl,
-      });
-    } else {
-      window.open(link, "_blank", "width=600,height=400");
-    }
+    window.open(link, "_blank", "width=600,height=400");
   };
 
   return (
