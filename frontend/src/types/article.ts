@@ -11,3 +11,15 @@ export type Article = {
 };
 
 export type ArticleList = Article[];
+
+export type ArticlePageMeta = {
+  total: number;
+  page: number;
+  perPage: number;
+  totalPages: number;
+};
+
+export type ArticlePageResponse = {
+  data: Article[];
+  meta: ArticlePageMeta;
+};

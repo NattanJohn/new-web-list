@@ -6,6 +6,7 @@ import { api } from '@/services/api';
 jest.mock('@/services/api', () => ({
   api: {
     getArticles: jest.fn(),
+    getArticlesPaginated: jest.fn(),
   },
   ApiError: class MockApiError extends Error {
     status?: number;
@@ -78,11 +79,20 @@ const mockArticles = [
 describe('HomePage - Integration Test', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    
+    // Setup default mock para getArticlesPaginated
+    (api.getArticlesPaginated as jest.Mock).mockResolvedValue({
+      data: mockArticles,
+      meta: {
+        total: mockArticles.length,
+        page: 1,
+        perPage: 6,
+        totalPages: 1,
+      },
+    });
   });
 
   it('should render home page with articles list', async () => {
-    (api.getArticles as jest.Mock).mockResolvedValue(mockArticles);
-
     const component = await HomePage();
     render(component);
 
@@ -99,8 +109,6 @@ describe('HomePage - Integration Test', () => {
   });
 
   it('should render with HomeTemplate structure', async () => {
-    (api.getArticles as jest.Mock).mockResolvedValue(mockArticles);
-
     const component = await HomePage();
     const { container } = render(component);
 
@@ -111,7 +119,10 @@ describe('HomePage - Integration Test', () => {
   });
 
   it('should handle empty articles list', async () => {
-    (api.getArticles as jest.Mock).mockResolvedValue([]);
+    (api.getArticlesPaginated as jest.Mock).mockResolvedValue({
+      data: [],
+      meta: { total: 0, page: 1, perPage: 6, totalPages: 0 },
+    });
 
     const component = await HomePage();
     render(component);
@@ -124,7 +135,7 @@ describe('HomePage - Integration Test', () => {
 
   it('should handle API error gracefully', async () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    (api.getArticles as jest.Mock).mockRejectedValue(new Error('API Error'));
+    (api.getArticlesPaginated as jest.Mock).mockRejectedValue(new Error('API Error'));
 
     const component = await HomePage();
     render(component);
@@ -149,7 +160,10 @@ describe('HomePage - Integration Test', () => {
       image: `https://picsum.photos/seed/${i}/800/450`,
     }));
 
-    (api.getArticles as jest.Mock).mockResolvedValue(manyArticles);
+    (api.getArticlesPaginated as jest.Mock).mockResolvedValue({
+      data: manyArticles.slice(0, 6),
+      meta: { total: 10, page: 1, perPage: 6, totalPages: 2 },
+    });
 
     const component = await HomePage();
     render(component);
@@ -164,8 +178,6 @@ describe('HomePage - Integration Test', () => {
   });
 
   it('should have proper semantic HTML structure', async () => {
-    (api.getArticles as jest.Mock).mockResolvedValue(mockArticles);
-
     const component = await HomePage();
     const { container } = render(component);
 
@@ -181,8 +193,6 @@ describe('HomePage - Integration Test', () => {
   });
 
   it('should render articles with correct dates', async () => {
-    (api.getArticles as jest.Mock).mockResolvedValue(mockArticles);
-
     const component = await HomePage();
     const { container } = render(component);
 

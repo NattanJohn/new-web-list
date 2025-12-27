@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { api } from "@/services/api";
-import { ArticleTemplate } from "@/components/templates";
+import { ArticleTemplate, StatusTemplate } from "@/components/templates";
 import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
 import { ScrollToTop } from "@/components/atoms";
 import NotFound from "@/app/not-found";
 import { SITE_CONFIG } from "@/lib/metadata";
+import { Title } from "@/components/atoms/Title/Title";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -51,7 +52,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = await api.getArticleBySlug(slug);
+
+  let article = null;
+  try {
+    article = await api.getArticleBySlug(slug);
+  } catch (error) {
+    console.error('Erro ao carregar artigo:', error);
+    return (
+      <StatusTemplate>
+        <Title tag="h1">Não foi possível carregar a notícia</Title>
+        <p role="status">Tente novamente em instantes.</p>
+      </StatusTemplate>
+    );
+  }
 
   if (!article) {
     return <NotFound />;

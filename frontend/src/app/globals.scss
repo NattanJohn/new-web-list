@@ -28,7 +28,9 @@
   --text-color: #ffff00;
   --accent-color: #ffff00;
   --icon-color: #ffff00;
+  --border-color: #ffff00;
   --bg-contrast: #000000;
+  color-scheme: light;
 }
 
 [data-theme="dark-high-contrast"] {
@@ -36,7 +38,9 @@
   --text-color: #ffff00;
   --accent-color: #ffff00;
   --icon-color: #ffff00;
+  --border-color: #ffff00;
   --bg-contrast: #000000;
+  color-scheme: dark;
 }
 
 * {

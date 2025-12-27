@@ -2,6 +2,7 @@ import { Title } from '../../atoms/Title/Title';
 import { PostImage } from '../../atoms/PostImage/PostImage';
 import { BackButton } from '../../atoms/BackButton/BackButton';
 import { CategoryTag } from '../../atoms/CategoryTag/CategoryTag';
+import { ShareButtons } from '../../atoms/ShareButtons/ShareButtons';
 import styles from './ArticleDetail.module.scss';
 import type { Article } from '@/types';
 import { formatDate } from '../../../utils/formatDate';
@@ -33,6 +34,11 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
   const imageWidth = article.imageWidth || DEFAULT_IMAGE_WIDTH;
   const imageHeight = article.imageHeight || DEFAULT_IMAGE_HEIGHT;
   const imageUrl = article.image || getImageFallbackUrl();
+  
+  // URL do artigo para compartilhamento
+  const articleUrl = typeof window !== 'undefined' 
+    ? `${window.location.origin}/article/${article.slug}`
+    : `http://localhost:3000/article/${article.slug}`;
 
   return (
     <article 
@@ -58,6 +64,12 @@ export const ArticleDetail = ({ article }: ArticleDetailProps) => {
           </span>
         </div>
       </header>
+
+      <ShareButtons 
+        title={article.title}
+        url={articleUrl}
+        summary={article.summary}
+      />
       
       {imageUrl && (
         <figure className={styles.featuredImage} itemProp="image" itemScope itemType="https://schema.org/ImageObject">

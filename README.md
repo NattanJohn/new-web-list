@@ -242,6 +242,7 @@ frontend/src/
 │   │   ├── Pagination/
 │   │   ├── PostImage/
 │   │   ├── ScrollToTop/
+│   │   ├── ShareButtons/
 │   │   ├── Skeleton/
 │   │   ├── ThemeButton/
 │   │   ├── Title/
@@ -334,9 +335,9 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
 - **Prototipagem rápida:** Perfeito para MVP e portfolios
 
 #### ⚡ Renderização Dinâmica (Next.js App Router)
-- Usamos `dynamic = 'force-dynamic'`, `fetchCache = 'force-no-store'` e `revalidate = 0` na home ([frontend/src/app/page.tsx](frontend/src/app/page.tsx#L8-L10)).
-- **Motivo:** a API é consultada em runtime e não pode ser cacheada ou pré-renderizada; precisamos sempre dos dados mais recentes do backend (que lê o JSON em tempo real).
-- **É boa prática?** É **aceitável** quando os dados são mutáveis ou o backend não está disponível no build. Se os dados puderem ser cacheados, prefira `revalidate` > 0 para reduzir custo e latência.
+- Configurei a Home com `dynamic = 'force-dynamic'` e `revalidate = 0` ([frontend/src/app/page.tsx](frontend/src/app/page.tsx#L8-L10)).
+- **Minha decisão:** Como nosso "banco de dados" é um arquivo JSON local que pode mudar a qualquer momento, priorizei a consistência imediata. Queria garantir que, se você editar o JSON, a mudança apareça na hora.
+- **Em produção:** Eu certamente usaria **ISR (Incremental Static Regeneration)** com um tempo de revalidação maior (ex: `revalidate = 60`), para aproveitar o cache do Next.js, reduzir carga no servidor e entregar páginas estáticas instantâneas. Mas para o escopo deste teste, desativar o cache foi a escolha mais segura.
 
 ### 📊 Estrutura de Dados
 
@@ -374,15 +375,6 @@ React Components (via props)
     ↓
 UI Rendering
 ```
-
-### Stack Técnico
-
-| Aspecto | Tecnologia |
-|---------|-----------|
-| **Frontend** | Next.js 16, React 19, TypeScript 5, SCSS Modules |
-| **Testes** | Jest 30, React Testing Library 16, MSW 2 |
-| **Backend** | Node.js, Express 5 |
-| **Infra** | Docker, Docker Compose |
 
 ---
 
@@ -618,26 +610,9 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitH
 Apesar do uso de IA, **todas as decisões arquiteturais foram minhas**:
 - Escolha do Atomic Design como padrão de organização
 - Implementação de 4 controles de acessibilidade (não apenas dark mode)
-- Estrutura de testes com Jest + RTL + Playwright
 - Schema.org microdata para SEO profissional
 - Error Boundaries customizados
 - Separação entre componentes (UI) e lib (infraestrutura)
-
-A IA foi usada como **acelerador de produtividade**, não como substituto de conhecimento técnico.
-
----
-
-## 🏆 Destaques do Projeto
-
-Este projeto demonstra expertise profissional com:
-
-1. **Atomic Design** - Arquitetura escalável e reutilizável (4 níveis)
-2. **Acessibilidade Avançada** - 4 controles + WCAG compliance
-3. **Testes Completos** - 31 unitários + 6 E2E cobrindo fluxos críticos
-4. **SEO Profissional** - Schema.org microdata + metadata dinâmica
-5. **Type Safety Estrito** - Zero `any`, interfaces robustas, TypeScript strict mode
-6. **Performance Otimizada** - LCP 1.5s, Score 95, Server Components, preload SSR
-7. **Deploy-Ready** - Docker multi-stage, health checks, env vars configuradas
 
 ---
 
@@ -650,9 +625,3 @@ MIT License - Código aberto
 ## 👨‍💻 Desenvolvedor
 
 Desenvolvido com foco em **acessibilidade**, **performance**, **boas práticas** e **testes automatizados**.
-
-Demonstra expertise em: Atomic Design, Context API, Next.js Server Components, SEO, Type Safety, Testing e DevOps.
-
----
-
-> 💡 **Nota**: Para documentação técnica detalhada, consulte os comentários no código.

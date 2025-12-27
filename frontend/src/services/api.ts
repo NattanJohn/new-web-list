@@ -1,5 +1,5 @@
-import type { Article, ArticleList, ApiErrorShape } from '@/types';
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import type { Article, ArticleList, ApiErrorShape, ArticlePageResponse } from '@/types';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 export class ApiError extends Error {
   status?: number;
@@ -61,6 +61,14 @@ export const api = {
   async getArticles(): Promise<ArticleList> {
     const res = await fetchWithTimeout(`${API_URL}/articles`, { cache: 'no-store' });
     return handleResponse<ArticleList>(res);
+  },
+
+  async getArticlesPaginated(page: number, perPage: number): Promise<ArticlePageResponse> {
+    const url = new URL(`${API_URL}/articles`);
+    url.searchParams.set('page', String(page));
+    url.searchParams.set('per_page', String(perPage));
+    const res = await fetchWithTimeout(url.toString(), { cache: 'no-store' });
+    return handleResponse<ArticlePageResponse>(res);
   },
 
   async getArticleBySlug(slug: string): Promise<Article | null> {

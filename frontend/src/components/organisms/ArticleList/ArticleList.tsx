@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PostCard } from '../../molecules/PostCard/PostCard';
 import { Skeleton, Pagination } from '../../atoms';
@@ -8,20 +8,21 @@ import { EmptyState } from '../../atoms/EmptyState/EmptyState';
 import { api } from '@/services/api';
 import { handleApiError } from '@/utils/errorHandler';
 import styles from './ArticleList.module.scss';
-import type { Article } from '@/types';
-
-const ITEMS_PER_PAGE = 6;
+import type { Article, ArticlePageMeta } from '@/types';
 
 interface ArticleListProps {
   initialArticles?: Article[];
+  initialMeta?: ArticlePageMeta | null;
   initialError?: string | null;
+  perPage: number;
 }
 
-export const ArticleList = ({ initialArticles = [], initialError = null }: ArticleListProps) => {
+export const ArticleList = ({ initialArticles = [], initialMeta = null, initialError = null, perPage }: ArticleListProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   
   const [articles, setArticles] = useState<Article[]>(initialArticles);
+  const [meta, setMeta] = useState<ArticlePageMeta | null>(initialMeta);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(initialError);
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -42,26 +43,30 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
   }, [currentPage]);
 
   useEffect(() => {
-    // Carrega artigos apenas no mount se SSR falhou (sem dados iniciais)
-    if (!initialArticles || initialArticles.length === 0) {
-      const fetchArticles = async () => {
-        try {
-          setIsLoading(true);
-          setErrorMessage(null);
-          const data = await api.getArticles();
-          setArticles(data);
-        } catch (err) {
-          console.error('Erro ao carregar artigos:', err);
-          setErrorMessage(handleApiError(err));
-        } finally {
-          setIsLoading(false);
-        }
-      };
+    // Busca artigos ao montar se não veio do SSR ou sempre que a página mudar
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true);
+        setErrorMessage(null);
+        const { data, meta } = await api.getArticlesPaginated(currentPage, perPage);
+        setArticles(data);
+        setMeta(meta);
+      } catch (err) {
+        console.error('Erro ao carregar artigos:', err);
+        setErrorMessage(handleApiError(err));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const noSSRData = !initialArticles || initialArticles.length === 0;
+    const missingMetaForPage = meta && meta.page !== currentPage;
+
+    if (noSSRData || missingMetaForPage) {
       void fetchArticles();
     }
-    // Executa apenas uma vez no mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage, perPage]);
 
   const handlePageChange = (page: number) => {
     // Se clicou na mesma página, só faz scroll sem re-render
@@ -82,12 +87,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     router.push(newUrl, { scroll: false });
   };
 
-  const total = articles.length;
-
-  const paginated = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return articles.slice(start, start + ITEMS_PER_PAGE);
-  }, [articles, currentPage]);
+  const total = meta?.total ?? articles.length;
 
   if (isLoading) {
     return (
@@ -112,7 +112,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
   return (
     <div className={styles.mainWrapper} aria-busy={isLoading}>
       <section className={styles.grid} aria-label="Lista de notícias" aria-live="polite">
-        {paginated.map((article, index) => (
+        {articles.map((article, index) => (
           <PostCard
             key={article.id ?? article.slug}
             slug={article.slug}
@@ -130,7 +130,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
         <Pagination
           total={total}
           current={currentPage}
-          perPage={ITEMS_PER_PAGE}
+          perPage={perPage}
           onPageChange={handlePageChange}
         />
       </footer>

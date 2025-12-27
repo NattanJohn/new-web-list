@@ -177,24 +177,24 @@
   to { opacity: 1; }
 }
   :global([data-theme='light-high-contrast']) .resetBtn {
-    background: #000 !important;
-    color: #ffeb3b !important;
-    border: 2px solid #ffeb3b !important;
+    background: #000;
+    color: #ffeb3b;
+    border: 2px solid #ffeb3b;
   }
   
   :global([data-theme='light-high-contrast']) .resetBtn:hover {
-    background: #ffeb3b !important;
-    color: #000 !important;
+    background: #ffeb3b;
+    color: #000;
   }
   
   :global([data-theme='dark-high-contrast']) .resetBtn {
-    background: #ffeb3b !important;
-    color: #000 !important;
-    border: 2px solid #000 !important;
+    background: #ffeb3b;
+    color: #000;
+    border: 2px solid #000;
   }
   
   :global([data-theme='dark-high-contrast']) .resetBtn:hover {
-    background: #000 !important;
-    color: #ffeb3b !important;
-    border-color: #ffeb3b !important;
+    background: #000;
+    color: #ffeb3b;
+    border-color: #ffeb3b;
   }

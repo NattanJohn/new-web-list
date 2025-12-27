@@ -5,6 +5,7 @@ export { EmptyState } from './EmptyState/EmptyState';
 export { Pagination } from './Pagination/Pagination';
 export { PostImage } from './PostImage/PostImage';
 export { ScrollToTop } from './ScrollToTop/ScrollToTop';
+export { ShareButtons } from './ShareButtons/ShareButtons';
 export { Skeleton } from './Skeleton/Skeleton';
 export { ThemeButton } from './ThemeButton/ThemeButton';
 export { Title } from './Title/Title';

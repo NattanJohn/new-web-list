@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px dashed var(--border-color, #e0e0e0);
+
+  --btn-bg: var(--background-secondary, #f5f5f5);
+  --btn-text: #555;
+  --btn-border: transparent;
+  --btn-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(48px * var(--text-scale, 1));
+  height: calc(48px * var(--text-scale, 1));
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 2px solid var(--btn-border);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  padding: 0;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px var(--btn-hover-shadow, var(--btn-shadow));
+    background: var(--brand-color); 
+    color: white;
+    border-color: var(--brand-color);
+  }
+
+  &.twitter { 
+    --brand-color: #1da1f2; 
+    --btn-text: #1da1f2; 
+    --btn-hover-shadow: rgba(29, 161, 242, 0.4); 
+  }
+  &.whatsapp { 
+    --brand-color: #25d366; 
+    --btn-text: #25d366; 
+    --btn-hover-shadow: rgba(37, 211, 102, 0.4); 
+  }
+  &.linkedin { 
+    --brand-color: #0a66c2; 
+    --btn-text: #0a66c2; 
+    --btn-hover-shadow: rgba(10, 102, 194, 0.4); 
+  }
+
+  .icon {
+    width: calc(20px * var(--text-scale, 1));
+    height: calc(20px * var(--text-scale, 1));
+    z-index: 1;
+    stroke-width: 2.5;
+  }
+}
+
+
+:global(html[data-theme*='high-contrast']) {
+  .container {
+    border-top: 2px solid var(--text-color);
+    
+    --btn-bg: var(--bg-color);
+    --btn-text: var(--text-color);
+    --btn-border: var(--text-color);
+    --brand-color: var(--text-color);
+    --btn-shadow: transparent;
+  }
+
+  .button {
+    color: var(--text-color);
+    border-color: var(--text-color);
+    background-color: var(--bg-color);
+
+    &:hover {
+      background-color: var(--text-color);
+      color: var(--bg-color); 
+      border-color: var(--text-color);
+    }
+  }
+}
+
+:global(html[data-theme='dark']) {
+  .container {
+    --btn-bg: #2a2a2a;
+    border-color: #333;
+  }
+}

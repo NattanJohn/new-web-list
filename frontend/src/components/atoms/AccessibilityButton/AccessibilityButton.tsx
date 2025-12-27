@@ -23,8 +23,8 @@ export const AccessibilityButton = () => {
           ref={triggerRef}
           aria-label="Abrir menu de acessibilidade"
         >
-          <Eye size={24} />
           <span>Acessibilidade</span>
+          <Eye size={24} />
         </button>
       </div>
       

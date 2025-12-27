@@ -41,6 +41,14 @@
   font-family: var(--font-main);
   font-weight: 500;
   font-size: clamp(0.8rem, 1rem, 1.25rem);
+
+  @media (max-width: 768px) {
+    // Ajuste Agressivo para Mobile:
+    // Scale 1x: 1.25rem (20px) -> Bem grande e legível
+    // Scale 2x: 0.8rem (12.8px) * 2 = 25.6px -> Controlado para não quebrar layout
+    font-size: calc(1.25rem - (0.45rem * (var(--text-scale) - 1)));
+  }
+
   border-radius: 50%;
   transition: all 0.2s ease;
 
