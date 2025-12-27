@@ -576,25 +576,6 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-## 📄 Scripts Disponíveis
-
-```bash
-# Frontend
-npm run dev                 # Desenvolvimento (localhost:3000)
-npm run build              # Build de produção
-npm start                  # Produção (após build)
-npm test                   # Roda todos os testes unitários
-npm run test:watch         # Testes unitários em watch mode
-npm run test:coverage      # Relatório de coverage
-npm run test:e2e           # Testes E2E (requer backend rodando)
-npm run test:e2e:ui        # Testes E2E com interface visual
-npm run lint               # ESLint
-
-# Backend
-npm start                  # Servidor Express (localhost:3001)
-npm run dev                # Watch mode com nodemon (se configurado)
-```
-
 ---
 
 ## 🤖 Uso de Inteligência Artificial
@@ -603,7 +584,7 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitH
 
 ### Ferramentas Utilizadas
 
-**IA de Chat (ChatGPT/Claude)**: Utilizada para discussões arquiteturais, planejamento de deploy e estratégias de acessibilidade.
+**IA de Chat (ChatGPT/Gemini)**: Utilizada para discussões arquiteturais, planejamento de deploy e estratégias de acessibilidade.
 
 **IA no Editor (GitHub Copilot/VS Code)**: Utilizada para auxílio no preenchimento de código repetitivo (boilerplate) e refatoração rápida.
 
@@ -623,6 +604,11 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitH
 
 **Performance:**
 > "Como otimizar o LCP de uma listagem de notícias com Next.js Image optimization e preload de recursos críticos?"
+
+**Qualidade e Testes:**
+> "Crie um teste de integração para a listagem de notícias verificando se o loading state é exibido antes dos dados"
+
+> "Escreva um script de teste E2E (End-to-End) que simule o usuário alterando o tamanho da fonte e verificando se a alteração persiste após o reload"
 
 **Análise de código:**
 > "Analise este projeto e identifique más práticas em HTML semântico, TypeScript, SCSS, SEO e código duplicado."
