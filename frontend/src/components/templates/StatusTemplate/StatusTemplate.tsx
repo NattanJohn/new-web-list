@@ -1,6 +1,5 @@
 import React from 'react';
-import { Header } from '../../organisms/Header/Header';
-import { Footer } from '../../organisms/Footer/Footer';
+import { Title } from '../../atoms/Title/Title';
 import styles from './StatusTemplate.module.scss';
 
 interface StatusTemplateProps {
@@ -10,13 +9,17 @@ interface StatusTemplateProps {
 export const StatusTemplate = ({ children }: StatusTemplateProps) => {
   return (
     <div className={styles.wrapper}>
-      <Header className={styles.header} />
+      <header className={styles.header}>
+        <Title tag="h1">Gazeta News</Title>
+      </header>
       
       <main className={styles.mainContent}>
         {children}
       </main>
 
-      <Footer className={styles.footer} />
+      <footer className={styles.footer}>
+        <p>© 2025 Gazeta News - Nattan John Lana da Silva</p>
+      </footer>
     </div>
   );
 };

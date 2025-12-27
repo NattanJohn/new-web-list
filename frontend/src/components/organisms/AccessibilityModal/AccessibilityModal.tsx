@@ -1,7 +1,7 @@
 'use client';
 
 import { useAccessibility, ACCESSIBILITY_LEVELS } from '@/context/AccessibilityContext';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import styles from './AccessibilityModal.module.scss';
 import { X, RotateCcw, Contrast, Ghost } from 'lucide-react';
 
@@ -16,14 +16,64 @@ export const AccessibilityModal = ({ onClose }: { onClose: () => void }) => {
   } = useAccessibility();
 
   const firstButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     firstButtonRef.current?.focus();
   }, []);
 
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      onClose();
+      return;
+    }
+
+    if (event.key !== 'Tab') return;
+
+    const container = modalRef.current;
+    if (!container) return;
+
+    const focusable = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(el => !el.hasAttribute('disabled'));
+
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+
+    if (event.shiftKey) {
+      if (active === first || !container.contains(active)) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (active === last || !container.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
-    <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="accessibility-title">
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.overlay} onClick={onClose} role="presentation">
+      <div
+        className={styles.modal}
+        ref={modalRef}
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="accessibility-title"
+      >
         <header className={styles.header}>
           <h2 id="accessibility-title">Acessibilidade</h2>
           <button ref={firstButtonRef} className={styles.closeBtn} onClick={onClose} aria-label="Fechar">

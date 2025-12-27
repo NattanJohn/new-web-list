@@ -8,7 +8,7 @@ interface ScrollToTopProps {
 
 export const ScrollToTop = ({ children }: ScrollToTopProps) => {
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
   return <>{children}</>;

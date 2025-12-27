@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Inter } from "next/font/google";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
-import { AccessibilityButton } from "@/components/molecules/AccessibilityButton/AccessibilityButton";
+import { AccessibilityButton } from "@/components/atoms/AccessibilityButton/AccessibilityButton";
 import { ThemeButton } from "@/components/atoms/ThemeButton/ThemeButton";
 import { ErrorBoundary, SITE_CONFIG, OPEN_GRAPH_CONFIG, TWITTER_CONFIG } from "@/lib";
 

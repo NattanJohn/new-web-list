@@ -1,6 +1,5 @@
 import React from 'react';
-import { Header } from '../../organisms/Header/Header';
-import { Footer } from '../../organisms/Footer/Footer';
+import { Title } from '../../atoms/Title/Title';
 import styles from './ArticleTemplate.module.scss';
 
 interface ArticleTemplateProps {
@@ -10,13 +9,17 @@ interface ArticleTemplateProps {
 export const ArticleTemplate = ({ children }: ArticleTemplateProps) => {
   return (
     <div className={styles.wrapper}>
-      <Header className={styles.header} headingLevel="h2" />
+      <header className={styles.header}>
+        <Title tag="h2">Gazeta News</Title>
+      </header>
       
       <main className={styles.mainContent}>
         {children}
       </main>
 
-      <Footer className={styles.footer} />
+      <footer className={styles.footer}>
+        <p>© 2025 Gazeta News - Nattan John Lana da Silva</p>
+      </footer>
     </div>
   );
 };

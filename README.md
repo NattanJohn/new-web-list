@@ -210,7 +210,7 @@ O projeto utiliza **Atomic Design**, um padrão de design que organiza component
 
 | Nível | Descrição | Exemplo |
 |-------|-----------|---------|
-| **Atoms** | Menores unidades indivísíveis | Button, Icon, Title, ScrollToTop |
+| **Atoms** | Menores unidades indivisíveis | Button, AccessibilityButton, Title, ScrollToTop |
 | **Molecules** | Combinações de atoms com função específica | PostCard (Title + Date + Summary) |
 | **Organisms** | Grupos de molecules complexos | ArticleList, ArticleDetail, Modal |
 | **Templates** | Estrutura de layouts de página | HomeTemplate, ArticleTemplate |
@@ -235,6 +235,7 @@ frontend/src/
 │
 ├── components/
 │   ├── atoms/                    # Elementos básicos
+│   │   ├── AccessibilityButton/
 │   │   ├── BackButton/
 │   │   ├── CategoryTag/
 │   │   ├── EmptyState/
@@ -247,7 +248,6 @@ frontend/src/
 │   │   └── index.ts
 │   │
 │   ├── molecules/                # Combinações de atoms
-│   │   ├── AccessibilityButton/
 │   │   ├── PostCard/
 │   │   └── index.ts
 │   │
@@ -255,8 +255,6 @@ frontend/src/
 │   │   ├── AccessibilityModal/
 │   │   ├── ArticleDetail/
 │   │   ├── ArticleList/
-│   │   ├── Footer/
-│   │   ├── Header/
 │   │   └── index.ts
 │   │
 │   └── templates/                # Layouts de página
@@ -315,6 +313,7 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
 - **Manutenção:** Mudanças isoladas em um atom não afetam organisms ou templates
 - **Escalabilidade:** Fácil adicionar novos componentes seguindo o padrão
 - **Testes:** Componentes pequenos e isolados são mais simples de testar
+- **Acessibilidade sempre disponível:** Botão flutuante de acessibilidade em atoms garante presença em todas as telas
 
 #### Por que Context API + localStorage?
 - **Context API:** Simplicidade com apenas 2 contextos (Theme + Accessibility) sem overhead
@@ -400,6 +399,7 @@ UI Rendering
 - **Espaçamento de Linhas**: 4 opções (normal, 1.3x, 1.6x, 2x)
 - **Alto Contraste**: Aumenta saturação e reforça bordas
 - **Escala de Cinza**: Remove cores para melhor legibilidade
+- Botão flutuante de acessibilidade agora em **atoms** (sempre disponível)
 - Todas as configurações persistidas e sincronizadas entre abas
 
 ### 3. SEO e Schema.org

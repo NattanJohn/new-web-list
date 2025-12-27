@@ -2,37 +2,60 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
 const DATA_PATH = path.join(__dirname, 'data', 'news.json');
 
-const getArticles = () => {
-    const jsonData = fs.readFileSync(DATA_PATH, 'utf-8');
+const getArticles = async () => {
+    const jsonData = await fs.readFile(DATA_PATH, 'utf-8');
     return JSON.parse(jsonData);
 };
 
-app.get('/articles', (req, res) => {
+app.get('/articles', async (req, res) => {
     try {
-        const articles = getArticles();
-        res.json(articles);
+        const articles = await getArticles();
+        const page = Number.parseInt(req.query.page, 10);
+        const perPageParam = req.query.per_page ?? req.query.perPage;
+        const perPage = Number.parseInt(perPageParam, 10);
+
+        const hasPagination = Number.isFinite(page) || Number.isFinite(perPage);
+
+        if (hasPagination) {
+            const safePage = Number.isFinite(page) && page > 0 ? page : 1;
+            const safePerPage = Number.isFinite(perPage) && perPage > 0 ? perPage : 10;
+            const total = articles.length;
+            const start = (safePage - 1) * safePerPage;
+            const data = articles.slice(start, start + safePerPage);
+
+            return res.json({
+                data,
+                meta: {
+                    total,
+                    page: safePage,
+                    perPage: safePerPage,
+                    totalPages: Math.max(1, Math.ceil(total / safePerPage)),
+                },
+            });
+        }
+
+        return res.json(articles);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: { message: 'Erro ao ler os dados' } });
     }
 });
 
-app.get('/articles/:slug', (req, res) => {
+app.get('/articles/:slug', async (req, res) => {
     try {
         const { slug } = req.params;
-        const articles = getArticles();
+        const articles = await getArticles();
         const article = articles.find(a => a.slug === slug);
 
         if (!article) {

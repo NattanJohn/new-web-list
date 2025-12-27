@@ -4,6 +4,7 @@ import { ArticleTemplate } from "@/components/templates";
 import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
 import { ScrollToTop } from "@/components/atoms";
 import NotFound from "@/app/not-found";
+import { SITE_CONFIG } from "@/lib/metadata";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -56,6 +57,8 @@ export default async function ArticlePage({ params }: Props) {
     return <NotFound />;
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
@@ -72,7 +75,7 @@ export default async function ArticlePage({ params }: Props) {
       name: 'Gazeta News',
       logo: {
         '@type': 'ImageObject',
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`,
+        url: `${siteUrl}/logo.png`,
       },
     },
   };

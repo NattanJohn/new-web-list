@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PostCard } from '../../molecules/PostCard/PostCard';
 import { Skeleton, Pagination } from '../../atoms';
@@ -25,29 +25,52 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(initialError);
   const currentPage = Number(searchParams.get('page')) || 1;
+  const previousPageRef = useRef(currentPage);
 
-  const loadArticles = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage(null);
-      const data = await api.getArticles();
-      setArticles(data);
-    } catch (err) {
-      console.error('Erro ao carregar artigos:', err);
-      setErrorMessage(handleApiError(err));
-    } finally {
-      setIsLoading(false);
+  // Scroll suave quando a página muda
+  useEffect(() => {
+    if (previousPageRef.current !== currentPage) {
+      previousPageRef.current = currentPage;
+      
+      // Aguarda 2 frames de renderização para garantir layout completo
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
     }
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
+    // Carrega artigos apenas no mount se SSR falhou (sem dados iniciais)
     if (!initialArticles || initialArticles.length === 0) {
-      void loadArticles();
+      const fetchArticles = async () => {
+        try {
+          setIsLoading(true);
+          setErrorMessage(null);
+          const data = await api.getArticles();
+          setArticles(data);
+        } catch (err) {
+          console.error('Erro ao carregar artigos:', err);
+          setErrorMessage(handleApiError(err));
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      void fetchArticles();
     }
+    // Executa apenas uma vez no mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialArticles]);
+  }, []);
 
   const handlePageChange = (page: number) => {
+    // Se clicou na mesma página, só faz scroll sem re-render
+    if (page === currentPage) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Página diferente: muda URL (useEffect cuida do scroll)
     const params = new URLSearchParams(searchParams.toString());
     if (page === 1) {
       params.delete('page');
@@ -57,8 +80,6 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
     
     const newUrl = params.toString() ? `/?${params.toString()}` : '/';
     router.push(newUrl, { scroll: false });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const total = articles.length;
@@ -82,7 +103,7 @@ export const ArticleList = ({ initialArticles = [], initialError = null }: Artic
         <EmptyState
           title={errorMessage ? 'Ops! Algo deu errado' : 'Nenhuma notícia encontrada'}
           message={errorMessage ?? 'Aguarde novos conteúdos em breve.'}
-          actions={[{ label: 'Tentar novamente', onClick: loadArticles }]}
+          actions={[{ label: 'Tentar novamente', onClick: () => window.location.reload() }]}
         />
       </div>
     );

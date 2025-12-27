@@ -184,11 +184,11 @@ describe('HomePage - Integration Test', () => {
     (api.getArticles as jest.Mock).mockResolvedValue(mockArticles);
 
     const component = await HomePage();
-    render(component);
+    const { container } = render(component);
 
     await waitFor(() => {
       // Verificar que as datas estão formatadas e presentes
-      const timeElements = screen.getAllByRole('time');
+      const timeElements = container.querySelectorAll('time');
       expect(timeElements.length).toBeGreaterThan(0);
     });
   });

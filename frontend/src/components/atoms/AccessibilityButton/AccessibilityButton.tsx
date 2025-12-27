@@ -1,12 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './AccessibilityButton.module.scss';
 import { Eye } from 'lucide-react';
 import { AccessibilityModal } from '@/components/organisms/AccessibilityModal/AccessibilityModal';
 
 export const AccessibilityButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    triggerRef.current?.focus();
+  };
 
   return (
     <>
@@ -14,6 +20,7 @@ export const AccessibilityButton = () => {
         <button 
           className={styles.trigger} 
           onClick={() => setIsModalOpen(true)}
+          ref={triggerRef}
           aria-label="Abrir menu de acessibilidade"
         >
           <Eye size={24} />
@@ -21,7 +28,7 @@ export const AccessibilityButton = () => {
         </button>
       </div>
       
-      {isModalOpen && <AccessibilityModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <AccessibilityModal onClose={handleClose} />}
     </>
   );
 };
