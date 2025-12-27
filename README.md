@@ -39,7 +39,7 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 - 📄 **Paginação via URL** (/?page=2) - Compartilhável e SEO-friendly
 - 🐳 **Docker** pronto para produção com multi-stage builds
 - ⚡ **Performance Mobile Otimizada** - LCP ~1.5s, Score ~95
-- 📤 **Compartilhamento nativo no mobile**: Os botões de compartilhar usam a Web Share API em dispositivos móveis, abrindo o menu nativo do sistema (permitindo compartilhar direto para apps como WhatsApp, LinkedIn, Twitter, etc.) e evitando problemas de foco/hover ao voltar do app.
+- 📤 **Compartilhamento mobile integrado**: Os botões de compartilhar abrem diretamente o app correspondente (WhatsApp, LinkedIn, Twitter, etc.) se instalado, proporcionando uma experiência rápida e fluida no mobile.
 
 ---
 
@@ -203,7 +203,8 @@ frontend/
 
 ---
 
-## 📁 Arquitetura do Projeto
+<details>
+<summary><strong>## 📁 Arquitetura do Projeto (clique para expandir)</strong></summary>
 
 ### 🏗️ Atomic Design Pattern
 
@@ -379,7 +380,8 @@ UI Rendering
 
 ---
 
-## 🎨 Features Principais
+<details>
+<summary><strong>## 🎨 Features Principais (clique para expandir)</strong></summary>
 
 ### 1. Tema Dark/Light Mode
 - Persistência em `localStorage`
@@ -412,7 +414,8 @@ UI Rendering
 
 ---
 
-## ⚡ Otimizações de Performance Aplicadas
+<details>
+<summary><strong>## ⚡ Otimizações de Performance Aplicadas (clique para expandir)</strong></summary>
 
 ### 1. Server Components Maximizados
 - **ArticleDetail como Server Component**: Todo o conteúdo renderizado no servidor
@@ -466,7 +469,8 @@ const inter = Inter({
 
 ---
 
-## 🎯 Boas Práticas Implementadas
+<details>
+<summary><strong>## 🎯 Boas Práticas Implementadas (clique para expandir)</strong></summary>
 
 ### Type Safety
 ```typescript
@@ -517,7 +521,8 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-## 📱 Funcionalidades
+<details>
+<summary><strong>## 📱 Funcionalidades (clique para expandir)</strong></summary>
 
 ### Home (`/` ou `/?page=2`)
 - Lista paginada de notícias (6 por página)
@@ -540,7 +545,8 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-## 📊 Checklist Completo
+<details>
+<summary><strong>## 📊 Checklist Completo (clique para expandir)</strong></summary>
 
 ### Funcionalidades Principais
 - ✅ React/Next.js 16 com TypeScript 5
@@ -571,7 +577,20 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-## 🤖 Uso de Inteligência Artificial
+<details>
+<summary><strong>## 🤖 Uso de Inteligência Artificial (clique para expandir)</strong></summary>
+...existing code...
+</details>
+...existing code...
+</details>
+...existing code...
+</details>
+...existing code...
+</details>
+...existing code...
+</details>
+...existing code...
+</details>
 
 Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitHub Copilot) como auxiliares de produtividade. Abaixo, descrevo como elas foram aplicadas conforme solicitado nas diretrizes:
 
