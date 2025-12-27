@@ -13,8 +13,8 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 
 ## 🌐 Demo Online
 
-- 🚀 **Frontend (Vercel)**: [https://new-web-list.vercel.app/](https://new-web-list.vercel.app/)
-- 🔌 **Backend API (Render)**: [https://new-web-list.onrender.com/articles](https://new-web-list.onrender.com/articles)
+- 🚀 **Frontend (Vercel)**: <a href="https://new-web-list.vercel.app/" target="_blank">https://new-web-list.vercel.app/</a>
+- 🔌 **Backend API (Render)**: <a href="https://new-web-list.onrender.com/articles" target="_blank">https://new-web-list.onrender.com/articles</a>
 
 > ⏳ **Atenção:** a primeira chamada do backend (Render free) pode levar até ~50s por cold start.
 
@@ -97,8 +97,8 @@ npm run dev
 ```
 
 **Acesse:**
-- 🌐 **Frontend**: http://localhost:3000
-- 🔌 **API Backend**: http://localhost:3001/articles
+- 🌐 **Frontend**: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+- 🔌 **API Backend**: <a href="http://localhost:3001/articles" target="_blank">http://localhost:3001/articles</a>
 
 ### 🐳 Com Docker (Recomendado)
 
@@ -122,8 +122,8 @@ docker compose down     # Para e remove containers
 ```
 
 **Acesse:**
-- 🌐 **Frontend**: http://localhost:3000 (startup: ~273ms ⚡)
-- 🔌 **API Backend**: http://localhost:3001/articles
+- 🌐 **Frontend**: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> (startup: ~273ms ⚡)
+- 🔌 **API Backend**: <a href="http://localhost:3001/articles" target="_blank">http://localhost:3001/articles</a>
 
 **Comandos úteis do Docker:**
 ```bash
@@ -335,6 +335,9 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
 >  Como nosso "banco de dados" é um arquivo JSON local que pode mudar a qualquer momento, priorizei a consistência imediata. Queria garantir que, se você editar o JSON, a mudança apareça na hora.
  
 > Em produção,  eu certamente usaria **ISR (Incremental Static Regeneration)** com um tempo de revalidação maior (ex: `revalidate = 60`), para aproveitar o cache do Next.js, reduzir carga no servidor e entregar páginas estáticas instantâneas. Mas para o escopo deste teste, desativar o cache foi a escolha mais segura.
+
+> ### 💡 Nota sobre Hydration Warnings (React Error #418)
+> O projeto pode apresentar um aviso de hidratação no console. Isso ocorre devido à persistência de preferências de acessibilidade (Tema Dark/Light e escala de fonte) via `localStorage`. Como o servidor não tem acesso ao armazenamento local do navegador durante o SSR, ocorre uma breve divergência na renderização inicial. Isso foi mantido para garantir que o usuário não sofra com "flashes" de luz branca ao carregar a página, priorizando a experiência de acessibilidade.
 
 ### 📊 Estrutura de Dados
 
