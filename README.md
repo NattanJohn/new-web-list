@@ -336,8 +336,30 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
  
 > Em produção,  eu certamente usaria **ISR (Incremental Static Regeneration)** com um tempo de revalidação maior (ex: `revalidate = 60`), para aproveitar o cache do Next.js, reduzir carga no servidor e entregar páginas estáticas instantâneas. Mas para o escopo deste teste, desativar o cache foi a escolha mais segura.
 
-> ### 💡 Nota sobre Hydration Warnings (React Error #418)
+#### 💡 Nota sobre Hydration Warnings (React Error #418)
 > O projeto pode apresentar um aviso de hidratação no console. Isso ocorre devido à persistência de preferências de acessibilidade (Tema Dark/Light e escala de fonte) via `localStorage`. Como o servidor não tem acesso ao armazenamento local do navegador durante o SSR, ocorre uma breve divergência na renderização inicial. Isso foi mantido para garantir que o usuário não sofra com "flashes" de luz branca ao carregar a página, priorizando a experiência de acessibilidade.
+
+#### 🌐 Estratégia de Resolução de URL (Ambiente Híbrido)
+
+A lógica abaixo garante que o frontend consiga se comunicar com a API corretamente em diferentes cenários: **dev local, SSR, Docker e produção**.
+
+```ts
+// services/api.ts
+const getBaseUrl = () => {
+  // Executando no navegador (client-side)
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  }
+
+
+  // Executando no servidor (SSR / rotas internas do Next.js)
+  return (
+    process.env.INTERNAL_API_URL ||        // ex: http://backend:3001 (rede Docker)
+    process.env.NEXT_PUBLIC_API_URL ||     // fallback: URL pública
+    'http://127.0.0.1:3001'                // fallback local estável
+  );
+};
+```
 
 ### 📊 Estrutura de Dados
 
