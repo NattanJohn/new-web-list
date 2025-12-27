@@ -78,7 +78,7 @@ cd new-web-list
 
 # 2. Configure as variáveis de ambiente
 # Frontend: crie .env na pasta frontend/
-echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > frontend/.env
+echo "NEXT_PUBLIC_API_URL=http://localhost:3001\nINTERNAL_API_URL=http://127.0.0.1:3001" > frontend/.env
 
 # Backend: crie .env na pasta backend/ (opcional, padrão é 3001)
 echo "PORT=3001" > backend/.env
