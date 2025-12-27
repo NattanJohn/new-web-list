@@ -193,17 +193,11 @@ frontend/
 ├── playwright.config.ts          # Configuração do Playwright
 ├── jest.config.js                # Configuração do Jest
 ├── setupTests.ts                 # Setup dos testes unitários
-├── eslint.config.mjs             # Regras de linting
-├── tsconfig.json                 # Configuração TypeScript
-├── next.config.mjs               # Configuração Next.js
-├── .env.example                  # Template de variáveis
-├── Dockerfile                    # Multi-stage build otimizado
-└── .dockerignore                 # Arquivos ignorados no build
 ```
 
 ---
 
-<strong>## 📁 Arquitetura do Projeto (clique para expandir)</strong>
+## 📁 Arquitetura do Projeto
 ### 🏗️ Atomic Design Pattern
 
 O projeto utiliza **Atomic Design**, um padrão de design que organiza componentes em níveis hierárquicos:
@@ -336,8 +330,9 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
 
 #### ⚡ Renderização Dinâmica (Next.js App Router)
 - Configurei a Home com `dynamic = 'force-dynamic'` e `revalidate = 0` ([frontend/src/app/page.tsx](frontend/src/app/page.tsx#L8-L10)).
-- **Minha decisão:** Como nosso "banco de dados" é um arquivo JSON local que pode mudar a qualquer momento, priorizei a consistência imediata. Queria garantir que, se você editar o JSON, a mudança apareça na hora.
-- **Em produção:** Eu certamente usaria **ISR (Incremental Static Regeneration)** com um tempo de revalidação maior (ex: `revalidate = 60`), para aproveitar o cache do Next.js, reduzir carga no servidor e entregar páginas estáticas instantâneas. Mas para o escopo deste teste, desativar o cache foi a escolha mais segura.
+>  Como nosso "banco de dados" é um arquivo JSON local que pode mudar a qualquer momento, priorizei a consistência imediata. Queria garantir que, se você editar o JSON, a mudança apareça na hora.
+ 
+> Em produção,  eu certamente usaria **ISR (Incremental Static Regeneration)** com um tempo de revalidação maior (ex: `revalidate = 60`), para aproveitar o cache do Next.js, reduzir carga no servidor e entregar páginas estáticas instantâneas. Mas para o escopo deste teste, desativar o cache foi a escolha mais segura.
 
 ### 📊 Estrutura de Dados
 
@@ -378,7 +373,7 @@ UI Rendering
 
 ---
 
-<strong>## 🎨 Features Principais (clique para expandir)</strong>
+## 🎨 Features Principais
 
 ### 1. Tema Dark/Light Mode
 - Persistência em `localStorage`
@@ -391,7 +386,7 @@ UI Rendering
 - **Espaçamento de Linhas**: 4 opções (normal, 1.3x, 1.6x, 2x)
 - **Alto Contraste**: Aumenta saturação e reforça bordas
 - **Escala de Cinza**: Remove cores para melhor legibilidade
-- Botão flutuante de acessibilidade agora em **atoms** (sempre disponível)
+- Botão flutuante de acessibilidade (sempre disponível)
 - Todas as configurações persistidas e sincronizadas entre abas
 
 ### 3. SEO e Schema.org
@@ -411,7 +406,7 @@ UI Rendering
 
 ---
 
-<strong>## ⚡ Otimizações de Performance Aplicadas (clique para expandir)</strong>
+## ⚡ Otimizações de Performance Aplicadas
 
 ### 1. Server Components Maximizados
 - **ArticleDetail como Server Component**: Todo o conteúdo renderizado no servidor
@@ -457,15 +452,7 @@ const inter = Inter({
 });
 ```
 
-**Resultado esperado:**
-- LCP: 7s → ~1-1.5s (⚡ **-5.5s**)
-- Score: 77 → ~92-95 (📈 **+15-18 pontos**)
-- Bundle JS: **-28 linhas** de código cliente
-- HTML: **-58%** de blur placeholder data
-
----
-
-<strong>## 🎯 Boas Práticas Implementadas (clique para expandir)</strong>
+## 🎯 Boas Práticas Implementadas
 
 ### Type Safety
 ```typescript
@@ -516,7 +503,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-<strong>## 📱 Funcionalidades (clique para expandir)</strong>
+## 📱 Funcionalidades
 
 ### Home (`/` ou `/?page=2`)
 - Lista paginada de notícias (6 por página)
@@ -531,6 +518,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 - Imagem otimizada com next/image
 - Botão de voltar com histórico
 - 404 automático se não existir
+- Botão para compartilhar artigo ( Whatsapp / Twitter / Linkedin )
 
 ### Páginas de Erro
 - 404 personalizada com link home
@@ -539,7 +527,7 @@ export const safeLocalStorageGet = (key: string): string | null => {
 
 ---
 
-<strong>## 📊 Checklist Completo (clique para expandir)</strong>
+## 📊 Checklist Completo
 
 ### Funcionalidades Principais
 - ✅ React/Next.js 16 com TypeScript 5
@@ -557,26 +545,15 @@ export const safeLocalStorageGet = (key: string): string | null => {
 - ✅ Tema Dark/Light com persistência
 - ✅ 4 controles de acessibilidade completos
 
-### Destaques Diferenciais
-- ✅ Atomic Design Pattern (raramente visto em JR)
-- ✅ Schema.org microdata (NewsArticle + Person + ImageObject)
-- ✅ Context API sincronizado entre abas
-- ✅ SSR-safe localStorage (sem hydration mismatch)
-- ✅ Docker com multi-stage builds e health checks
-- ✅ Testes E2E cobrindo fluxos críticos de usuário
-- ✅ Performance otimizada (LCP 1.5s, Score 95)
-
 ---
 
----
+## 🤖 Uso de Inteligência Artificial
 
-<strong>## 🤖 Uso de Inteligência Artificial (clique para expandir)</strong>
-
-Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitHub Copilot) como auxiliares de produtividade. Abaixo, descrevo como elas foram aplicadas conforme solicitado nas diretrizes:
+Para o desenvolvimento deste desafio, utilizei ferramentas de IA (Gemini e GitHub Copilot) como auxiliares de produtividade. Abaixo, descrevo como elas foram aplicadas conforme solicitado nas diretrizes:
 
 ### Ferramentas Utilizadas
 
-**IA de Chat (ChatGPT/Gemini)**: Utilizada para discussões arquiteturais, planejamento de deploy e estratégias de acessibilidade.
+**IA de Chat (Gemini)**: Utilizada para discussões arquiteturais, planejamento de deploy e estratégias de acessibilidade.
 
 **IA no Editor (GitHub Copilot/VS Code)**: Utilizada para auxílio no preenchimento de código repetitivo (boilerplate) e refatoração rápida.
 
@@ -604,15 +581,6 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (ChatGPT e GitH
 
 **Análise de código:**
 > "Analise este projeto e identifique más práticas em HTML semântico, TypeScript, SCSS, SEO e código duplicado."
-
-### Decisões Tomadas por Mim
-
-Apesar do uso de IA, **todas as decisões arquiteturais foram minhas**:
-- Escolha do Atomic Design como padrão de organização
-- Implementação de 4 controles de acessibilidade (não apenas dark mode)
-- Schema.org microdata para SEO profissional
-- Error Boundaries customizados
-- Separação entre componentes (UI) e lib (infraestrutura)
 
 ---
 
