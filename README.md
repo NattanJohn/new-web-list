@@ -72,7 +72,7 @@ PORT=3001
 ```bash
 # 1. Clone o repositório
 git clone https://github.com/NattanJohn/new-web-list.git
-cd news-web-list
+cd new-web-list
 
 # 2. Configure as variáveis de ambiente
 # Frontend: crie .env na pasta frontend/
@@ -103,7 +103,7 @@ npm run dev
 ```bash
 # 1. Clone o repositório (se ainda não clonou)
 git clone https://github.com/NattanJohn/new-web-list.git
-cd news-web-list
+cd new-web-list
 
 # 2. Build e inicie os containers
 docker compose build    # Primeira vez: ~80 segundos
