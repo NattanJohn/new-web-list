@@ -53,9 +53,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
 
-  let article = null;
+
   try {
-    article = await api.getArticleBySlug(slug);
+    const article = await api.getArticleBySlug(slug);
+    if (!article) {
+      return <NotFound />;
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      headline: article.title,
+      description: article.summary || article.content?.slice(0, 160),
+      image: article.image,
+      datePublished: article.date,
+      author: {
+        '@type': 'Person',
+        name: article.author || 'Gazeta News',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Gazeta News',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteUrl}/logo.png`,
+        },
+      },
+    };
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <ArticleTemplate>
+          <ScrollToTop>
+            <ArticleDetail article={article} />
+          </ScrollToTop>
+        </ArticleTemplate>
+      </>
+    );
   } catch (error) {
     console.error('Erro ao carregar artigo:', error);
     return (
@@ -66,44 +106,4 @@ export default async function ArticlePage({ params }: Props) {
     );
   }
 
-  if (!article) {
-    return <NotFound />;
-  }
-
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'NewsArticle',
-    headline: article.title,
-    description: article.summary || article.content?.slice(0, 160),
-    image: article.image,
-    datePublished: article.date,
-    author: {
-      '@type': 'Person',
-      name: article.author || 'Gazeta News',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Gazeta News',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${siteUrl}/logo.png`,
-      },
-    },
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <ArticleTemplate>
-        <ScrollToTop>
-          <ArticleDetail article={article} />
-        </ScrollToTop>
-      </ArticleTemplate>
-    </>
-  );
 }

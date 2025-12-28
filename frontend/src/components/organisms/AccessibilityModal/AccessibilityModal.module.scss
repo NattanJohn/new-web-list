@@ -1,3 +1,4 @@
+@use "sass:map";
 @import '@/styles/variables';
 
 .overlay {
@@ -149,9 +150,9 @@
 .resetBtn {
   width: 100%;
   padding: 14px;
-  background: map-get($colors-error, 'light');
-  color: map-get($colors-error, 'main');
-  border: 1px solid map-get($colors-error, 'border');
+  background: map.get($colors-error, 'light');
+  color: map.get($colors-error, 'main');
+  border: 1px solid map.get($colors-error, 'border');
   border-radius: $border-radius-md;
   font-weight: 700;
   cursor: pointer;
@@ -162,7 +163,7 @@
   transition: $transition-fast;
 
   &:hover { 
-    background: map-get($colors-error, 'main'); 
+    background: map.get($colors-error, 'main'); 
     color: #fff; 
     transform: translateY(-1px); 
   }

@@ -1,14 +1,7 @@
+import { getApiUrl } from '@/lib/getApiUrl';
 import type { Article, ArticleList, ApiErrorShape, ArticlePageResponse } from '@/types';
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  }
-
-  return process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
-};
-
-const API_URL = getBaseUrl();
+const API_URL = getApiUrl();
 
 export class ApiError extends Error {
   status?: number;

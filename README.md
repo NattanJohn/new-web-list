@@ -16,7 +16,7 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 - 🚀 **Frontend (Vercel)**: <a href="https://new-web-list.vercel.app/" target="_blank">https://new-web-list.vercel.app/</a>
 - 🔌 **Backend API (Render)**: <a href="https://new-web-list.onrender.com/articles" target="_blank">https://new-web-list.onrender.com/articles</a>
 
-> ⏳ **Atenção:** a primeira chamada do backend (Render free) pode levar até ~50s por cold start.
+> ⏳ **Atenção:** a primeira chamada do backend (Render free) pode levar até ~60s por cold start.
 
 ---
 
@@ -45,19 +45,21 @@ Portal de notícias moderno e acessível construído com Next.js 16, TypeScript 
 
 ## 🌍 Variáveis de Ambiente
 
+> ⚠️ **Atenção:** As variáveis de ambiente abaixo **não são obrigatórias** para rodar o projeto (local ou Docker), pois o código já possui valores padrão e o Docker Compose injeta as variáveis necessárias. Use-as apenas se ocorrer erro relacionado a variável de ambiente.
+
 ```bash
-# Frontend (.env ou .env.example)
+# Frontend (.env)
 NEXT_PUBLIC_API_URL=http://localhost:3001
 INTERNAL_API_URL=http://127.0.0.1:3001
 
-# Backend (.env ou .env.example)
+# Backend (.env)
 PORT=3001
 ```
 
-**Por que são necessárias?**
-- `NEXT_PUBLIC_API_URL`: o frontend roda em ambiente dinâmico e precisa saber em runtime onde está a API (localhost em dev, host real em deploy). Como é `NEXT_PUBLIC`, ela é lida no cliente e no servidor.
-`INTERNAL_API_URL`: Utilizada pelo servidor Node.js (SSR). Localmente aponta para o IP direto (127.0.0.1) para evitar latência de DNS, e no Docker aponta para o nome do serviço (http://backend:3001).
-- `PORT`: define a porta do Express; útil para Docker e para não conflitar com outras apps locais.
+**Sobre as variáveis:**
+- `NEXT_PUBLIC_API_URL`: URL da API para o frontend (SSR/CSR). Se não definida, usa `http://localhost:3001`.
+- `INTERNAL_API_URL`: Usada pelo SSR do Next.js. Se não definida, usa `http://127.0.0.1:3001`.
+- `PORT`: Porta do backend. Se não definida, usa `3001`.
 
 ---
 
@@ -76,20 +78,13 @@ PORT=3001
 git clone https://github.com/NattanJohn/new-web-list.git
 cd new-web-list
 
-# 2. Configure as variáveis de ambiente
-# Frontend: crie .env na pasta frontend/
-echo "NEXT_PUBLIC_API_URL=http://localhost:3001\nINTERNAL_API_URL=http://127.0.0.1:3001" > frontend/.env
-
-# Backend: crie .env na pasta backend/ (opcional, padrão é 3001)
-echo "PORT=3001" > backend/.env
-
-# 3. Instale e inicie o BACKEND (Terminal 1)
+# 2. Instale e inicie o BACKEND (Terminal 1)
 cd backend
 npm install
 npm start
 # ✅ Backend rodando em http://localhost:3001
 
-# 4. Instale e inicie o FRONTEND (Terminal 2)
+# 3. Instale e inicie o FRONTEND (Terminal 2)
 cd frontend
 npm install
 npm run dev
@@ -259,7 +254,8 @@ frontend/src/
 ├── lib/                          # Utilitários e infraestrutura
 │   ├── index.ts                  # Barrel (ErrorBoundary + metadata)
 │   ├── ErrorBoundary.tsx         # Error boundary reutilizável
-│   └── metadata.ts               # Constantes de SEO centralizadas
+│   ├── metadata.ts               # Constantes de SEO centralizadas
+│   └── getApiUrl.ts              # Centraliza lógica de URL da API
 │
 ├── services/
 │   ├── api.ts                    # HTTP service + 7 testes
@@ -335,22 +331,22 @@ A estrutura de 4 níveis (atoms → molecules → organisms → templates) ofere
 A lógica abaixo garante que o frontend consiga se comunicar com a API corretamente em diferentes cenários: **dev local, SSR, Docker e produção**.
 
 ```ts
-// services/api.ts
-const getBaseUrl = () => {
-  // Executando no navegador (client-side)
+// src/lib/getApiUrl.ts
+export function getApiUrl() {
+  // No navegador (CSR)
   if (typeof window !== 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   }
-
-
-  // Executando no servidor (SSR / rotas internas do Next.js)
-  return (
-    process.env.INTERNAL_API_URL ||        // ex: http://backend:3001 (rede Docker)
-    process.env.NEXT_PUBLIC_API_URL ||     // fallback: URL pública
-    'http://127.0.0.1:3001'                // fallback local estável
-  );
-};
+  // No servidor (SSR)
+  if (process.env.INTERNAL_API_URL) {
+    return process.env.INTERNAL_API_URL;
+  }
+  return 'http://127.0.0.1:3001';
+}
 ```
+
+> 💡 **Por que usar `localhost` e `127.0.0.1`?**
+> - `localhost` funciona para o browser local, mas em Docker cada container tem seu próprio localhost. Por isso, para SSR (servidor), usamos `INTERNAL_API_URL` (ex: `http://backend:3001` no compose) e fallback para `127.0.0.1` para garantir que o SSR local funcione mesmo sem variáveis.
 
 ### 📊 Estrutura de Dados
 
