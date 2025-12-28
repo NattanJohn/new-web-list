@@ -125,17 +125,6 @@ docker compose down     # Para e remove containers
 - 🌐 **Frontend**: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> (startup: ~273ms ⚡)
 - 🔌 **API Backend**: <a href="http://localhost:3001/articles" target="_blank">http://localhost:3001/articles</a>
 
-**Comandos úteis do Docker:**
-```bash
-docker compose up -d         # Inicia em background
-docker compose stop          # Para sem remover
-docker compose start         # Reinicia containers parados
-docker compose down          # Para e remove tudo
-docker compose logs backend  # Logs apenas do backend
-docker compose logs frontend # Logs apenas do frontend
-docker compose ps            # Status dos containers
-```
-
 ---
 
 ## 🧪 Testes
@@ -213,7 +202,8 @@ O projeto utiliza **Atomic Design**, um padrão de design que organiza component
 
 **Benefícios:** Reutilização máxima, manutenção simplificada, consistência visual, facilita testes unitários.
 
-### 📂 Estrutura de Diretórios
+<details>
+<summary><h3>📂 Estrutura de Diretórios</h3></summary>
 
 ```
 frontend/src/
@@ -294,6 +284,7 @@ frontend/src/
 │
 └── setupTests.ts                 # Configuração do Jest
 ```
+</details>
 
 ### 🔧 Decisões Técnicas
 
@@ -589,6 +580,8 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (Gemini e GitHu
 **Arquitetura e UX:**
 > "Como implementar um contexto de acessibilidade no React que persista as preferências do usuário no LocalStorage?"
 
+> "Como configurar a comunicação entre um frontend Next.js (SSR) e um backend Express dentro de uma rede Docker Bridge, garantindo que o fetch funcione tanto no servidor quanto no cliente?"
+
 **Refatoração:**
 > "Refatore este componente de Context para usar as melhores práticas de performance (useMemo/useCallback) e resolver erros de lint de variáveis não utilizadas."
 
@@ -616,7 +609,5 @@ Para o desenvolvimento deste desafio, utilizei ferramentas de IA (Gemini e GitHu
 MIT License - Código aberto
 
 ---
-
-## 👨‍💻 Desenvolvedor
 
 Desenvolvido com foco em **acessibilidade**, **performance**, **boas práticas** e **testes automatizados**.
