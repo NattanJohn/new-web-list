@@ -1,11 +1,10 @@
 import { Metadata } from "next";
 import { api } from "@/services/api";
-import { ArticleTemplate, StatusTemplate } from "@/components/templates";
+import { ArticleTemplate} from "@/components/templates";
 import { ArticleDetail } from "@/components/organisms/ArticleDetail/ArticleDetail";
-import { ScrollToTop } from "@/components/atoms";
+import {  EmptyState, ScrollToTop } from "@/components/atoms";
 import NotFound from "@/app/not-found";
 import { SITE_CONFIG } from "@/lib/metadata";
-import { Title } from "@/components/atoms/Title/Title";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -96,14 +95,16 @@ export default async function ArticlePage({ params }: Props) {
         </ArticleTemplate>
       </>
     );
-  } catch (error) {
+  }catch (error) {
     console.error('Erro ao carregar artigo:', error);
     return (
-      <StatusTemplate>
-        <Title tag="h1">Não foi possível carregar a notícia</Title>
-        <p role="status">Tente novamente em instantes.</p>
-      </StatusTemplate>
+      <ArticleTemplate>
+        <EmptyState
+          title="Ops! Algo deu errado"
+          message="Não foi possível carregar esta notícia no momento. O servidor pode estar offline."
+          actions={[{ label: 'Ver últimas notícias', href: '/' }]}
+        />
+      </ArticleTemplate>
     );
   }
-
 }
